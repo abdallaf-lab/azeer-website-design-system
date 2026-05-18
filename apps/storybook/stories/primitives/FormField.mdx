@@ -1,0 +1,112 @@
+import { Meta, Title, Subtitle, Primary, Controls, Stories } from "@storybook/addon-docs/blocks";
+import * as FormFieldStories from "./FormField.stories";
+
+<Meta of={FormFieldStories} />
+
+<Title />
+<Subtitle />
+
+The canonical form anatomy from Forms.md — 4 slots, top-aligned:
+
+```
+┌───────────────────────────────────────────┐
+│  Label *                                  │  ← 1. Label (text-label-sm)
+│  ┌─────────────────────────────────────┐  │
+│  │  Control                             │  │  ← 2. Control (Input / Textarea / Select / etc.)
+│  └─────────────────────────────────────┘  │
+│  Helper text. Replaced by error message.  │  ← 3. Helper OR error (text-body-xs)
+└───────────────────────────────────────────┘
+```
+
+`FormField` wraps **exactly one** control as a child and auto-wires the
+accessibility plumbing.
+
+## Live
+
+<Primary />
+<Controls />
+
+## All stories
+
+<Stories includePrimary={false} />
+
+## Auto-wired accessibility
+
+For every child control, `FormField` writes:
+
+| Attribute | When |
+| --- | --- |
+| `id` | Always (auto-generated via `React.useId` unless `htmlFor` is set) |
+| `aria-describedby` | When `helper` or `error` is present — points at the message paragraph |
+| `aria-invalid="true"` | When `error` is set |
+| `aria-required="true"` | When `required` is set |
+
+The matching `<label htmlFor>` is set automatically. Consumers don't manage
+any of these directly.
+
+## Required vs. optional
+
+Pick **one rule per form** (Forms §3):
+
+- **`required` → red `*` after the label.** Use when most fields are optional.
+- **`optional` → "(optional)" muted suffix.** Use when most fields are required.
+
+Never mix the two in the same form — visually confuses scanning and screen
+reader output.
+
+## Validation timing
+
+| When | What to validate |
+| --- | --- |
+| **On blur** | Format checks (email shape, phone shape, URL shape) |
+| **On submit** | Required fields, cross-field rules, server-side validation |
+| **On type** | ONLY for live constraints (character count, password strength) |
+| **On change** (Select / Checkbox / Switch) | The single-interaction controls — immediate |
+
+**Never flash red while the user is mid-typing in a still-empty field.** Wait
+for blur or submit. The system bans "hostile validation" patterns.
+
+## Disabled with a reason
+
+When a control is disabled because of a recoverable prerequisite, use the
+`helper` slot to explain — disabled-with-no-reason is hostile UX:
+
+```tsx
+<FormField
+  label="Two-factor authentication"
+  helper="Verify your email first to enable this."
+>
+  <Switch disabled />
+</FormField>
+```
+
+See the **Disabled — with reason** story above.
+
+## Tokens used
+
+| Token | Where |
+| --- | --- |
+| `--text-label-sm` (13 / 16 / 500) | Label typography (via `<Label>`) |
+| `--text-body-xs` (12 / 16 / 400) | Helper / error typography |
+| `--color-fg-default` | Label text |
+| `--color-fg-muted` | Helper text, "(optional)" suffix |
+| `--color-danger-text` | Error message text + label `*` marker |
+| Spacing `gap-1.5` (6 px) | Label-to-control and control-to-helper gaps (per Spacing §locked-defaults) |
+
+## A11y
+
+- Renders semantic HTML — `<label>` + native control + `<p>` for helper/error.
+- The `*` required marker is `aria-hidden`; `aria-required="true"` on the control carries the signal.
+- Error messages get a stable id from `React.useId`, referenced by `aria-describedby` on the control.
+- Error replaces helper — never both at once (screen readers would announce both).
+- Click on the label focuses the control (HTML default, preserved).
+
+## Forbidden
+
+- Multiple children passed to `FormField` — pass exactly one control
+- Manually managing `aria-invalid` on the child (FormField wires it from `error`)
+- Manually generating ids (use `htmlFor` to override only when interop with another tool needs it)
+- Mixing `required` (`*`) and `optional` (`(optional)`) markers in the same form
+- Validating on every keystroke for format
+- Disabling a submit button as the only loading indicator — use `Button loading` prop
+- Custom validation message colors — `text-danger-text` is the only one

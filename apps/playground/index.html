@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-theme="light" data-density="comfortable">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Azeer · Playground</title>
+    <!--
+      Font loading per tokens.css §3 font-families:
+        --font-sans   → Inter (Latin UI text)
+        --font-arabic → IBM Plex Sans Arabic (AR UI text — same-metric pairing with Inter)
+        --font-mono   → JetBrains Mono (IDs, phones, code)
+      Three weights only (400/500/600) per DS weight policy.
+      `display=swap` renders system fallback first, swaps when web fonts load —
+      avoids FOIT on slow networks. Self-host for stricter CSP / GDPR setups.
+    -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+    />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

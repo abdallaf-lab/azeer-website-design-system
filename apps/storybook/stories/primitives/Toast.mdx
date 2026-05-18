@@ -1,0 +1,110 @@
+import { Meta, Title, Subtitle, Primary, Stories } from "@storybook/addon-docs/blocks";
+import * as ToastStories from "./Toast.stories";
+
+<Meta of={ToastStories} />
+
+<Title />
+<Subtitle />
+
+Sonner under the hood, wrapped in DS-locked defaults. Use `toast.*` helpers
+to dispatch — never `import { toast } from "sonner"` directly (ESLint bans
+it). The singleton `<Toaster />` is already mounted at the app root —
+Storybook's decorator does this for you; in apps, mount it once near
+`<App />`.
+
+## Live
+
+Click any button to fire a toast. They land in the **top-end** corner —
+flip the toolbar to RTL and the position mirrors automatically.
+
+<Primary />
+
+## All stories
+
+<Stories includePrimary={false} />
+
+## Helper API
+
+| Helper | Duration | Icon | Use |
+| --- | --- | --- | --- |
+| `toast.success(msg, opts?)` | **3 s** | `CheckCircle2` (success-text) | "Message sent", "Saved", "Copied" |
+| `toast.info(msg, opts?)` | 4 s | `Info` (info-text) | "Synced in background" |
+| `toast.warning(msg, opts?)` | 5 s | `TriangleAlert` (warning-text) | "Approaching quota" |
+| `toast.error(msg, opts?)` | **Persistent** | `AlertCircle` (danger-text) | "Webhook returned 502 — [Retry]" |
+| `toast.loading(msg, opts?)` | Until dismissed | Sonner's spinner | "Sending broadcast…" — call `toast.dismiss(id)` when done |
+| `toast.ai(msg, opts?)` | 4 s | `Sparkles` (ai-icon — brand indigo) | "AI summary ready" |
+| `toast.promise(p, msgs)` | auto | spinner → variant-icon | Async pattern — transitions loading → success / error |
+| `toast.dismiss(id?)` | — | — | Manual dismiss; no `id` dismisses all |
+
+**Why errors are persistent.** For an enterprise CPaaS where a missed error
+can mean a missed customer issue, persistent wins. The user can always
+dismiss via the close button (always visible). The max-stack-3 rule keeps
+the surface from piling up.
+
+## Locked behavior (Toast.md canon)
+
+| Parameter | Value |
+| --- | --- |
+| **Position** | `top-end` — top-right LTR, top-left RTL (auto-mirrors via `<html dir>` observer) |
+| **Max stack** | 3 visible — older toasts auto-dismiss when a 4th fires |
+| **Viewport offset** | 16 px |
+| **Inter-toast gap** | 8 px |
+| **Min width** | 360 px |
+| **Max width** | 440 px |
+| **Surface** | `bg-surface` (white) — uniform across variants; intent comes from icon only |
+| **Radius** | `rounded-lg` (8 px) |
+| **Shadow** | `--shadow-elev-3` |
+| **z-index** | `--z-toast` (1600) — above modals, below call-bar |
+| **Close button** | Always visible; click or swipe-to-dismiss |
+
+## Tokens used
+
+| Token | Where |
+| --- | --- |
+| `--color-surface` | Toast background — uniform for every variant |
+| `--color-border-default` | 1 px border |
+| `--color-fg-default` | Title text |
+| `--color-fg-muted` | Description text + close icon |
+| `--color-success-text` / `-info-text` / `-warning-text` / `-danger-text` | Variant icon colors |
+| `--color-ai-icon` (= `accent-brand`) | AI variant icon — only place this token shows up on a toast |
+| `--text-body-md` | Title typography (font-medium) |
+| `--text-body-sm` | Description typography |
+| `--radius-lg` | Corner |
+| `--shadow-elev-3` | Shadow |
+| `--color-accent-fill` / `-hover` | Action button bg / hover |
+| `--color-state-hover` | Cancel + close button hover |
+
+## When NOT to use a Toast
+
+Per Errors.md, reach for a different surface when:
+
+| Scenario | Use |
+| --- | --- |
+| Form validation per-field | `FormField` `error` (inline) |
+| User must decide before continuing | `Dialog` / `ConfirmDialog` |
+| Persistent app-state (trial, maintenance) | `Banner` (later batch — shell-level) |
+| Critical irreversible action | `Dialog` |
+| Inline contextual help | `Tooltip` or `HoverCard` |
+| Progress with % or steps | `Progress` |
+
+## A11y
+
+- Sonner uses `role="status"` for success/info/warning/ai/loading (polite announcement) and `role="alert"` for error (immediate).
+- Focus is NOT stolen; action button is reachable via keyboard tab cycle once a toast is present.
+- `prefers-reduced-motion` collapses enter/exit animations via the global rule in tokens.css.
+- Hover pauses the auto-dismiss timer (Sonner default) — gives users time to read.
+- Swipe-to-dismiss on touch devices (Sonner native).
+
+## Forbidden
+
+- `import { toast } from "sonner"` — ESLint blocks; route through `@azeer/ui`
+- Calling raw `sonner.toast(...)` — must use one of the seven helpers
+- `position` override — DS-locked to top-end
+- `duration` override per-call to extend a variant — if you want a different duration you want a different variant
+- Multiple `<Toaster />` instances — mount exactly one at app root
+- Two action buttons in one toast — max one (use a Dialog if you need two)
+- Background color per intent — DS uses uniform `bg-surface`; icon carries the signal
+- Toast for form validation — use `FormField` inline error
+- Toast for blocking decisions — use `ConfirmDialog`
+- Toast for ongoing state ("Trial expiring") — use `Banner`
+- Custom toast component / library — Sonner via this wrapper only

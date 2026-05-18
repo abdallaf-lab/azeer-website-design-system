@@ -1,0 +1,93 @@
+import { Meta, Title, Subtitle, Primary, Stories } from "@storybook/addon-docs/blocks";
+import * as SkeletonStories from "./Skeleton.stories";
+
+<Meta of={SkeletonStories} />
+
+<Title />
+<Subtitle />
+
+Content-shaped placeholders for the initial data-fetch state. Per
+Loading.md Rule 1, Skeletons must **match the shape of incoming content**
+so the layout doesn't shift when data lands. Four primitives cover most
+patterns; for anything else, compose them.
+
+## Live
+
+<Primary />
+
+## All stories
+
+<Stories includePrimary={false} />
+
+## The four primitives
+
+```tsx
+<Skeleton className="h-4 w-32" />     // generic — pass dimensions
+<SkeletonText lines={3} />             // text block (mixed widths)
+<SkeletonAvatar size="md" />           // matches Avatar sizing
+<SkeletonCard />                       // composed: avatar + 2 lines + tail
+```
+
+### Skeleton
+
+Base building block. Pass `h-N w-N` via `className` or computed widths via
+`style`. Default radius `md`; pass `rounded="full"` for avatar-shaped or
+`rounded="sm"` for tiny indicators.
+
+### SkeletonText
+
+Stack of lines with **cycling widths** (100% → ~90% → ~75%) so 4+ lines
+feel like real prose. The final line uses `lastLineWidth` (60/70/80) to
+suggest paragraph ending.
+
+| Prop | Default |
+| --- | --- |
+| `lines` | `3` |
+| `lineHeight` | `"md"` (sm = h-3, md = h-4, lg = h-5) |
+| `gap` | `"default"` (tight = gap-2, default = gap-3, loose = gap-4) |
+| `lastLineWidth` | `70` |
+
+### SkeletonAvatar
+
+Six sizes matching the Avatar component (xs–2xl). Pass `shape="rounded"`
+for organization avatars.
+
+### SkeletonCard
+
+`SkeletonAvatar` + tail (timestamp-shaped Skeleton) + `SkeletonText`. The
+canonical conversation-row / contact-row / list-row shape.
+
+## Tokens used
+
+| Token | Where |
+| --- | --- |
+| `--color-surface-sunken` | Placeholder color |
+| `animate-pulse` (Tailwind built-in) | Subtle opacity-pulse motion |
+| `--radius-md` / `-radius-full` / `-radius-sm` | Radius variants |
+
+## When to use Skeleton
+
+Per Loading.md decision matrix:
+
+| Situation | Loader |
+| --- | --- |
+| **Container waiting for content** | **Skeleton** ✓ |
+| Action in progress, ≤ 2 s | `Spinner` |
+| Known duration OR multiple steps | `Progress` |
+
+## A11y
+
+- Generic `Skeleton` is `aria-hidden` — the container above usually carries `aria-busy`.
+- `SkeletonText` + `SkeletonCard` carry `role="status"` + `aria-label="Loading"` so screen readers announce the loading intent.
+- `prefers-reduced-motion` collapses `animate-pulse` to a static state (Tailwind built-in respects the media query).
+
+## Forbidden
+
+- Skeleton for ≤ 1 s loads — creates flicker; just let the brief delay pass
+- Skeleton during a re-fetch when content already exists — show an inline `Spinner` at the top, keep existing rows visible
+- Skeleton mixed with real content in the same list — all or nothing
+- Skeleton + Spinner overlaid on the same surface — pick one
+- Skeleton + Progress on the same surface — pick one
+- Skeleton for action feedback — use `Spinner` inside the button (`Button loading` once Phase 5 ships)
+- Animated skeletons with multiple effects (shimmer + slide + pulse) — one subtle pulse only
+- Skeleton sized differently than the content it'll replace — defeats the layout-stability purpose

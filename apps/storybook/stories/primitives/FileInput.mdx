@@ -1,0 +1,89 @@
+import { Meta, Title, Subtitle, Primary, Controls, Stories } from "@storybook/addon-docs/blocks";
+import * as FileInputStories from "./FileInput.stories";
+
+<Meta of={FileInputStories} />
+
+<Title />
+<Subtitle />
+
+Drag-drop zone + click-to-browse. **Single-file in v1** per Components.md;
+multi-file is the v1.2 fork. The visible drop zone is a styled `<div>`; a
+visually-hidden `<input type="file">` does the actual file picking.
+
+## Live
+
+<Primary />
+<Controls />
+
+## All stories
+
+<Stories includePrimary={false} />
+
+## API
+
+```tsx
+const [file, setFile] = useState<File | null>(null);
+
+<FileInput
+  value={file}
+  onValueChange={setFile}
+  accept="image/png,image/jpeg"
+  maxSize={2 * 1024 * 1024}      // 2 MB
+  helper="PNG or JPG up to 2 MB"
+/>
+```
+
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `value` | `File \| null` | Currently selected file |
+| `onValueChange` | `(file \| null) => void` | Fires on pick / drop / clear |
+| `accept` | `string` | MIME types or extensions, comma-separated |
+| `maxSize` | `number` | Bytes. Shows red error if file exceeds; `value` still updates so the consumer can decide handling |
+| `helper` | `ReactNode` | Subtle text below the prompt in the empty state |
+| `disabled` | `boolean` | Disables drop + browse |
+| `id` | `string` | Pair with `FormField`'s `htmlFor` |
+
+## States
+
+| State | Visual |
+| --- | --- |
+| Empty | Dashed border, `bg-surface`, "Drop a file here, or browse" prompt |
+| Hover (empty) | Background tints to `surface-sunken` |
+| Dragging over | Border + bg tint to `accent-fill` + `accent-bg-subtle` |
+| Selected | File icon + name + size + remove (X) button |
+| Over `maxSize` | Border tints to `danger-border` + error message below |
+| Disabled | `opacity-50` + `cursor-not-allowed`, no drop/browse |
+
+## Tokens used
+
+| Token | Where |
+| --- | --- |
+| `--color-border-strong` | Default dashed border |
+| `--color-border-accent-fill` (via `border-accent-fill`) | Dragging-state border |
+| `--color-accent-bg-subtle` | Dragging-state background |
+| `--color-surface` / `-surface-sunken` | Empty bg / hover bg |
+| `--color-danger-border` + `--color-danger-text` | Size-error border + message |
+| `--color-fg-muted` | Helper text + file metadata |
+| `--radius-lg` | Drop-zone corner |
+| `--duration-fast` + `--ease-standard` | Border / background transitions |
+
+## A11y
+
+- Drop zone is `role="button"` with `tabIndex={0}` — keyboard users `Tab` to it + press `Enter`/`Space` to open the picker.
+- Native `<input type="file">` is `.sr-only` (visually hidden, focusable for screen readers).
+- `aria-label` falls back to `"Selected file: filename"` when a file is present, `"Upload a file"` when empty.
+- Remove button has `aria-label="Remove file"`.
+- `FormField` wires `aria-invalid` + `aria-describedby` onto the drop zone.
+
+## RTL behavior
+
+- Drop-zone layout is centered, direction-neutral.
+- Selected-file row uses `gap-3` and natural flow — file icon at start, X button at end.
+
+## Forbidden
+
+- Multi-file in v1 — wait for the deferred v1.2 fork
+- File-list display below the drop zone instead of inside — single-file in v1 always renders inline
+- Bypassing the visually-hidden `<input>` and using only drag-drop — keyboard / mobile users would have no way to pick a file
+- Auto-uploading on drop without user confirmation — pass `value` to a consumer-owned upload action; FileInput is the *picker*, not the *uploader*
+- Custom drag-state colors per feature — `accent-fill` / `accent-bg-subtle` are the locked drag affordance

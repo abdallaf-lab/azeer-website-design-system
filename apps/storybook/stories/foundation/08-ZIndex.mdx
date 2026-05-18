@@ -1,0 +1,38 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+import { ZLadder, Callout } from "./_specimens";
+
+<Meta title="Foundation/Z-Index" />
+
+# Z-Index
+
+**The single source of truth for layering.** Every floating, sticky, or
+portaled element gets its z-index from this ladder. No arbitrary `z-9999`. No
+inline `style={{ zIndex: 50 }}`.
+
+## The ladder
+
+<ZLadder />
+
+## Why these tiers
+
+<Callout intent="info">
+Each layer answers "what can this hide, and what can hide it?" The gaps (35
+between banner and bubble, 100 between popover and tooltip, 1000 between
+tooltip and modal-backdrop) leave room for future tiers without renumbering.
+</Callout>
+
+| Tier | Rationale |
+| --- | --- |
+| **call-bar** wins everything | A missed call is worse than a missed anything in a CPaaS |
+| **toast** outranks **modal** | Action feedback can't be trapped behind a dialog |
+| **tooltip** outranks **popover** | Tooltips often explain popover triggers |
+| **banner** is content-level (35) | Modals fully cover trial/maintenance banners when open |
+| **bubble** below popovers | HelpBubble is anchored UI; popovers and modals must overlay it |
+
+## Forbidden
+
+- `z-[9999]`, `z-99999`, `z-1000` arbitrary values
+- `style={{ zIndex: 50 }}` inline
+- Tailwind defaults `z-0` … `z-50` for floating layers (they don't map to our ladder)
+- Stacking two surfaces at the same tier — if they compete, one belongs in a different tier
+- Adding a one-off tier for "this feature" — propose a new named tier via RFC, never an arbitrary number

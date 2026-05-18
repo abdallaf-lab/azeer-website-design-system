@@ -1,0 +1,35 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+import {
+  SpacingScaleAllowed,
+  SpacingScaleBanned,
+  SpacingRhythmTable,
+  SpacingSurfaceTable,
+  Callout,
+} from "./_specimens";
+
+<Meta title="Foundation/Spacing" />
+
+# Spacing
+
+**4px base.** Half-steps allowed below 12px; strict 4px multiples above. The
+eye distinguishes 6 vs 4 vs 8 clearly at small sizes; above 12px, half-steps
+break visual rhythm.
+
+## Scale
+
+<SpacingScaleAllowed />
+<SpacingScaleBanned />
+
+## Intercom-calm three-tier rhythm
+
+<SpacingRhythmTable />
+
+## Locked per-surface defaults
+
+<Callout intent="info">
+To prevent "one screen uses p-4, another uses p-5" drift, every recurring
+surface has a single canonical default. Designers and engineers pick from this
+table, not from the full scale.
+</Callout>
+
+<SpacingSurfaceTable />

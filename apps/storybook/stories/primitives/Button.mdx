@@ -1,0 +1,85 @@
+import { Meta, Title, Subtitle, Primary, Controls, Stories } from "@storybook/addon-docs/blocks";
+import * as ButtonStories from "./Button.stories";
+
+<Meta of={ButtonStories} />
+
+<Title />
+<Subtitle />
+
+The main action surface. Locked at four variants — `primary`, `secondary`,
+`ghost`, `destructive` — and six sizes (`sm` / `md` / `lg` and their
+`icon-*` counterparts). ESLint enforces the allowlist; passing
+`variant="brand"` or `size="xs"` fails the build.
+
+## Live
+
+<Primary />
+<Controls />
+
+## All stories
+
+<Stories includePrimary={false} />
+
+## Anatomy
+
+- **Pill shape** (`rounded-full`) reserved for `primary` and `destructive` — the highest-priority actions.
+- **`rounded-md`** for `secondary` and `ghost` — hierarchy encoded by shape, not just by color.
+- **One `primary` per screen.** Two primaries = bug.
+- **One size per row.** Mixed sizes break visual alignment — ESLint can't catch this; code review does.
+
+## Tokens used
+
+| Token | Where |
+| --- | --- |
+| `--color-accent-fill` / `-hover` / `-active` | Primary background (fill-swap states) |
+| `--color-fg-on-accent` | Primary text (white, 7.3:1 AAA) |
+| `--color-surface` / `--color-surface-sunken` | Secondary resting / hover |
+| `--color-border-strong` | Secondary outline |
+| `--color-state-hover` / `--color-state-active` | Ghost overlay states |
+| `--color-danger-fill` / `-hover` | Destructive (fill-swap) |
+| `--color-fg-on-danger` | Destructive text (white, 4.6:1 AA) |
+| `--text-label-sm` / `--text-label-md` | Type tokens by size |
+| `--radius-md`, `--radius-full` | Shape by hierarchy |
+| `--duration-fast`, `--ease-standard` | Hover transition |
+| `--focus-ring` (global) | Focus indicator — single canonical ring |
+| `h-8` / `h-10` / `h-12` (= 32 / 40 / 48 px) | Locked control heights |
+
+Zero hex / px / hard-coded values in the component source — every style
+resolves through Tailwind utilities backed by the `@theme` block.
+
+## States
+
+| State | Mechanism |
+| --- | --- |
+| **hover** | Fill-swap (primary, destructive) or overlay (secondary → surface-sunken, ghost → state-hover) |
+| **focus** | Global `:focus-visible` rule applies the canonical 2px indigo ring at 2px offset |
+| **active** | Fill-swap to `accent-fill-active` (primary), `state-active` overlay (ghost) |
+| **disabled** | `opacity: 0.5` + native `disabled` + `cursor: not-allowed` (four signals together) |
+
+## Theming axes — toolbar toggles
+
+The three theming axes set attributes on `<html>` via the global decorator:
+
+- **Theme** — `data-theme=light` (v1). Dark / high-contrast options flip the attribute but render unchanged today — primitive overrides ship in v1.5.
+- **Density** — `data-density=comfortable` (v1). Compact is a v1.2 scaffold.
+- **Direction** — `dir=ltr` / `dir=rtl`. **Fully active in v1** — flip the toggle and the Button's icon + label sides mirror through logical utilities.
+
+## A11y
+
+- Renders a real `<button>` (no `<div role="button">`).
+- Icon-only sizes (`icon-sm` / `icon-md` / `icon-lg`) require an `aria-label` — the stories above pass one.
+- Disabled state pairs four signals (visual opacity, `pointer-events`, `aria-disabled`, cursor) so screen-reader and keyboard users get the same information as sighted mouse users.
+- Focus ring is system-global; never re-rolled per component.
+
+The Storybook A11y panel runs axe-core on every story — open the **A11y**
+tab in the addons panel to see live violations / passes / incomplete checks.
+
+## Forbidden
+
+- `variant="brand"` (deprecated alias) → use `variant="primary"`
+- `variant="link"` — different element; use a `<Link>` / `<a className="text-accent-fill underline-offset-4 hover:underline">`
+- `size="xs"` / `size="xl"` — not in the allowlist
+- `className="h-9"` (or other inline heights) — use the `size` prop
+- Passing `size="md"` explicitly — it's the default; passing it is noise
+- Two `primary` Buttons on the same screen
+- Mixed sizes inside one row

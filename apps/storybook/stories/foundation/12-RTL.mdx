@@ -1,0 +1,227 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+import { Callout } from "./_specimens";
+
+<Meta title="Foundation/RTL" />
+
+# RTL Mirroring Rules
+
+Full mirror by default — including the L1 rail. Specific elements opt out via `bidi-isolate`, `<bdi>`, or `dir="ltr"`. **RTL parity is a release gate.**
+
+<Callout intent="info" title="Decision">
+**Yes — the entire shell mirrors in RTL.** L1 rail moves left → right. L2 sits to the right of Main. Inbox folders + conversation list shift right. Details panel moves from right → left. Every panel, every row, every form field follows the document direction.
+
+The native `dir` HTML attribute + Tailwind v4 logical utilities + Radix's RTL-aware primitives handle **~95% of this automatically**. The remaining 5% is content with intrinsic LTR semantics — and that's what this doc locks.
+</Callout>
+
+## How RTL gets wired (the 95%)
+
+Three layers do the work:
+
+1. **`<html dir="rtl">`** — single source of truth. Set once by the i18n layer; never set per-component.
+2. **Tailwind v4 logical utilities** — `ms-*` / `me-*` / `ps-*` / `pe-*` / `start-*` / `end-*` / `border-s` / `rounded-e` / `text-start` / `text-end`. These resolve to physical sides based on `<html dir>`. **Physical-side utilities** (`ml-*`, `pr-*`, `left-*`, `text-left`, `border-l`, `rounded-l`) **are forbidden** in component code.
+3. **Radix primitives** — Dialog, Sheet, DropdownMenu, ContextMenu, Popover, Tooltip, Slider, Switch, Toggle, Breadcrumb, Pagination, RadioGroup — every Radix primitive reads `dir` from the document and auto-mirrors. Submenus open toward `start`, sliders fill from `start`, sheets slide from the opposite edge.
+
+If you only do those three things, RTL works.
+
+---
+
+## ALWAYS LTR (no mirror)
+
+These elements stay LTR even inside RTL prose. Wrap in `.bidi-isolate`, `<bdi>`, or `dir="ltr"`.
+
+| Element | Why |
+|---|---|
+| **Phone numbers** (`+966 50 555 0142`) | Numbers + `+` prefix follow LTR convention globally |
+| **Email addresses** (`user@domain.com`) | LTR by construction (TLD on the right) |
+| **URLs** (`https://example.com/path`) | LTR by construction (protocol → domain → path) |
+| **Monospace IDs** (`113962`, `acct_8f3kdo10`, API keys, session tokens) | Read as opaque tokens — LTR |
+| **Code blocks** (`<code>`, `<pre>`) | Programming languages are LTR. Syntax direction is invariant |
+| **File paths** (`/home/user/file.txt`) | Slashes + directory separators are LTR |
+| **Hex color values** (`#5146CE`) | LTR by construction |
+| **Keyboard shortcuts** (`⌘K`, `Ctrl+Shift+P`) | Modifier-key combos read LTR universally |
+| **Audio waveforms** | Time progresses left-to-right universally |
+| **Video timelines / scrubbers** | Time direction is universal |
+| **Sparkline charts** | Time-series direction is LTR (data consistency) |
+| **Chart X-axis (time-based)** | LTR — flipping breaks time progression interpretation |
+| **Version numbers** (`v1.2.3`) | LTR by construction |
+| **ISO timestamps** (`2026-05-16T14:23:00`) | LTR by construction |
+| **Brand wordmarks** (Twerlo logo, channel logos) | Never mirror brand assets |
+| **Latin numerals (0–9)** alone | Weakly directional; display LTR per our locked Numerals policy |
+| **Mathematical formulas** | LTR globally |
+
+---
+
+## MIRRORS with the document (the default)
+
+Everything else.
+
+| Element | Behavior in RTL |
+|---|---|
+| L1 Primary Rail | Moves from left → right edge |
+| L2 Secondary Nav | Right of Main (was left in LTR) |
+| Inbox Folders | Right of L2 |
+| Conversation List | Right of Folders |
+| Details panel | Left side (was right in LTR) |
+| Module Header title | Right-aligned (was left) |
+| Module Header actions | Left-aligned (was right) |
+| Form labels (top-aligned) | No change |
+| Form labels (beside inputs) | Right of input |
+| List row content | Avatar right, text + time left |
+| Conversation row | Avatar right, name/preview/time left |
+| Unread badge in conversation row | Top-left (was top-right) |
+| Modal close button | Top-left (was top-right) |
+| `Sheet side="end"` | Slides from left (was right) |
+| `Sheet side="start"` | Slides from right (was left) |
+| Tooltip / popover arrows | Auto-position by Radix |
+| Breadcrumb chevrons | Point left (was right) — via `flipOnRtl` |
+| Pagination prev/next | Swap visual positions — via `flipOnRtl` chevrons |
+| Send button icon (paper plane) | Flips — via `flipOnRtl` |
+| Reply / Forward icons | Flip — via `flipOnRtl` |
+| Indent / outdent | Flip |
+| Sliders | Filled portion grows from right (the logical start) |
+| Carousels | Scroll direction reverses |
+| Search icon in input | Right side (was left) — via `ps-*` |
+| Clear icon in input | Left side (was right) — via `pe-*` |
+
+---
+
+## Judgment-call cases
+
+Document the choice per context.
+
+| Case | Recommendation |
+|---|---|
+| Currency display | Locale-driven via `Intl.NumberFormat`. `100 SAR` reads LTR; `١٠٠ ر.س` reads RTL. Use the locale-formatted string + `<bdi>` to isolate from prose. |
+| Date strings | Locale-driven via `Intl.DateTimeFormat` or `date-fns` `locale` param. `May 16, 2026` LTR; `١٦ مايو ٢٠٢٦` follows the locale. Wrap in `<bdi>` when inline. |
+| Categorical bar charts (no time axis) | OK to flip with `dir` — categories read in document order |
+| Time-series charts | **Always LTR** (rule above) |
+| Pie / donut charts | No direction — they don't mirror |
+| Hashtags / @ mentions | The `#` / `@` symbol is bidi-neutral; the label after follows its own language. Don't isolate the whole token. |
+
+---
+
+## Three tools — pick by context
+
+### 1. `<bdi>` element (preferred for inline)
+
+```tsx
+<p>اتصل بنا على <bdi>+966 50 555 0142</bdi> اليوم</p>
+```
+
+HTML-native, accessible. Best when LTR content is embedded inside RTL prose.
+
+### 2. `.bidi-isolate` class
+
+```tsx
+<span className="bidi-isolate">+966 50 555 0142</span>
+```
+
+```css
+.bidi-isolate {
+  unicode-bidi: isolate;
+  direction: ltr;
+}
+```
+
+Use when you need a styled wrapper (the DS exposes the `.bidi-isolate` global utility from `tokens.css`).
+
+### 3. `dir="ltr"` attribute (force the subtree)
+
+```tsx
+<code dir="ltr">const indigo = '#5146CE';</code>
+```
+
+Use on entire LTR blocks (code samples, ID grids, log dumps).
+
+---
+
+## Locked code patterns
+
+```tsx
+// Phone numbers
+<span className="bidi-isolate font-mono tabular-nums">+966 50 555 0142</span>
+
+// Emails (always-LTR by construction)
+<span className="bidi-isolate">{user.email}</span>
+
+// IDs / API keys
+<code dir="ltr" className="font-mono">{conversation.id}</code>
+
+// Code blocks
+<pre dir="ltr" className="font-mono text-code-md">{snippet}</pre>
+
+// Keyboard shortcuts (Kbd component handles LTR internally)
+<Kbd>⌘K</Kbd>
+
+// Inline mixed-script
+<p>الرقم: <bdi>+966 50 555 0142</bdi> — اتصل الآن</p>
+
+// Currency, locale-formatted
+<bdi>{new Intl.NumberFormat(locale, { style: 'currency', currency: 'SAR' }).format(100)}</bdi>
+
+// Dates, locale-formatted via date-fns
+import { arSA } from "date-fns/locale/ar-SA";
+import { format } from "date-fns";
+
+<span>{format(date, "PP", { locale: arSA })}</span>
+```
+
+---
+
+## Forbidden in RTL contexts
+
+| ❌ Don't | ✅ Do |
+|---|---|
+| Render phone numbers without `<bdi>` or `.bidi-isolate` | Always wrap |
+| Render IDs / hashes without `dir="ltr"` | Always isolate |
+| Mirror a brand mark or channel logo | Brand assets never mirror |
+| Mirror a code block | Code is always LTR |
+| Mirror a waveform / video timeline | Time direction is universal LTR |
+| Use Arabic-Indic numerals (٠–٩) in UI | **Locked: Latin (0–9) only** |
+| Use `transform: translateX()` without `rtl:` mirror | Add `rtl:-translate-x-*` |
+| Use `<input type="text">` for phone numbers without `inputMode="tel"` + bidi handling | Use `<PhoneInput>` — handles this |
+| Render arrows / chevrons / send icons without `flipOnRtl` | Always pass `flipOnRtl` |
+| Format dates with manual string concatenation | Use `Intl.DateTimeFormat` or `date-fns` `locale` |
+| Use physical-side Tailwind utilities (`ml-*`, `pr-*`, `text-left`, `border-l`, `rounded-l`) in component code | Use logical (`ms-*`, `pe-*`, `text-start`, `border-s`, `rounded-s`) — ESLint enforces this |
+
+---
+
+## Per-primitive RTL handling
+
+| Primitive | RTL behavior | Engineer needs to do |
+|---|---|---|
+| `Button`, `Input`, `Select`, etc. | Auto-mirror via logical utilities | Nothing |
+| `Dialog`, `Sheet`, `Popover` | Auto-mirror; close button moves to the start | Nothing |
+| `Tooltip` | Auto-position via Radix | Nothing |
+| `DropdownMenu`, `ContextMenu` | Auto-mirror; submenu opens toward start | Nothing |
+| `Breadcrumb` | Chevron auto-flips | Nothing |
+| `Pagination` | Prev/next chevrons auto-flip | Nothing |
+| `Switch` | Thumb slides logical start → end | Nothing |
+| `Slider` | Fill grows from logical start | Nothing |
+| `ConversationListItem` | Avatar / name / time positions auto-mirror | Nothing |
+| `MessageBubble` | Inbound left, outbound right in LTR — auto-flips in RTL | Nothing |
+| `MessageComposer` toolbar | Auto-mirror; send icon flips | Nothing |
+| Directional icons (chevrons, send, reply, indent) | Pass `flipOnRtl` to `Icon` | Add the prop |
+| `Kbd` | Internally `dir="ltr"` | Nothing |
+| Inline phone / email / ID | Engineer wraps in `.bidi-isolate` / `<bdi>` / `dir="ltr"` | Wrap explicitly |
+| Code blocks | Engineer adds `dir="ltr"` | Add the attribute |
+
+---
+
+## RTL release-gate checklist
+
+When shipping a screen, verify in both LTR and RTL:
+
+- [ ] Layout — every panel mirrors; nothing breaks out of the grid
+- [ ] Form fields — labels, errors, helper text all flow with the input
+- [ ] Search input — Search icon on the logical-start side; Clear icon on the logical-end side
+- [ ] Tables — header alignment matches body alignment; numeric columns stay end-aligned
+- [ ] Phone + email cells — `bidi-isolate` keeps them LTR even inside RTL prose
+- [ ] Tooltips / popovers — point in the right direction, position correctly
+- [ ] Toasts — slide in from the logical-end edge
+- [ ] Sheets / dialogs — close button at logical-end; `side="end"` slides from logical-end
+- [ ] Chevrons / send / reply icons — `flipOnRtl` applied
+- [ ] Dates — locale-formatted (e.g. `date-fns` `locale: arSA`), not concatenated
+- [ ] Numbers — Latin digits only (Numerals policy)
+- [ ] Keyboard shortcuts — render LTR via `Kbd`
+- [ ] No physical-side classes (`ml-*` / `pr-*` / `text-left` / `border-l` / `rounded-l`) in newly added code

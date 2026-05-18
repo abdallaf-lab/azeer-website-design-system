@@ -1,0 +1,65 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+import { Callout } from "./_specimens";
+
+<Meta title="Foundation/Introduction" />
+
+# Azeer Design System 4.0
+
+The canonical surface for Azeer product UI. Tokens, primitives, and patterns
+locked together — change one place, the whole product updates.
+
+<Callout intent="info" title="What's in v1">
+Light theme · comfortable density · LTR + RTL · WCAG 2.1 AA across the board,
+AAA on primary body text · Tailwind v4 CSS-first with `@theme` · Radix +
+Shadcn primitives · Sonner toasts · Lucide icons via the system wrapper.
+</Callout>
+
+## Architecture — three layers
+
+1. **Primitive** — raw values (indigo 50…950, neutrals, intent fills, channel hexes).
+   The only place hex literals exist. Lives in `tokens.css :root`. Components
+   **never** read primitives directly.
+2. **Semantic** — purpose-named tokens (`--color-surface`, `--color-fg-default`,
+   `--color-accent-fill`). Defined in `@theme inline { … }`, which auto-generates
+   Tailwind utilities like `bg-surface`, `text-fg-default`, `rounded-md`,
+   `shadow-elev-2`, `z-popover`, `text-body-md`. Components consume this layer.
+3. **Theming bridge** — `data-theme` / `data-density` / `dir` attributes on
+   `<html>`. v1 ships `light` + `comfortable` + `ltr`/`rtl`. Future values
+   (dark, high-contrast, compact, `brand-{tenant}`) are **scaffolded** — adding
+   them means redefining the primitive layer, zero component changes.
+
+## How to consume tokens
+
+**In component JSX** — use the Tailwind utility (preferred).
+
+```tsx
+<div className="bg-surface text-fg-default rounded-md p-4 shadow-elev-2">…</div>
+```
+
+**In component CSS** — use the variable.
+
+```css
+.card { background: var(--color-surface); box-shadow: var(--elev-1); }
+```
+
+**In tooling / docs / scripts** — import typed metadata from `@azeer/tokens`.
+
+```ts
+import { COLOR_GROUPS, TYPE_TOKENS, Z_INDEX } from "@azeer/tokens";
+```
+
+## What's forbidden
+
+- Hex / rgb / hsl literals outside `tokens.css :root`
+- Tailwind defaults (`bg-blue-500`, `text-gray-100`, `shadow-md`)
+- `bg-white`, `text-black` — use `bg-surface`, `text-fg-default`
+- Inline `style={{ color: '…' }}` for static colors
+- Off-scale spacing (14 / 18 / 22 / 26 / 28 / 36 / 44 / 52 / 56 / 60 px)
+- Radius above 12px or `rounded-2xl`
+- Physical RTL utilities (`ml-*`, `pr-*`, `text-left`, `border-l`, `rounded-l`)
+- Arbitrary `z-[9999]` — use the ladder
+
+## Pages in this section
+
+The remaining Foundation pages render every token from the design system 1:1
+against the spec. Order in the sidebar matches the locked spec order.

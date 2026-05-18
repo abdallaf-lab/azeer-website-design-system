@@ -1,0 +1,79 @@
+import { Meta, Title, Subtitle, Primary, Controls, Stories } from "@storybook/addon-docs/blocks";
+import * as RadioStories from "./Radio.stories";
+
+<Meta of={RadioStories} />
+
+<Title />
+<Subtitle />
+
+Single-select control built on `@radix-ui/react-radio-group`. Always
+composed: `RadioGroup` orchestrates focus and arrow-key navigation;
+`RadioGroupItem` is the individual radio. Single canonical size 16 × 16 px.
+
+## Live
+
+<Primary />
+<Controls />
+
+## All stories
+
+<Stories includePrimary={false} />
+
+## Anatomy
+
+| Element | Spec |
+| --- | --- |
+| Outer circle (unchecked) | 16 × 16 px, 1 px `border-strong`, `bg-surface` |
+| Outer circle (**checked**) | `bg-accent-fill` + `border-accent-fill` |
+| Inner dot (checked) | 6 × 6 px, `bg-surface` (white) |
+| Group layout | `flex flex-col gap-2` (8 px between items per Forms canon) |
+
+The **checked appearance follows DS canon** (States.md): outer fill +
+inner white dot. This is the inverse of the Shadcn default (which uses an
+indigo dot on a white outer). We follow DS, not Shadcn.
+
+## Tokens used
+
+| Token | Where |
+| --- | --- |
+| `--color-border-strong` | Unchecked outline |
+| `--color-surface` | Unchecked bg + checked inner dot |
+| `--color-accent-fill` | Checked outer fill + border |
+| `--radius-full` | Circle shape |
+| `--duration-fast` + `--ease-standard` | State-change transitions |
+| `--focus-ring` (global) | Focus indicator |
+
+## Keyboard
+
+Radix wires the full WAI-ARIA Radio Group pattern:
+
+| Key | Behavior |
+| --- | --- |
+| `Tab` | Moves focus into / out of the group (single tab stop — focus lands on the checked item, or the first item if none checked) |
+| `↓` / `→` | Move focus + selection to the next item (mirrors logically under RTL) |
+| `↑` / `←` | Move focus + selection to the previous item |
+| `Space` | Selects the focused item (already selected on arrow nav — Radix uses the standard "auto-select on focus" pattern) |
+
+## A11y
+
+- Each `RadioGroupItem` carries `role="radio"`; the `RadioGroup` carries `role="radiogroup"`.
+- `aria-checked` is synced by Radix.
+- Single tab stop on the group — keyboard users tab in, arrow between options, tab out.
+- `FormField` wraps the entire `RadioGroup` and writes `aria-required` / `aria-describedby` onto the *group*, not the individual items.
+- One item disabled inside an otherwise enabled group: pass `disabled` to that specific `RadioGroupItem`. See the **One item disabled** story above.
+
+## RTL behavior
+
+Arrow keys mirror under `dir="rtl"`: `←` moves to next, `→` moves to previous.
+Radix handles this via the DOM's effective direction; flip the toolbar to RTL
+to verify.
+
+## Forbidden
+
+- `<input type="radio">` ad-hoc — always use `RadioGroupItem`
+- `RadioGroupItem` outside a `RadioGroup` — Radix throws (and you'd lose all keyboard nav anyway)
+- Mixed Radio and Checkbox in the same group — different semantics (single-select vs multi-select), different controls
+- Inner indigo dot on white outer — that's the Shadcn default; we follow DS canon (outer fill, inner white)
+- A `size` prop — there isn't one
+- Two radios checked in the same group — Radix prevents this; if you find yourself wanting it, you want Checkbox
+- More than 7 options in a single group — switch to `Select` or `Combobox` (when those land)

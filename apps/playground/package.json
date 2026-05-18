@@ -1,0 +1,36 @@
+{
+  "name": "@azeer/playground",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Vite + React sandbox for dogfooding Azeer components outside Storybook",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@azeer/tokens": "workspace:*",
+    "@azeer/ui": "workspace:*",
+    "@tanstack/react-table": "^8.20.5",
+    "date-fns": "^4.1.0",
+    "libphonenumber-js": "^1.11.20",
+    "lucide-react": "^0.469.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@azeer/config-eslint": "workspace:*",
+    "@azeer/config-tsconfig": "workspace:*",
+    "@tailwindcss/vite": "^4.0.0",
+    "@types/react": "^19.0.7",
+    "@types/react-dom": "^19.0.3",
+    "@vitejs/plugin-react": "^4.3.4",
+    "eslint": "^9.18.0",
+    "tailwindcss": "^4.0.0",
+    "typescript": "^5.7.3",
+    "vite": "^6.0.7"
+  }
+}

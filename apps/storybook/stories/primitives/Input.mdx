@@ -1,0 +1,80 @@
+import { Meta, Title, Subtitle, Primary, Controls, Stories } from "@storybook/addon-docs/blocks";
+import * as InputStories from "./Input.stories";
+
+<Meta of={InputStories} />
+
+<Title />
+<Subtitle />
+
+The text-entry primitive. **One visual style** — Inputs are about content,
+not chrome (Variants.md). State changes happen via Tailwind state modifiers
+(`focus-visible:`, `aria-invalid:`, `disabled:`, `read-only:`), never a
+`variant` prop. Three sizes: `sm` 32 / `md` 40 (default) / `lg` 48.
+
+## Live
+
+<Primary />
+<Controls />
+
+## All stories
+
+<Stories includePrimary={false} />
+
+## Sizes
+
+| Size | Height | Padding-x | Type token |
+| --- | --- | --- | --- |
+| `sm` | 32 px | 10 px | `text-body-sm` (13) |
+| `md` (default) | 40 px | 12 px | `text-body-md` (14) |
+| `lg` | 48 px | 14 px | `text-body-md` (14) |
+
+Per Sizes §rule-1: `md` is the default; never write `size="md"` explicitly.
+Per Sizes §rule-2: drop to `sm` only inside dense surfaces (toolbars, inline
+filter rows). Per Sizes §rule-3: `lg` is for auth / onboarding hero CTAs.
+
+## State matrix
+
+| State | Visual | Trigger |
+| --- | --- | --- |
+| **default** | Subtle border + white surface | Resting |
+| **focus** | Border tints to `border-focus` (indigo) + global focus ring | `:focus-visible` |
+| **invalid** | Border tints to `danger-border`; focus border to `danger-fill` | `aria-invalid="true"` (auto-wired by FormField when `error` is passed) |
+| **disabled** | `opacity: 0.5` + `bg-surface-sunken` + `cursor-not-allowed` | `disabled` attribute |
+| **read-only** | `bg-surface-sunken` (looks "set", not greyed) | `readOnly` attribute |
+
+`disabled` ≠ `read-only`: disabled controls don't submit, read-only controls
+do. Use read-only for fields the user should see in context but can't change
+(verified email, system-set ID).
+
+## Tokens used
+
+| Token | Where |
+| --- | --- |
+| `--color-surface` | Background |
+| `--color-surface-sunken` | Disabled / read-only background |
+| `--color-border-strong` | Default border |
+| `--color-border-focus` (indigo) | Focus border tint |
+| `--color-danger-border` / `-fill` | Invalid border / invalid focus border |
+| `--color-fg-default` | Input text |
+| `--color-fg-subtle` | Placeholder text |
+| `--text-body-sm` / `-body-md` | Typography by size |
+| `--radius-md` (6 px) | Corner |
+| `--duration-fast` + `--ease-standard` | Border transitions |
+| `--focus-ring` (global :focus-visible) | Outline ring |
+
+## A11y
+
+- Always pair with a `<Label>` (prefer `FormField` — it wires `htmlFor` and `aria-describedby` automatically).
+- `FormField` sets `aria-invalid="true"` when an `error` is present and `aria-required="true"` when `required` is set.
+- Placeholder is a *hint*, not a label — it disappears on focus, so screen reader users miss it. The visible label carries the meaning.
+- Numbers should use `inputMode` (`numeric` / `decimal` / `tel`) for the right mobile keyboard. `type="number"` has UX gotchas (scroll wheel changes value) — prefer `type="text" inputMode="numeric"` for most cases.
+- For phone numbers, `inputMode="tel"` + bidi isolation via `.bidi-isolate` on display. `PhoneInput` (Fork in v1) handles this.
+
+## Forbidden
+
+- Raw `<input>` in app code — always use `Input`
+- Inline `style={{ border: '…' }}` — variants drive border
+- `variant` prop — Inputs have no variants, only sizes + states
+- Custom search-input compositions — extract `SearchInput` (Fork in v1)
+- Inline-height overrides (`className="h-9"`) — pick a `size`
+- `type="number"` for currency or quotas — use `NumberInput` (Fork in v1)

@@ -1,0 +1,101 @@
+import { Meta, Title, Subtitle, Primary, Stories } from "@storybook/addon-docs/blocks";
+import * as DropdownMenuStories from "./DropdownMenu.stories";
+
+<Meta of={DropdownMenuStories} />
+
+<Title />
+<Subtitle />
+
+The canonical menu surface, built on `@radix-ui/react-dropdown-menu`.
+Shares the `surface-overlay` + `--elev-2` + `rounded-lg` look with
+`Popover` / `ContextMenu` / `Combobox` content. Item highlight (both
+hover and keyboard) uses `accent-bg-subtle` + `accent-text` to match the
+selected-row pattern from States.md.
+
+## Live
+
+<Primary />
+
+## All stories
+
+<Stories includePrimary={false} />
+
+## Slots
+
+| Component | Role |
+| --- | --- |
+| `DropdownMenu` | Radix Root — open/close state |
+| `DropdownMenuTrigger` | The opening element (wrap your `Button` with `asChild`) |
+| `DropdownMenuContent` | The floating panel (portal-rendered) |
+| `DropdownMenuItem` | A clickable row. Pass `destructive` for delete-style actions, `inset` to align with checkbox/radio rows in mixed groups, `disabled` to dim. |
+| `DropdownMenuLabel` | UPPERCASE eyebrow group header (text-label-xs) — non-interactive |
+| `DropdownMenuSeparator` | 1 px divider (`bg-border-divider`) |
+| `DropdownMenuShortcut` | End-aligned slot for keyboard hints. Wrap `Kbd` inside for boxed shortcuts. |
+| `DropdownMenuGroup` | Semantic grouping (Radix `<DropdownMenu.Group>`) — visually identical, improves a11y |
+
+## Item highlight
+
+States.md, DropdownMenu / ContextMenu item row:
+
+> Hover → bg `accent-bg-subtle` + text `accent-text` (= same as selected) — menu items use hover-style for keyboard nav.
+
+So **mouse hover and keyboard focus produce the same highlight**. Radix sets
+`data-[highlighted]` on the active item; our CSS targets that attribute:
+
+```tsx
+"data-[highlighted]:bg-accent-bg-subtle data-[highlighted]:text-accent-text"
+```
+
+Destructive items invert the intent — danger background tint + danger text:
+
+```tsx
+"data-[highlighted]:bg-danger-bg-subtle data-[highlighted]:text-danger-text"
+```
+
+## Tokens used
+
+| Token | Where |
+| --- | --- |
+| `--color-surface-overlay` | Menu background |
+| `--color-fg-default` | Default item text |
+| `--color-danger-text` | Destructive item text |
+| `--color-accent-bg-subtle` + `--color-accent-text` | Highlighted item |
+| `--color-danger-bg-subtle` + `--color-danger-text` | Highlighted destructive item |
+| `--color-border-divider` | Separator |
+| `--color-fg-muted` | Label (uppercase eyebrow) + Shortcut text |
+| `--text-body-sm` | Item label typography |
+| `--text-label-xs` | Group label + shortcut typography |
+| `--radius-lg` | Menu corner (8 px) |
+| `--radius-sm` | Item corner (4 px) — fits inside the menu's `p-1` padding |
+| `--shadow-elev-2` | Menu shadow |
+| `--z-popover` (100) | Menu z-index |
+
+## Keyboard
+
+Radix wires the full menu pattern:
+
+| Key | Behavior |
+| --- | --- |
+| `↑` / `↓` | Move highlight |
+| `Enter` / `Space` | Activate highlighted item |
+| `Esc` | Close menu, return focus to trigger |
+| `Home` / `End` | Jump to first / last item |
+| `A`-`Z` | Type-ahead to first matching item |
+| `Tab` | Closes menu (matches WAI-ARIA menu pattern) |
+
+## A11y
+
+- Trigger needs to be focusable — wrap `Button` with `asChild`.
+- Each item is `role="menuitem"` (Radix). `aria-disabled` set automatically for `disabled` items.
+- Group labels render `<DropdownMenu.Label>` which carries `role="presentation"` — purely visual.
+- Destructive items don't get a separate `aria-` annotation — color + icon + verb together signal intent. Pair with a `ConfirmDialog` for the actual irreversible step.
+
+## Forbidden
+
+- Custom hover colors per-menu — `accent-bg-subtle` highlight, period
+- Menu items without an icon when other items have icons — pad with empty space via `inset` instead, never mismatched padding
+- Two destructive items in one menu — there's at most one irreversible "delete-this" action per context
+- Submenu (`DropdownMenuSub`) — deferred to a later batch (you can add via Radix directly if urgent)
+- Checkbox/Radio items (`CheckboxItem` / `RadioItem`) — deferred; use a Popover with form controls if needed today
+- Custom shortcut formatting — wrap real `<Kbd>` inside `DropdownMenuShortcut`, never raw text
+- DropdownMenu for an action that needs >7 items — switch to a Combobox / Command palette

@@ -1,0 +1,150 @@
+import { Meta, Title, Subtitle, Primary, Stories } from "@storybook/addon-docs/blocks";
+import * as TableStories from "./Table.stories";
+
+<Meta of={TableStories} />
+
+<Title />
+<Subtitle />
+
+Two layers:
+
+1. **Table primitives** — semantic `<table>` HTML with DS chrome. Use
+   directly for static / simple tables.
+2. **`DataTable`** — TanStack Table renderer. Pass a `useReactTable`
+   instance; DataTable renders it through the Table primitives. Consumer
+   owns all sorting / filtering / pagination / row-selection logic.
+
+This hybrid (TanStack handles state and logic, Shadcn-style primitives
+handle UI) is the recommended split — keeps the renderer dumb and tiny
+while the engine handles the heavy lifting.
+
+## Live
+
+<Primary />
+
+## All stories
+
+<Stories includePrimary={false} />
+
+## Anatomy
+
+```tsx
+<Table>
+  <TableCaption>…</TableCaption>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Name</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>Sara Khan</TableCell>
+    </TableRow>
+  </TableBody>
+  <TableFooter>…</TableFooter>
+</Table>
+```
+
+| Slot | Style |
+| --- | --- |
+| `Table` | `<table>` inside an `overflow-auto` wrapper; `text-body-md` baseline |
+| `TableHeader` | `<thead>` with `bg-surface-sunken` + bottom border-default |
+| `TableBody` | `<tbody>` — no extra padding |
+| `TableFooter` | `<tfoot>` with `bg-surface-sunken` top border |
+| `TableRow` | `h-14` (56 px row height per Spacing canon); hover → `state-hover`; `data-[state=selected]` → `accent-bg-subtle` |
+| `TableHead` | `<th>` — `text-label-xs uppercase text-fg-muted` (eyebrow tier) |
+| `TableCell` | `<td>` — `px-3 align-middle text-body-md text-fg-default` |
+| `TableCaption` | `<caption>` below the table, `text-body-sm fg-muted` |
+
+## DataTable composition
+
+```tsx
+import { useReactTable, getCoreRowModel, getSortedRowModel, … } from "@tanstack/react-table";
+import { DataTable } from "@azeer/ui";
+
+const table = useReactTable({
+  data,
+  columns,
+  state: { sorting },
+  onSortingChange: setSorting,
+  getCoreRowModel: getCoreRowModel(),
+  getSortedRowModel: getSortedRowModel(),
+});
+
+return <DataTable table={table} />;
+```
+
+DataTable is a renderer — **all** TanStack features (sorting, filtering,
+pagination, row selection, grouping, expanding, column visibility, column
+ordering) work because they're driven by the `table` instance the consumer
+constructs.
+
+For sortable columns, the canonical `columnDef.header` recipe:
+
+```tsx
+header: ({ column }) => (
+  <Button
+    variant="ghost"
+    size="sm"
+    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+  >
+    Name <Icon icon={ArrowUpDown} size={14} />
+  </Button>
+)
+```
+
+For row selection, drop a checkbox column at the start:
+
+```tsx
+{
+  id: "select",
+  header: ({ table }) => (
+    <Checkbox
+      checked={table.getIsAllPageRowsSelected()}
+      onCheckedChange={(v) => table.toggleAllPageRowsSelected(!!v)}
+    />
+  ),
+  cell: ({ row }) => (
+    <Checkbox
+      checked={row.getIsSelected()}
+      onCheckedChange={(v) => row.toggleSelected(!!v)}
+    />
+  ),
+}
+```
+
+## Tokens used
+
+| Token | Where |
+| --- | --- |
+| `--color-surface` | Table body bg (inherited) |
+| `--color-surface-sunken` | Header + footer bg |
+| `--color-border-default` | Header bottom / footer top |
+| `--color-border-divider` | Inter-row border |
+| `--color-fg-default` / `-fg-muted` | Body text / header eyebrow |
+| `--color-state-hover` | Row hover overlay |
+| `--color-accent-bg-subtle` | Selected row bg |
+| `--text-body-md` | Cell typography |
+| `--text-label-xs` | Header typography (uppercase) |
+| `h-14` (= `--spacing` × 14) | Row height (56 px) |
+
+## A11y
+
+- Renders semantic `<table>` / `<thead>` / `<tbody>` / `<tr>` / `<th>` / `<td>` — screen readers parse it as a data table.
+- Use `<TableCaption>` for a programmatic summary when the table's purpose isn't obvious from surrounding context.
+- Sortable column headers should render an `<button>` (via `Button variant="ghost"`) so they're keyboard-focusable.
+- Row checkboxes need `aria-label="Select row"` — the stories above pass labels.
+
+## RTL behavior
+
+- `text-start` on `<th>` and `align-middle` on cells flow naturally in both directions.
+- `tabular-nums` on numeric cells (e.g. `Unread` count) keeps digits column-aligned regardless of direction.
+- `text-end` is logical (`text-align: end`) — last column right-aligned in LTR, left-aligned in RTL.
+
+## Forbidden
+
+- `<table>` ad-hoc in app code — always use Table primitives
+- Custom row colors per-feature — `state-hover` / `accent-bg-subtle` are the only allowed row tints
+- Off-`h-14` row heights — pick `h-14` (default) or pass `h-10` for dense-table mode (per Spacing canon §dense-table)
+- Sticky-position tweaks ad-hoc — the header is `bg-surface-sunken` so you can apply `sticky top-0` at the consumer level
+- Loading a huge dataset without virtualization — use `@tanstack/react-virtual` alongside DataTable when row count > ~200

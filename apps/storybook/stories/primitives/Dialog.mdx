@@ -1,0 +1,93 @@
+import { Meta, Title, Subtitle, Primary, Stories } from "@storybook/addon-docs/blocks";
+import * as DialogStories from "./Dialog.stories";
+
+<Meta of={DialogStories} />
+
+<Title />
+<Subtitle />
+
+Modal surface built on `@radix-ui/react-dialog`. Centered overlay that
+blocks interaction with the page beneath it. **Use Dialog when the user
+must make a decision before continuing** (per Errors.md Rule 2); for
+persistent state use a `Banner` (later batch), for ephemeral feedback use a
+`Toast`, for inline panels use a `Popover`.
+
+## Live
+
+<Primary />
+
+## All stories
+
+<Stories includePrimary={false} />
+
+## Slots
+
+| Component | Role |
+| --- | --- |
+| `Dialog` | Radix Root — open/close state |
+| `DialogTrigger` | The opening element (`asChild` + `Button` is the canonical wrap) |
+| `DialogContent` | Modal surface. Pass `size` and optional `hideCloseButton`. |
+| `DialogHeader` | Title + Description block. `px-6 pt-6 pb-4`, gap-1.5 |
+| `DialogTitle` | `text-heading-sm` (16 / 22 / 600) |
+| `DialogDescription` | `text-body-sm` + `text-fg-muted` |
+| `DialogBody` | Scrolling main content. `px-6 py-2`, body-md text |
+| `DialogFooter` | Action row, end-aligned, `px-6 pt-4 pb-6`, gap-2 |
+| `DialogClose` | Close trigger (`asChild` to wrap a Button) |
+| `DialogOverlay` | Backdrop scrim — auto-rendered inside `DialogContent` |
+
+## Sizes — locked
+
+| Size | Width |
+| --- | --- |
+| `sm` | 480 px |
+| `md` (default) | 640 px |
+| `lg` | 800 px |
+
+No `xl`. No arbitrary width override. The three sizes cover sm = confirmation,
+md = form, lg = content-heavy modal. Reach beyond 800 and you want a full
+page route, not a dialog.
+
+Width is `min(content, max-w)` — on viewports narrower than 480 + 32 (gutter),
+the dialog scales to fit (`w-[calc(100vw-2rem)]`).
+
+## Tokens used
+
+| Token | Where |
+| --- | --- |
+| `--color-surface` | Modal background |
+| `--color-border-default` | 1 px modal border |
+| `--color-backdrop-overlay` (rgba 20,20,20,0.40) | Backdrop scrim |
+| `--color-fg-default` | Title + body text |
+| `--color-fg-muted` | Description text + close-button icon |
+| `--text-heading-sm` / `-body-md` / `-body-sm` | Slot typography |
+| `--radius-xl` (12 px) | Modal corner — DS radius ceiling |
+| `--shadow-elev-3` | Modal shadow |
+| `--z-modal` (1300) | Content z-index |
+| `--z-modal-bd` (1200) | Backdrop z-index |
+| `--color-state-hover` / `-active` | Close button overlay states |
+
+## A11y
+
+- Radix wires `aria-labelledby` → `DialogTitle` and `aria-describedby` → `DialogDescription` automatically.
+- Focus moves into the dialog on open and returns to the trigger on close.
+- `Esc` closes; outside-click closes.
+- Body scroll is locked while the dialog is open.
+- Default close button has `aria-label="Close"` (override via `closeLabel`).
+- **`DialogTitle` is required** — Radix logs a warning if you omit it. If your dialog has no visible title (rare), wrap the title text in `<VisuallyHidden>` or use Radix's `sr-only` pattern.
+
+## RTL behavior
+
+Centering uses `start-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2` with
+`rtl:translate-x-1/2` to mirror the X translate. Header / body / footer use
+`text-start` so prose reads correctly in both directions. Close button sits at
+the logical end side (`end-4`) — mirrors to start side under `dir="rtl"`.
+
+## Forbidden
+
+- Dialog for confirmable info ("Saved successfully — OK") → use `Toast`
+- Dialog for non-blocking state ("Trial expires in 3 days") → use `Banner`
+- Dialog with only a "Got it" button — that's a `Toast` or `Banner`
+- Multiple stacked dialogs — never open a Dialog from another Dialog without explicit UX justification
+- Width override via `className="max-w-…"` — pick a `size`
+- Shadow override (`shadow-2xl`, etc.) — `--elev-3` is the lock
+- Missing `DialogTitle` — silently breaks screen-reader announcements

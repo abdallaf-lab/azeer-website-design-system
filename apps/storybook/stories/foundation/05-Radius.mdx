@@ -1,0 +1,30 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+import { RadiusScale, Callout } from "./_specimens";
+
+<Meta title="Foundation/Radius" />
+
+# Radius
+
+**Six values, locked.** `md` (6px) is the system default. **12px is the
+ceiling** — no 16, 20, 24. Modal corner = card corner = 12px. Hierarchy comes
+from elevation, not from radius.
+
+<RadiusScale />
+
+<Callout intent="danger" title="Forbidden">
+- `rounded-[Npx]` arbitrary values
+- `rounded-2xl` (24px) or larger — capped at 12px
+- 4 / 10 / 14 / 16 / 20 / 24 px custom radii
+- Tailwind default `rounded-sm` (which is 2px in Tailwind, but our `rounded-sm` is **4px**)
+</Callout>
+
+## Component → radius mapping
+
+| Surface | Radius | Why |
+| --- | --- | --- |
+| Buttons, inputs, list items | `rounded-md` (6px) | System default |
+| Chips, badge dots, checkboxes | `rounded-sm` (4px) | Tiny surfaces — small radius for crispness |
+| Dropdowns, popovers, tooltips, inner cards | `rounded-lg` (8px) | Floating surfaces — slightly softer |
+| Cards, modals, sheets, shell panels | `rounded-xl` (12px) | Ceiling — large surfaces, calm curvature |
+| Avatars (people), switches, pills, status dots | `rounded-full` | Circular by intent |
+| Avatars (organizations) | `rounded-lg` (8px) | Distinguishes "company" from "person" at a glance |
