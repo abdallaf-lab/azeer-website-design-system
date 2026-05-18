@@ -14,22 +14,22 @@
     "@azeer/tokens": "workspace:*",
     "@azeer/ui": "workspace:*",
     "date-fns": "^4.1.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6"
   },
   "devDependencies": {
     "@azeer/config-eslint": "workspace:*",
     "@azeer/config-tsconfig": "workspace:*",
-    "@storybook/addon-a11y": "^9.0.0",
-    "@storybook/addon-docs": "^9.0.0",
-    "@storybook/react-vite": "^9.0.0",
-    "@tailwindcss/vite": "^4.0.0",
-    "@types/react": "^19.0.7",
-    "@types/react-dom": "^19.0.3",
-    "eslint": "^9.18.0",
-    "storybook": "^9.0.0",
-    "tailwindcss": "^4.0.0",
-    "typescript": "^5.7.3",
-    "vite": "^6.0.7"
+    "@storybook/addon-a11y": "^10.4.0",
+    "@storybook/addon-docs": "^10.4.0",
+    "@storybook/react-vite": "^10.4.0",
+    "@tailwindcss/vite": "^4.3.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "eslint": "^9.39.4",
+    "storybook": "^10.4.0",
+    "tailwindcss": "^4.3.0",
+    "typescript": "^6.0.3",
+    "vite": "^8.0.13"
   }
 }
