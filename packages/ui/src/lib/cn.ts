@@ -23,6 +23,7 @@ const fontSizeTokens = [
   "body-md",
   "heading-sm",
   "heading-md",
+  "heading-lg",
   "heading-xl",
   "display",
 ];
