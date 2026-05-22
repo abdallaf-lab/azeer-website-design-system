@@ -199,12 +199,7 @@ export function MultiSelect<T extends string = string>({
                         )}
                       >
                         {checked ? (
-                          <Icon
-                            icon={Check}
-                            size={12}
-                            strokeWidth={2.5}
-                            aria-hidden="true"
-                          />
+                          <Icon icon={Check} size={12} aria-hidden="true" />
                         ) : null}
                       </span>
                       <span className="flex-1">{option.label}</span>

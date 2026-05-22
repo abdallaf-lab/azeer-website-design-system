@@ -1,0 +1,103 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+import { Callout } from "./_brand-specimens";
+
+<Meta title="Brand/Usage in Code" />
+
+# Usage in Code
+
+Everything in the Brand section is consumable two ways: **typed metadata** from
+`@azeer/tokens` and **React components** from `@azeer/website-ui`.
+
+## 1. Brand tokens (colors)
+
+Brand colors are CSS variables with matching Tailwind utilities. They ship via
+`@azeer/tokens/tokens.css` (already imported wherever the design system is set
+up), so no extra import is needed in components.
+
+```tsx
+// Tailwind utilities — preferred
+<section className="bg-brand-secondary text-brand-on-secondary">…</section>
+<a className="bg-brand-accent text-brand-on-accent rounded-full px-5 py-2">ابدأ الآن</a>
+
+// CSS variable — when a utility doesn't fit
+<div style={{ background: "var(--brand-primary)" }} />
+```
+
+Available utilities: `brand-primary`, `brand-secondary`, `brand-accent`,
+`brand-neutral`, `brand-supportive`, plus on-color text: `brand-on-primary`,
+`brand-on-secondary`, `brand-on-accent` (each works as `bg-*`, `text-*`,
+`border-*`, `ring-*`).
+
+<Callout intent="warning" title="Adding a brand token is a two-place change">
+New brand colors go in `packages/tokens/src/brand.css` (var + `@theme`) **and**
+the `colorTokens` array in `packages/ui/src/lib/cn.ts` — otherwise tailwind-merge
+may drop the class. Same rule as product tokens.
+</Callout>
+
+## 2. Brand components
+
+```tsx
+import { AzeerLogo, AzeerMark, BrandPattern } from "@azeer/website-ui";
+
+// Logo lockup — scales with font-size
+<AzeerLogo className="text-2xl" />                     // horizontal, color, AR+EN
+<AzeerLogo variant="mark" tone="color" />              // symbol only
+<AzeerLogo variant="stacked" tone="inverse" wordmark="en" />
+
+// Standalone mark (currentColor)
+<span className="text-brand-primary"><AzeerMark className="h-10" title="Azeer" /></span>
+
+// Background pattern (currentColor, decorative)
+<div className="relative isolate overflow-hidden bg-brand-supportive">
+  <BrandPattern variant="layers" className="absolute inset-0 text-brand-primary opacity-10" />
+  <div className="relative">…</div>
+</div>
+```
+
+## 3. Brand metadata
+
+For docs, content tooling, audits, or AI prompts:
+
+```ts
+import {
+  BRAND_COLORS,        // 5 colors: hex/rgb/hsb/cmyk + meaning + product mapping
+  BRAND_VISION,        // mission statement (ar/en)
+  BRAND_POSITIONING,   // 4 principles
+  BRAND_BEHAVIORS,     // 4 behaviors
+  BRAND_VOICE,         // 3 attributes × 3 levels (with examples)
+  BRAND_WRITING_RULES, // 14 rules (قل / لا تقل)
+  BRAND_LOGO,          // concept, clear space, variants, misuse, backgrounds
+  BRAND_TYPOGRAPHY,    // Dialogue ME family + weights + tagline
+  BRAND_PATTERNS,      // 4 patterns (variant + inspiration + meaning)
+  BRAND_APPLICATIONS,  // touchpoint list
+  BRAND_GOVERNANCE,    // "always use the latest digital version" note
+} from "@azeer/tokens";
+```
+
+## Putting it together — a brand band
+
+```tsx
+import { AzeerLogo, BrandPattern, Section, Container, SectionHeading } from "@azeer/website-ui";
+
+export function BrandHero() {
+  return (
+    <div className="relative isolate overflow-hidden bg-brand-secondary text-brand-on-secondary">
+      <BrandPattern variant="topographic" className="absolute inset-0 text-brand-on-secondary opacity-10" />
+      <Container className="relative py-24">
+        <AzeerLogo tone="inverse" className="mb-8 text-3xl" />
+        <SectionHeading
+          eyebrow="هوية أزير"
+          title="محادثات تحقق طموحات"
+          description="نظام تشغيل العملاء الأكثر اعتمادية وتكاملًا."
+        />
+      </Container>
+    </div>
+  );
+}
+```
+
+<Callout intent="ai" title="RTL is a release gate">
+Brand surfaces are Arabic-first. Use logical Tailwind utilities (`ms-*`/`me-*`,
+`ps-*`/`pe-*`, `start-*`/`end-*`), wrap inline Latin/IDs in `dir="ltr"`, and test
+with the toolbar **Direction → RTL** toggle.
+</Callout>

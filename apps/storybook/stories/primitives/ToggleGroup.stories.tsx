@@ -2,9 +2,21 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { AlignCenter, AlignLeft, AlignRight, Bold, Italic, Underline } from "lucide-react";
 import { Icon, ToggleGroup, ToggleGroupItem } from "@azeer/ui";
 
-const meta: Meta<typeof ToggleGroup> = {
+/**
+ * Radix ToggleGroup.Root props are a `single | multiple` discriminated union,
+ * which Storybook's `StoryObj` can't represent (it collapses `args` to `never`).
+ * We type the Meta against an explicit, flattened args surface and bake the
+ * discriminant into each story's `render`.
+ */
+type ToggleGroupArgs = {
+  type?: "single" | "multiple";
+  disabled?: boolean;
+  defaultValue?: string | string[];
+};
+
+const meta: Meta<ToggleGroupArgs> = {
   title: "Primitives/ToggleGroup",
-  component: ToggleGroup,
+  component: ToggleGroup as Meta<ToggleGroupArgs>["component"],
   parameters: {
     layout: "centered",
     docs: {
@@ -27,9 +39,8 @@ type Story = StoryObj<typeof meta>;
 
 export const SingleSelect: Story = {
   name: "Single — one of three (alignment)",
-  args: { type: "single", defaultValue: "center" } as any,
-  render: (args) => (
-    <ToggleGroup {...args}>
+  render: () => (
+    <ToggleGroup type="single" defaultValue="center">
       <ToggleGroupItem value="left" size="icon-sm" aria-label="Align left">
         <Icon icon={AlignLeft} size={14} aria-hidden="true" />
       </ToggleGroupItem>
@@ -45,9 +56,8 @@ export const SingleSelect: Story = {
 
 export const MultiSelect: Story = {
   name: "Multiple — composer toolbar pattern",
-  args: { type: "multiple", defaultValue: ["bold", "italic"] } as any,
-  render: (args) => (
-    <ToggleGroup {...args}>
+  render: () => (
+    <ToggleGroup type="multiple" defaultValue={["bold", "italic"]}>
       <ToggleGroupItem value="bold" size="icon-sm" aria-label="Bold">
         <Icon icon={Bold} size={14} aria-hidden="true" />
       </ToggleGroupItem>
@@ -63,9 +73,8 @@ export const MultiSelect: Story = {
 
 export const LabelSegmented: Story = {
   name: "Single + label segmented (view picker)",
-  args: { type: "single", defaultValue: "month" } as any,
-  render: (args) => (
-    <ToggleGroup {...args}>
+  render: () => (
+    <ToggleGroup type="single" defaultValue="month">
       <ToggleGroupItem value="day" size="sm">Day</ToggleGroupItem>
       <ToggleGroupItem value="week" size="sm">Week</ToggleGroupItem>
       <ToggleGroupItem value="month" size="sm">Month</ToggleGroupItem>
@@ -75,9 +84,8 @@ export const LabelSegmented: Story = {
 };
 
 export const Disabled: Story = {
-  args: { type: "single", defaultValue: "center", disabled: true } as any,
-  render: (args) => (
-    <ToggleGroup {...args}>
+  render: () => (
+    <ToggleGroup type="single" defaultValue="center" disabled>
       <ToggleGroupItem value="left" size="icon-sm" aria-label="Align left">
         <Icon icon={AlignLeft} size={14} aria-hidden="true" />
       </ToggleGroupItem>

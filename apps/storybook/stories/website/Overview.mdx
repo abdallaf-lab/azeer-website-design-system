@@ -1,0 +1,40 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+<Meta title="Website/Overview" />
+
+# Marketing sections (`@azeer/website-ui`)
+
+These are the **marketing-site sections** — compositions built on top of the
+`@azeer/ui` primitives, shipped from the separate `@azeer/website-ui` package
+and consumed by `apps/website` (the Next.js 15 marketing site).
+
+They are **not new primitives**. Every button, card, input, accordion, tab,
+avatar, and channel icon comes from `@azeer/ui`; these stories only arrange
+them into page-level sections. Everything reads from the `@azeer/tokens` layer
+(no hardcoded color/size/type) and uses logical Tailwind utilities, so each
+section mirrors correctly under **RTL** (toggle direction in the toolbar).
+
+## What's here
+
+| Group | Sections |
+| --- | --- |
+| **Chrome** | `Navbar` (+ Product / Solutions / Resources mega-menus), `Footer` |
+| **Heroes** | `Hero` — Centered, Split, Split-with-video |
+| **Conversion** | `Pricing` (cards + calculator), `CTABanner`, `NewsletterSignup` |
+| **Capability** | `FeatureGrid`, `FeatureSplit`, `VerticalSwitcher`, `CompareTable`, `FAQ` |
+| **Trust / proof** | `StatsBand`, `Testimonials`, `LogoCloud`, `ComplianceBand`, `IntegrationsRow`, `ChannelsRow` |
+| **Blog** | `BlogCard` |
+| **Brand** | `AzeerMark`, `AzeerLogo`, `BrandPattern` |
+
+## Server vs. client
+
+In the Next.js App Router, interactive sections (`Navbar`, `Pricing` calculator,
+`FAQ`, `VerticalSwitcher`, `NewsletterSignup`, testimonials, split-video) ship a
+`"use client"` directive; the rest stay React Server Components. In Storybook
+(Vite) everything renders on the client, so the directive is a no-op here.
+
+## Try it
+
+- Toggle **Direction → RTL** in the toolbar to confirm every section mirrors.
+- Toggle **Density** to see control sizes flip inside embedded primitives.
+- Open the **A11y** panel — sections target WCAG 2.1 AA.

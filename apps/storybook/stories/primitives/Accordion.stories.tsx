@@ -6,9 +6,21 @@ import {
   AccordionTrigger,
 } from "@azeer/ui";
 
-const meta: Meta<typeof Accordion> = {
+/**
+ * Radix Accordion.Root props are a `single | multiple` discriminated union,
+ * which Storybook's `StoryObj` can't represent (it collapses `args` to `never`).
+ * We type the Meta against an explicit, flattened args surface and bake the
+ * discriminant into each story's `render`.
+ */
+type AccordionArgs = {
+  type?: "single" | "multiple";
+  collapsible?: boolean;
+  defaultValue?: string | string[];
+};
+
+const meta: Meta<AccordionArgs> = {
   title: "Primitives/Accordion",
-  component: Accordion,
+  component: Accordion as Meta<AccordionArgs>["component"],
   parameters: {
     layout: "padded",
     docs: {
@@ -27,9 +39,8 @@ type Story = StoryObj<typeof meta>;
 
 export const SingleCollapsible: Story = {
   name: "Single + collapsible (FAQ)",
-  args: { type: "single", collapsible: true },
-  render: (args) => (
-    <Accordion {...args} className="w-[560px]">
+  render: () => (
+    <Accordion type="single" collapsible className="w-[560px]">
       <AccordionItem value="item-1">
         <AccordionTrigger>How do I connect a channel?</AccordionTrigger>
         <AccordionContent>
@@ -57,9 +68,12 @@ export const SingleCollapsible: Story = {
 
 export const Multiple: Story = {
   name: "Multiple — many open at once",
-  args: { type: "multiple", defaultValue: ["item-1", "item-3"] } as any,
-  render: (args) => (
-    <Accordion {...args} className="w-[560px]">
+  render: () => (
+    <Accordion
+      type="multiple"
+      defaultValue={["item-1", "item-3"]}
+      className="w-[560px]"
+    >
       <AccordionItem value="item-1">
         <AccordionTrigger>Section A</AccordionTrigger>
         <AccordionContent>
@@ -81,9 +95,8 @@ export const Multiple: Story = {
 
 export const Single: Story = {
   name: "Single — no collapse (always one open)",
-  args: { type: "single", defaultValue: "item-1" } as any,
-  render: (args) => (
-    <Accordion {...args} className="w-[560px]">
+  render: () => (
+    <Accordion type="single" defaultValue="item-1" className="w-[560px]">
       <AccordionItem value="item-1">
         <AccordionTrigger>Step 1 — Connect</AccordionTrigger>
         <AccordionContent>Set up the first channel.</AccordionContent>

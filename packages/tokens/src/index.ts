@@ -11,6 +11,10 @@
  * what's defined there and must be kept in sync (one place each, one PR).
  */
 
+/* Brand-book metadata (marketing layer) — colors, voice, writing rules, logo,
+ * patterns, typography. Mirrors `./brand.css` + the Azeer Brand Book. */
+export * from "./brand";
+
 /* ─────────────────────────────────────────────────────────────────────── */
 /*  Colors                                                                 */
 /* ─────────────────────────────────────────────────────────────────────── */
@@ -304,7 +308,7 @@ export type TypeTokenMeta = {
   readonly cssVar: `--text-${string}`;
   readonly size: string;
   readonly lineHeight: string;
-  readonly weight: 400 | 500 | 600;
+  readonly weight: 400 | 500 | 600 | 700; // 700 is the exceptional `display` tier
   readonly tracking: string;
   readonly transform?: "uppercase";
   readonly use: string;

@@ -43,7 +43,7 @@ export const Warning: Story = {
   ),
 };
 
-export const Error: Story = {
+export const ErrorToast: Story = {
   name: "error — persistent",
   render: () => (
     <Button
@@ -86,14 +86,14 @@ export const AI: Story = {
   ),
 };
 
-export const Promise: Story = {
+export const PromiseToast: Story = {
   name: "promise — auto loading → success/error",
   render: () => (
     <div className="flex gap-3">
       <Button
         onClick={() =>
           toast.promise(
-            new Promise((resolve) => setTimeout(() => resolve(1284), 1500)),
+            new Promise<number>((resolve) => setTimeout(() => resolve(1284), 1500)),
             {
               loading: "Sending broadcast…",
               success: (count) => `Broadcast sent to ${count} contacts`,

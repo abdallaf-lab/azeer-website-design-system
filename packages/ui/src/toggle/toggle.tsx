@@ -36,10 +36,13 @@ export function Toggle({
 
 /* ─── ToggleGroup ──────────────────────────────────────────────────────── */
 
-export interface ToggleGroupProps
-  extends React.ComponentPropsWithoutRef<typeof ToggleGroupPrimitive.Root> {
-  ref?: React.Ref<React.ComponentRef<typeof ToggleGroupPrimitive.Root>>;
-}
+/**
+ * Radix's ToggleGroup Root props are a discriminated union
+ * (`type="single" | "multiple"`), so this is a type alias — not an
+ * `interface extends` (which can't extend a union). `ref` is included via
+ * `ComponentProps` under the React 19 ref-as-prop model.
+ */
+export type ToggleGroupProps = React.ComponentProps<typeof ToggleGroupPrimitive.Root>;
 
 /**
  * ToggleGroup — segmented control container. `type="single"` enforces one
@@ -49,17 +52,15 @@ export interface ToggleGroupProps
  * Default layout: `inline-flex gap-1`. Items share the Toggle visual + size
  * variants — pass a `size` on the group and every item inherits it via
  * context (or set per-item).
+ *
+ * Props are forwarded as a whole object (not destructured) to keep the
+ * single/multiple discriminated union correlated for Radix.
  */
-export function ToggleGroup({
-  className,
-  ref,
-  ...rest
-}: ToggleGroupProps) {
+export function ToggleGroup(props: ToggleGroupProps) {
   return (
     <ToggleGroupPrimitive.Root
-      ref={ref}
-      className={cn("inline-flex gap-1", className)}
-      {...rest}
+      {...props}
+      className={cn("inline-flex gap-1", props.className)}
     />
   );
 }

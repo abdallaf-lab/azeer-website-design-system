@@ -4,7 +4,7 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**", "storybook-static/**", ".vite/**"]
+      "outputs": ["dist/**", "storybook-static/**", ".vite/**", ".next/**", "!.next/cache/**"]
     },
     "dev": {
       "cache": false,

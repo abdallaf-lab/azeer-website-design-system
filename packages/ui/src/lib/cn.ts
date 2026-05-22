@@ -109,6 +109,15 @@ const colorTokens = [
   "text-link",
   "text-link-hover",
   "text-link-visited",
+  // brand (marketing layer — @azeer/tokens brand.css; product UI doesn't use these)
+  "brand-primary",
+  "brand-secondary",
+  "brand-accent",
+  "brand-neutral",
+  "brand-supportive",
+  "brand-on-primary",
+  "brand-on-secondary",
+  "brand-on-accent",
 ];
 
 const radiusTokens = ["none", "sm", "md", "lg", "xl", "full"];

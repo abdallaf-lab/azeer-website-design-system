@@ -42,6 +42,25 @@ export interface ToastOptions extends Omit<SonnerOptions, "icon" | "action" | "c
 type ToastId = string | number;
 type ToastMessage = React.ReactNode;
 
+/**
+ * Normalize our simplified `{ label, onClick }` action/cancel into the shapes
+ * sonner v2 expects (its `Action.onClick` is required and receives the click
+ * event). We wrap the DS's `() => void` so callers keep the simple signature,
+ * and supply a no-op for an omitted `cancel.onClick` (cancel just dismisses).
+ */
+function buildOptions(base: SonnerOptions, opts?: ToastOptions): SonnerOptions {
+  if (!opts) return base;
+  const { action, cancel, ...rest } = opts;
+  const merged: SonnerOptions = { ...base, ...rest };
+  if (action) {
+    merged.action = { label: action.label, onClick: () => action.onClick() };
+  }
+  if (cancel) {
+    merged.cancel = { label: cancel.label, onClick: () => cancel.onClick?.() };
+  }
+  return merged;
+}
+
 // Pre-computed icon nodes — created once at module load, reused across calls.
 const ICON_SUCCESS = <Icon icon={CheckCircle2} size={16} className="text-success-text" />;
 const ICON_INFO = <Icon icon={Info} size={16} className="text-info-text" />;
@@ -67,42 +86,35 @@ const ICON_AI = <Icon icon={Sparkles} size={16} className="text-ai-icon" />;
  */
 export const toast = {
   success(message: ToastMessage, opts?: ToastOptions): ToastId {
-    return sonnerToast.success(message, {
-      duration: DURATION.success,
-      icon: ICON_SUCCESS,
-      ...opts,
-    });
+    return sonnerToast.success(
+      message,
+      buildOptions({ duration: DURATION.success, icon: ICON_SUCCESS }, opts),
+    );
   },
 
   info(message: ToastMessage, opts?: ToastOptions): ToastId {
-    return sonnerToast.info(message, {
-      duration: DURATION.info,
-      icon: ICON_INFO,
-      ...opts,
-    });
+    return sonnerToast.info(
+      message,
+      buildOptions({ duration: DURATION.info, icon: ICON_INFO }, opts),
+    );
   },
 
   warning(message: ToastMessage, opts?: ToastOptions): ToastId {
-    return sonnerToast.warning(message, {
-      duration: DURATION.warning,
-      icon: ICON_WARNING,
-      ...opts,
-    });
+    return sonnerToast.warning(
+      message,
+      buildOptions({ duration: DURATION.warning, icon: ICON_WARNING }, opts),
+    );
   },
 
   error(message: ToastMessage, opts?: ToastOptions): ToastId {
-    return sonnerToast.error(message, {
-      duration: DURATION.error,
-      icon: ICON_ERROR,
-      ...opts,
-    });
+    return sonnerToast.error(
+      message,
+      buildOptions({ duration: DURATION.error, icon: ICON_ERROR }, opts),
+    );
   },
 
   loading(message: ToastMessage, opts?: ToastOptions): ToastId {
-    return sonnerToast.loading(message, {
-      duration: Infinity,
-      ...opts,
-    });
+    return sonnerToast.loading(message, buildOptions({ duration: Infinity }, opts));
   },
 
   /**
@@ -110,11 +122,10 @@ export const toast = {
    * Use for AI completions: "AI summary ready", "AI drafted a reply".
    */
   ai(message: ToastMessage, opts?: ToastOptions): ToastId {
-    return sonnerToast(message, {
-      duration: DURATION.ai,
-      icon: ICON_AI,
-      ...opts,
-    });
+    return sonnerToast(
+      message,
+      buildOptions({ duration: DURATION.ai, icon: ICON_AI }, opts),
+    );
   },
 
   /**

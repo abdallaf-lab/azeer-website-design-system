@@ -11,6 +11,7 @@
   "scripts": {
     "storybook": "turbo run storybook --filter=@azeer/storybook",
     "playground": "turbo run dev --filter=@azeer/playground",
+    "website": "turbo run dev --filter=@azeer/website",
     "build": "turbo run build",
     "lint": "turbo run lint",
     "typecheck": "turbo run typecheck",

@@ -1,0 +1,46 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+import { Callout, BrandColorGrid } from "./_brand-specimens";
+
+<Meta title="Brand/Color" />
+
+# Color — الألوان
+
+Five fixed brand colors with print-grade specs. Each is exposed as a CSS
+variable (`--brand-primary`) and a Tailwind utility (`bg-brand-primary`,
+`text-brand-primary`, `border-brand-primary`).
+
+<BrandColorGrid />
+
+<Callout intent="warning" title="Accent (amber) is never a white-text background">
+`#FFC857` fails contrast against white. Pair it with `--brand-on-accent`
+(`#2E2E2E`) — i.e. `bg-brand-accent text-brand-on-accent`.
+</Callout>
+
+<Callout intent="info" title="Brand vs product tokens">
+These are the **marketing** palette. The **product** UI (Foundation → Colors)
+re-derives an accessible set: brand primary `#7B61FF` maps to the product's
+non-text `--color-accent-brand`, while white-text CTAs use `--color-accent-fill`
+`#5238D1` (7.3:1 AAA). Brand secondary/accent/neutral/supportive have no exact
+product equivalents — don't substitute one layer for the other.
+</Callout>
+
+## Pairings
+
+| Background | Text | Use |
+| --- | --- | --- |
+| `bg-brand-primary` | `text-brand-on-primary` (white) | Hero bands, primary brand surfaces |
+| `bg-brand-secondary` | `text-brand-on-secondary` (white) | Footers, dark sections, deep navy panels |
+| `bg-brand-accent` | `text-brand-on-accent` (near-black) | CTAs, campaign highlights — **never white text** |
+| `bg-brand-supportive` | `text-brand-neutral` | Clean light content backgrounds |
+
+## In code
+
+```tsx
+import { BRAND_COLORS } from "@azeer/tokens";
+
+// Tailwind utilities (preferred)
+<section className="bg-brand-secondary text-brand-on-secondary">…</section>
+
+// CSS variable
+<div style={{ background: "var(--brand-primary)" }} />
+```

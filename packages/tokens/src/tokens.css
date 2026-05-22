@@ -26,6 +26,10 @@
  * overlays for enter/exit transitions on `data-[state=…]`. */
 @import "tw-animate-css";
 
+/* Brand layer — marketing palette (`--brand-*` + `bg-brand-*` utilities).
+ * Separate from the product semantic tokens below; see brand.css header. */
+@import "./brand.css";
+
 /*
  * Content scan paths beyond Tailwind's auto-detection.
  *
@@ -42,6 +46,7 @@
  * outside these patterns.
  */
 @source "../../ui/src/**/*.{ts,tsx,jsx,mdx}";
+@source "../../website-ui/src/**/*.{ts,tsx,jsx,mdx}";
 @source "../../../apps/*/src/**/*.{ts,tsx,jsx,mdx}";
 @source "../../../apps/*/stories/**/*.{ts,tsx,jsx,mdx}";
 @source "../../../apps/*/.storybook/**/*.{ts,tsx,jsx,mdx}";

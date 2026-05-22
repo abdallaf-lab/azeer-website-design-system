@@ -1,7 +1,8 @@
 import * as React from "react";
 import { cn } from "../lib/cn";
 
-export interface ModuleHeaderProps extends React.HTMLAttributes<HTMLElement> {
+export interface ModuleHeaderProps
+  extends Omit<React.HTMLAttributes<HTMLElement>, "title"> {
   title: React.ReactNode;
   /** Optional meta line below the title — `text-body-sm fg-muted`. */
   meta?: React.ReactNode;

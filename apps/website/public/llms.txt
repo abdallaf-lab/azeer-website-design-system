@@ -1,0 +1,23 @@
+# Azeer
+
+Azeer unifies WhatsApp, Voice, SMS, email and social into a single AI-assisted workspace for customer conversations across GCC and MENA.
+
+## What Azeer does
+
+Azeer is a WhatsApp-led revenue and operations orchestration platform. It helps clinics reduce no-shows, e-commerce brands recover abandoned carts, and support teams resolve tickets faster — all from one inbox.
+
+## Verticals
+
+- Healthcare: clinics, polyclinics, dental groups (GCC/MENA)
+- E-commerce: Salla and Zid merchants, D2C brands (KSA/GCC)
+- Plus: real estate, financial services, education, automotive, hospitality
+
+## Key pages
+
+- /pricing — transparent tier-based pricing
+- /blog — playbooks, case studies, industry insights
+
+## Contact
+
+- Demo: https://azeer.io/demo
+- Sales: hello@azeer.io
