@@ -36,6 +36,10 @@ export * from "./trust-badges";
 
 // Motion (Path C — entrance / scroll motion primitives)
 export * from "./motion/motion-preset";
+export * from "./motion/border-beam";
+
+// Layout (Path C — structural section wrappers)
+export * from "./layout/section-rails";
 
 // Chrome
 export * from "./navbar";
