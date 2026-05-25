@@ -8,3 +8,5 @@ export { HeroSplitVideo } from "./HeroSplitVideo";
 export type { HeroSplitVideoProps } from "./HeroSplitVideo";
 export { WorkflowItem } from "./workflow-item";
 export type { WorkflowItemProps } from "./workflow-item";
+export { HeroWithWorkflow } from "./HeroWithWorkflow";
+export type { HeroWithWorkflowProps, HeroEyebrowBadge } from "./HeroWithWorkflow";

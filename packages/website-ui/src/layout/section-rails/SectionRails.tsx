@@ -16,6 +16,8 @@ export interface SectionRailsProps {
   showBottomBorder?: boolean;
   /** Anchor id for in-page links (e.g. "hero", "pricing", "faq"). */
   id?: string;
+  /** Wire the section's accessible name to a heading's id (landmark naming). */
+  ariaLabelledby?: string;
   /** Semantic element for the outer wrapper. Default `section`. */
   as?: SectionRailsTag;
 }
@@ -49,11 +51,13 @@ export function SectionRails({
   density = "normal",
   showBottomBorder = true,
   id,
+  ariaLabelledby,
   as: Tag = "section",
 }: SectionRailsProps) {
   return (
     <Tag
       id={id}
+      aria-labelledby={ariaLabelledby}
       className={cn(
         "px-4 sm:px-6 lg:px-8",
         showBottomBorder && "border-b border-border-subtle",

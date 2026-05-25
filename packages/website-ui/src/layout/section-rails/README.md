@@ -11,6 +11,7 @@ The architectural section wrapper for every Azeer marketing page. Creates the Li
 | `density` | `'compact' \| 'normal' \| 'spacious'` | `'normal'` | Inner vertical rhythm. |
 | `showBottomBorder` | `boolean` | `true` | Render the dividing bottom hairline. Set `false` on the last section. |
 | `id` | `string` | — | Anchor id for in-page links (e.g. `"hero"`, `"pricing"`, `"faq"`). |
+| `ariaLabelledby` | `string` | — | Id of a heading inside the section — names the landmark for screen readers. |
 | `as` | `'section' \| 'div' \| 'article'` | `'section'` | Semantic element for the outer wrapper. |
 
 ### Density → padding
