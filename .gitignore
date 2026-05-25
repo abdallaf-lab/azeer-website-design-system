@@ -45,3 +45,9 @@ desktop.ini
 .turbo/
 .vercel/
 coverage/
+
+apps/website/tsconfig.tsbuildinfo
+**/tsconfig.tsbuildinfo
+
+apps/website/tsconfig.tsbuildinfo
+**/tsconfig.tsbuildinfo
