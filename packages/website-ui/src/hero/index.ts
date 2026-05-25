@@ -6,3 +6,5 @@ export { HeroSplit } from "./HeroSplit";
 export type { HeroSplitProps } from "./HeroSplit";
 export { HeroSplitVideo } from "./HeroSplitVideo";
 export type { HeroSplitVideoProps } from "./HeroSplitVideo";
+export { WorkflowItem } from "./workflow-item";
+export type { WorkflowItemProps } from "./workflow-item";
