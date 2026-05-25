@@ -1,0 +1,98 @@
+import { Meta, Title, Subtitle, Primary, Controls, Stories } from "@storybook/addon-docs/blocks";
+import * as FieldGroupStories from "./FieldGroup.stories";
+
+<Meta of={FieldGroupStories} />
+
+<Title />
+<Subtitle />
+
+Groups related form fields under a single heavier label and shared helper /
+error. Different from `FormField` in three ways per Forms.md §7:
+
+1. **Heavier label tier** — `text-label-md` (14 / 16 / 600) signals "this
+   is a unit", vs FormField's `text-label-sm` for single fields.
+2. **Multiple children** — FormField clones one child to auto-wire ARIA;
+   FieldGroup is layout-only and takes 2-4 children directly.
+3. **Helper / error spans the whole group** — one message for the unit
+   (e.g. "Enter a complete phone number"), not per-field.
+
+**Single-level only** — nesting `FieldGroup` inside `FieldGroup` is
+forbidden per Forms.md.
+
+## Live
+
+<Primary />
+<Controls />
+
+## All stories
+
+<Stories includePrimary={false} />
+
+## API
+
+```tsx
+<FieldGroup
+  label="Phone number"
+  required
+  helper="We'll send a verification code via SMS."
+  direction="row"               // "row" (default) or "column"
+  gap={2}                        // 1 / 2 (default) / 3 / 4
+>
+  <Select>{/* country code */}</Select>
+  <Input className="flex-1" />
+</FieldGroup>
+```
+
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `label` | `ReactNode` | Heavier-tier group label |
+| `required` | `boolean` | Adds `*` after the label |
+| `optional` | `boolean` | Adds `(optional)` after the label (mutually exclusive with `required`) |
+| `helper` | `ReactNode` | Replaced by `error` when present |
+| `error` | `ReactNode` | Validation error for the whole group |
+| `direction` | `"row" \| "column"` | Inter-control layout. Default `"row"` |
+| `gap` | `1 \| 2 \| 3 \| 4` | Tailwind gap-* between controls. Default `2` (8 px) |
+| `ariaLabel` | `string` | Falls back when no visible label and a sibling already names the group |
+
+## Canonical use cases (Forms.md §7)
+
+| Pattern | Composition |
+| --- | --- |
+| **Phone with country code** | `Select` (country) + `Input` / `PhoneInput` (number) |
+| **Date range** | `DatePicker` (start) + `DatePicker` (end) |
+| **Currency** | `NumberInput` (amount) + `Select` (currency code) |
+| **Address** | column direction — street → city/postal row → country `Select` |
+
+## When NOT to use FieldGroup
+
+- Single field — use `FormField`
+- Fields that don't share semantic meaning — use independent `FormField`s
+- Two FieldGroups nested — flatten or break into adjacent groups
+
+## Tokens used
+
+| Token | Where |
+| --- | --- |
+| `--text-label-md` (14 / 16 / 600) | Group label typography (heavier than FormField) |
+| `--text-body-xs` | Helper / error typography |
+| `--color-fg-default` | Label text |
+| `--color-fg-muted` | Helper text + "(optional)" suffix |
+| `--color-danger-text` | Error message text + required `*` marker |
+| Spacing `gap-1.5` (6 px) | Label-to-controls and controls-to-helper gaps |
+| Spacing `gap-1/2/3/4` | Inter-control gap (configurable) |
+
+## A11y
+
+- Outer container renders `role="group"`.
+- Label gets a `useId()` and is referenced via `aria-labelledby`.
+- Helper / error gets a `useId()` and is referenced via `aria-describedby`.
+- ARIA wiring lives on the group container, NOT on individual children — that's the consumer's job (or use FormField for per-control wiring).
+- Required `*` is `aria-hidden`; pair with `aria-required` on the child controls that should announce as required (consumer responsibility).
+
+## Forbidden
+
+- Nesting `FieldGroup` inside `FieldGroup` — flatten or split
+- Using FieldGroup for a single child — that's a `FormField`
+- Per-field error inside FieldGroup — the group's error is for the unit; if you need per-field validation, drop down to `FormField` per child
+- Mixing `required` + `optional` markers on the same group — choose one, never both
+- Group with > 4 children — re-evaluate; it's probably two groups

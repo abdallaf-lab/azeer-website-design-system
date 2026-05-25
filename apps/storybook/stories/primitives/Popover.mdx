@@ -1,0 +1,82 @@
+import { Meta, Title, Subtitle, Primary, Stories } from "@storybook/addon-docs/blocks";
+import * as PopoverStories from "./Popover.stories";
+
+<Meta of={PopoverStories} />
+
+<Title />
+<Subtitle />
+
+Floating panel built on `@radix-ui/react-popover`. **No arrow** per
+Components.md — the connection to the trigger is implied by position. Use
+for short interactive panels (inline edit, mini-form, contextual filter).
+For ephemeral text hints use `Tooltip`; for full-screen blocking interaction
+use `Dialog`.
+
+## Live
+
+<Primary />
+
+## All stories
+
+<Stories includePrimary={false} />
+
+## Anatomy
+
+```tsx
+import { Popover, PopoverTrigger, PopoverContent, PopoverClose } from "@azeer/ui";
+
+<Popover>
+  <PopoverTrigger asChild>
+    <Button>Open</Button>
+  </PopoverTrigger>
+  <PopoverContent>
+    …
+    <PopoverClose asChild>
+      <Button>Save</Button>
+    </PopoverClose>
+  </PopoverContent>
+</Popover>
+```
+
+| Property | Value |
+| --- | --- |
+| Default side | `bottom` |
+| Side offset | 4 px |
+| Default width | 288 px (`w-72`) — override per usage |
+| Default padding | 16 px (`p-4`) |
+| Radius | `rounded-lg` (8 px) |
+| Surface | `surface-overlay` (slightly tinted vs base surface) |
+| Shadow | `--elev-2` |
+| z-index | `--z-popover` (100) |
+
+## Tokens used
+
+| Token | Where |
+| --- | --- |
+| `--color-surface-overlay` (`#FCFCFB`) | Background — distinguishes floating from base surface |
+| `--color-fg-default` | Text |
+| `--radius-lg` (8 px) | Shape |
+| `--shadow-elev-2` | Shadow |
+| `--z-popover` (100) | Floating tier — DropdownMenu / ContextMenu / Combobox / HoverCard share this |
+
+## A11y
+
+- Radix wires focus management: focus moves into the content on open, returns to the trigger on close.
+- `Esc` closes; outside-click closes.
+- Triggers must be focusable — use `asChild` and wrap a real `<button>` / `Button`.
+- Inside a form-like popover, the first focusable element auto-focuses (Radix default) — override with `onOpenAutoFocus` if needed.
+
+## RTL behavior
+
+`side="start"` and `side="end"` are NOT valid Radix sides — Radix uses
+`top` / `right` / `bottom` / `left`. For RTL-aware placement use the
+default (`side="bottom"`) or rely on `align="start"` / `align="end"` which
+ARE logical (mirror under `dir="rtl"`).
+
+## Forbidden
+
+- Arrow / pointer on the popover — DS forbids
+- Popover for critical decisions — use `Dialog` (Popover dismisses on outside-click; a missed click ≠ a decision)
+- Popover for ephemeral hints — use `Tooltip`
+- Popover with another portal inside (nested Popover/Tooltip) — Z-Index works, but cognitive load is high; flatten the UI instead
+- Custom shadow / radius per-popover — system tokens only

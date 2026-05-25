@@ -1,0 +1,80 @@
+import { Meta, Title, Subtitle, Primary, Controls, Stories } from "@storybook/addon-docs/blocks";
+import * as PhoneInputStories from "./PhoneInput.stories";
+
+<Meta of={PhoneInputStories} />
+
+<Title />
+<Subtitle />
+
+CPaaS-critical phone-number entry, backed by `libphonenumber-js`. **Storage
+is always E.164** (`+966505550142`), per Numerals.md. The visible field
+shows the international format (`+966 50 555 0142`), `bidi-isolated` so it
+reads LTR even inside Arabic prose, monospace + tabular-nums for column
+alignment.
+
+## Live
+
+<Primary />
+<Controls />
+
+## All stories
+
+<Stories includePrimary={false} />
+
+## API
+
+```tsx
+const [phone, setPhone] = useState<string | undefined>();
+
+<PhoneInput
+  value={phone}                  // E.164 or undefined
+  onValueChange={setPhone}       // emits E.164 on valid blur, undefined when empty
+  defaultCountry="SA"            // for parsing national-format input
+  onValidityChange={setValid}    // optional — fires on every blur
+/>
+```
+
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `value` / `defaultValue` | `string` | E.164 form. Empty = `undefined` |
+| `onValueChange` | `(e164 \| undefined) => void` | Fires on blur with parsed value |
+| `defaultCountry` | `CountryCode` | "SA" / "AE" / "US" / "GB" / etc. — used when user types national digits |
+| `onValidityChange` | `(boolean) => void` | Fires on blur with the parse result |
+| `size` | `"sm" \| "md" \| "lg"` | Same scale as Input |
+| All standard `Input` props (except `type`, `value`, `onChange`, `inputMode`) | — | Pass through |
+
+## Behavior
+
+| User does | Result |
+| --- | --- |
+| Types `0505550142` (with `defaultCountry="SA"`) | On blur: stored as `+966505550142`, displayed as `+966 50 555 0142` |
+| Pastes `+966 50 555 0142` | Same |
+| Types `not-a-phone` | `aria-invalid="true"` on blur; `onValueChange` emits `undefined` |
+| Clears the field | `onValueChange` emits `undefined` |
+
+Validation only runs on **blur** — never on every keystroke per Forms.md §4
+("never red until the user has had a fair chance").
+
+## Tokens used
+
+Inherits from `Input` (border, focus border, disabled, aria-invalid). Adds:
+
+| Class | Why |
+| --- | --- |
+| `.bidi-isolate` | Forces LTR direction regardless of document `dir` — phone numbers always read left-to-right |
+| `font-mono` (`--font-mono`) | Column-aligned digit widths via JetBrains Mono |
+| `tabular-nums` | All digits same-width — `+966 50` aligns with `+1 555` in lists |
+
+## A11y
+
+- `type="tel"` + `inputMode="tel"` surface the phone keyboard on mobile.
+- `aria-invalid` toggles via parse result on blur. `FormField` pairs this with the visible red border + error message.
+- For internationalization, screen readers announce digit-by-digit when the field is `lang="ar"` paired with `<bdi>` — already handled by `.bidi-isolate`.
+
+## Forbidden
+
+- Storing display format (`"+966 50 555 0142"`) anywhere — store E.164 only
+- Rendering raw phone strings without `.bidi-isolate` / `<bdi>` in Arabic prose — direction wobbles
+- Phone input with `type="text"` and no `inputMode="tel"` — mobile keyboard is wrong
+- Manual phone validation regexes — `libphonenumber-js` handles country-specific rules
+- Truncating phone numbers in lists — use the full international format; column-align with `tabular-nums`

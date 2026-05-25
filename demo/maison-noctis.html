@@ -1,0 +1,1596 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0d0a08" />
+  <title>Maison Noctis — Apothecary of the Night</title>
+  <meta name="description" content="An independent perfumery of nocturnal compositions. Hand-blended in small batches from raw absolutes, resins, and tinctures." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..900,0..100,0..1;1,9..144,300..900,0..100,0..1&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=Geist+Mono:wght@300..700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ============================================================
+       MAISON NOCTIS
+       A late-night editorial / apothecary aesthetic.
+       Warm ink black · parchment cream · ember · oxblood.
+       ============================================================ */
+
+    :root {
+      --ink:        #0d0a08;
+      --ink-deep:   #050403;
+      --smoke:      #1a1612;
+      --smoke-2:    #221c17;
+      --paper:      #efe6d4;
+      --paper-dim:  #c9bda2;
+      --paper-mute: #8a8169;
+      --ember:      #e08545;
+      --ember-warm: #f0a86b;
+      --oxblood:    #6a1c1c;
+      --moss:       #4a5a3d;
+      --rule:       rgba(239, 230, 212, 0.16);
+      --rule-strong: rgba(239, 230, 212, 0.36);
+
+      --display: 'Fraunces', 'Times New Roman', serif;
+      --body:    'Newsreader', Georgia, serif;
+      --mono:    'Geist Mono', ui-monospace, monospace;
+
+      --bezel: 1px solid var(--rule);
+    }
+
+    *,
+    *::before,
+    *::after { box-sizing: border-box; }
+
+    html, body { margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      min-height: 100dvh;
+      background:
+        radial-gradient(ellipse 80% 60% at 15% -10%, rgba(224, 133, 69, 0.08), transparent 60%),
+        radial-gradient(ellipse 70% 60% at 110% 100%, rgba(106, 28, 28, 0.12), transparent 65%),
+        var(--ink);
+      color: var(--paper);
+      font-family: var(--body);
+      font-weight: 320;
+      line-height: 1.55;
+      letter-spacing: 0.005em;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      body { cursor: none; }
+      a, button, [data-hover] { cursor: none; }
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img, svg { display: block; max-width: 100%; }
+    button { font: inherit; color: inherit; background: none; border: 0; }
+
+    ::selection { background: var(--ember); color: var(--ink); }
+
+    /* ============================================================
+       ATMOSPHERE
+       ============================================================ */
+
+    .grain {
+      position: fixed; inset: 0;
+      pointer-events: none;
+      z-index: 100;
+      opacity: 0.16;
+      mix-blend-mode: overlay;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.92' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+      animation: grain 7s steps(6) infinite;
+    }
+    @keyframes grain {
+      0%, 100% { transform: translate(0, 0); }
+      15% { transform: translate(-2%, -3%); }
+      30% { transform: translate(2%, 1%); }
+      45% { transform: translate(-1%, 2%); }
+      60% { transform: translate(3%, -2%); }
+      75% { transform: translate(-3%, 1%); }
+      90% { transform: translate(1%, 3%); }
+    }
+
+    .vignette {
+      position: fixed; inset: 0; pointer-events: none; z-index: 90;
+      background: radial-gradient(ellipse 100% 80% at 50% 50%, transparent 55%, rgba(0,0,0,0.55) 100%);
+    }
+
+    /* Custom cursor ---------------------------------------- */
+    .cursor {
+      position: fixed; top: 0; left: 0;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--ember);
+      pointer-events: none;
+      z-index: 200;
+      transform: translate(-50%, -50%);
+      transition: width .25s ease, height .25s ease, background .25s ease, border-color .25s ease, opacity .25s ease;
+      box-shadow: 0 0 22px rgba(224, 133, 69, 0.65);
+    }
+    .cursor.is-hover {
+      width: 38px; height: 38px;
+      background: transparent;
+      border: 1px solid var(--paper);
+      box-shadow: 0 0 32px rgba(239, 230, 212, 0.25);
+    }
+    @media not all and (hover: hover) {
+      .cursor { display: none; }
+    }
+
+    /* ============================================================
+       SHELL & LAYOUT
+       ============================================================ */
+
+    .shell {
+      max-width: 1480px;
+      margin: 0 auto;
+      padding: 0 clamp(20px, 4vw, 64px);
+    }
+
+    .rule {
+      height: 1px; width: 100%;
+      background: var(--rule);
+      border: 0;
+    }
+
+    .label {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--paper-dim);
+    }
+
+    /* ============================================================
+       HEADER
+       ============================================================ */
+
+    header.bar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(12px) saturate(1.25);
+      -webkit-backdrop-filter: blur(12px) saturate(1.25);
+      background: linear-gradient(to bottom, rgba(13,10,8,0.88), rgba(13,10,8,0.55));
+      border-bottom: var(--bezel);
+    }
+
+    .bar-inner {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 32px;
+      padding: 18px 0;
+    }
+
+    .monogram {
+      display: inline-flex; align-items: baseline; gap: 10px;
+      font-family: var(--display);
+      font-style: italic;
+      font-weight: 400;
+      font-size: 22px;
+      font-variation-settings: "opsz" 144, "SOFT" 100, "WONK" 1;
+      letter-spacing: -0.015em;
+      color: var(--paper);
+    }
+    .monogram .glyph {
+      font-size: 30px;
+      color: var(--ember);
+      line-height: 0.8;
+    }
+    .monogram .est {
+      font-family: var(--mono);
+      font-style: normal;
+      font-size: 9px;
+      letter-spacing: 0.24em;
+      color: var(--paper-mute);
+      text-transform: uppercase;
+      margin-left: 6px;
+      align-self: center;
+      padding-left: 10px;
+      border-left: 1px solid var(--rule);
+    }
+
+    nav.primary {
+      display: flex; justify-content: center; gap: clamp(20px, 3vw, 44px);
+      font-family: var(--mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      color: var(--paper-dim);
+    }
+    nav.primary a {
+      position: relative;
+      padding: 6px 0;
+      transition: color .3s ease;
+    }
+    nav.primary a:hover { color: var(--paper); }
+    nav.primary a::after {
+      content: '';
+      position: absolute;
+      left: 50%; bottom: 0;
+      width: 0; height: 1px;
+      background: var(--ember);
+      transition: width .4s cubic-bezier(.2,.7,.2,1), left .4s cubic-bezier(.2,.7,.2,1);
+    }
+    nav.primary a:hover::after { width: 100%; left: 0; }
+
+    .clock {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      color: var(--paper-dim);
+      text-transform: uppercase;
+    }
+    .clock .time { color: var(--paper); font-variant-numeric: tabular-nums; }
+    .clock .pulse {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--ember);
+      animation: pulse 2.2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.35; box-shadow: 0 0 0 0 rgba(224, 133, 69, 0.55); }
+      50%      { opacity: 1;    box-shadow: 0 0 0 10px rgba(224, 133, 69, 0); }
+    }
+
+    @media (max-width: 760px) {
+      nav.primary { display: none; }
+      .bar-inner { grid-template-columns: auto auto; }
+    }
+
+    /* ============================================================
+       HERO
+       ============================================================ */
+
+    .hero {
+      position: relative;
+      padding: clamp(48px, 11vh, 120px) 0 clamp(60px, 12vh, 140px);
+      isolation: isolate;
+    }
+
+    .hero-meta {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 24px;
+      padding-bottom: clamp(32px, 6vh, 64px);
+    }
+    .hero-meta .left  { justify-self: start; }
+    .hero-meta .right { justify-self: end; }
+    .hero-meta .roman {
+      font-family: var(--display);
+      font-style: italic;
+      font-size: 22px;
+      letter-spacing: 0.04em;
+      color: var(--ember);
+      font-variation-settings: "opsz" 144, "wght" 300;
+    }
+
+    .hero-stage {
+      position: relative;
+    }
+
+    .hero-title {
+      font-family: var(--display);
+      font-style: italic;
+      font-weight: 300;
+      font-size: clamp(80px, 19vw, 300px);
+      line-height: 0.84;
+      letter-spacing: -0.045em;
+      color: var(--paper);
+      font-variation-settings: "opsz" 144, "SOFT" 80, "WONK" 1;
+      position: relative;
+      z-index: 2;
+    }
+    .hero-title .word {
+      display: block;
+      overflow: hidden;
+      padding-right: 0.04em;
+    }
+    .hero-title .word > span {
+      display: inline-block;
+      transform: translateY(110%);
+      animation: rise 1s cubic-bezier(.2,.75,.2,1) forwards;
+    }
+    .hero-title .w1 > span { animation-delay: .18s; }
+    .hero-title .w2 > span { animation-delay: .36s; }
+    .hero-title .noctis {
+      color: var(--ember);
+      font-variation-settings: "opsz" 144, "SOFT" 100, "WONK" 1;
+      letter-spacing: -0.04em;
+      padding-left: clamp(40px, 8vw, 140px);
+      position: relative;
+    }
+    .hero-title .noctis::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 50%;
+      width: clamp(30px, 6vw, 110px);
+      height: 1px;
+      background: var(--ember);
+      transform: translateY(-50%);
+      transform-origin: left;
+      animation: drawLine 1s cubic-bezier(.2,.75,.2,1) .9s both;
+    }
+    @keyframes rise   { to { transform: translateY(0); } }
+    @keyframes drawLine { from { transform: translateY(-50%) scaleX(0); } to { transform: translateY(-50%) scaleX(1); } }
+
+    .hero-foot {
+      display: grid;
+      grid-template-columns: 1fr 1.1fr 0.8fr;
+      gap: clamp(20px, 4vw, 56px);
+      align-items: end;
+      margin-top: clamp(40px, 8vh, 96px);
+      padding-top: 28px;
+      border-top: var(--bezel);
+      opacity: 0;
+      animation: fadeUp 1.1s ease 1.1s forwards;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-foot .number {
+      font-family: var(--display);
+      font-style: italic;
+      font-size: 56px;
+      line-height: 1;
+      color: var(--paper);
+      font-variation-settings: "opsz" 144, "SOFT" 100;
+      letter-spacing: -0.02em;
+    }
+    .hero-foot .number small {
+      display: block;
+      font-family: var(--mono);
+      font-style: normal;
+      font-size: 10px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--paper-mute);
+      margin-top: 8px;
+    }
+
+    .hero-foot .lede {
+      font-family: var(--body);
+      font-style: italic;
+      font-size: clamp(17px, 1.4vw, 21px);
+      line-height: 1.45;
+      color: var(--paper-dim);
+      max-width: 38ch;
+      font-variation-settings: "opsz" 36;
+    }
+    .hero-foot .lede::first-letter {
+      font-family: var(--display);
+      font-size: 2.6em;
+      line-height: 0.8;
+      float: left;
+      padding: 0.05em 0.1em 0 0;
+      color: var(--ember);
+      font-variation-settings: "opsz" 144, "SOFT" 100, "WONK" 1;
+    }
+
+    .hero-foot .cta {
+      justify-self: end;
+      text-align: right;
+    }
+    .ink-btn {
+      display: inline-flex; align-items: center; gap: 14px;
+      padding: 14px 22px;
+      border: 1px solid var(--rule-strong);
+      border-radius: 999px;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--paper);
+      background: transparent;
+      transition: background .35s ease, color .35s ease, border-color .35s ease, transform .35s ease;
+      position: relative;
+    }
+    .ink-btn::after {
+      content: '→';
+      font-family: var(--display);
+      font-size: 18px;
+      letter-spacing: 0;
+      transition: transform .35s ease;
+    }
+    .ink-btn:hover {
+      background: var(--ember);
+      color: var(--ink);
+      border-color: var(--ember);
+    }
+    .ink-btn:hover::after { transform: translateX(4px); }
+
+    /* perfume bottle SVG positioning */
+    .bottle-wrap {
+      position: absolute;
+      right: clamp(0px, 3vw, 48px);
+      top: clamp(-20px, -2vh, -10px);
+      width: clamp(110px, 13vw, 200px);
+      z-index: 3;
+      opacity: 0;
+      animation: floatIn 1.6s cubic-bezier(.2,.7,.2,1) 1.2s forwards;
+      pointer-events: none;
+    }
+    @keyframes floatIn {
+      from { opacity: 0; transform: translateY(-30px) rotate(-2deg); }
+      to   { opacity: 1; transform: translateY(0) rotate(0); }
+    }
+    .bottle-wrap svg { width: 100%; height: auto; filter: drop-shadow(0 18px 40px rgba(0,0,0,0.5)); }
+    .bottle-wrap .liquid { animation: shimmer 6s ease-in-out infinite alternate; transform-origin: center; }
+    @keyframes shimmer {
+      from { opacity: 0.85; }
+      to   { opacity: 1; }
+    }
+
+    /* ============================================================
+       MARQUEE — botanical names in Latin
+       ============================================================ */
+
+    .marquee {
+      border-block: var(--bezel);
+      overflow: hidden;
+      padding: clamp(18px, 3vh, 28px) 0;
+      background: linear-gradient(to right, rgba(13,10,8,1), rgba(13,10,8,0) 8%, rgba(13,10,8,0) 92%, rgba(13,10,8,1));
+      position: relative;
+    }
+    .marquee-track {
+      display: flex; gap: 64px;
+      width: max-content;
+      animation: scroll 60s linear infinite;
+      font-family: var(--display);
+      font-style: italic;
+      font-size: clamp(20px, 2.4vw, 32px);
+      color: var(--paper-dim);
+      font-variation-settings: "opsz" 144, "SOFT" 60, "WONK" 1;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+      align-items: center;
+    }
+    .marquee-track .sep {
+      color: var(--ember);
+      font-family: var(--display);
+      font-style: italic;
+      font-size: 0.7em;
+      transform: translateY(-0.15em);
+    }
+    @keyframes scroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ============================================================
+       PHILOSOPHY
+       ============================================================ */
+
+    section.philosophy {
+      padding: clamp(80px, 14vh, 160px) 0;
+    }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: 1fr auto 2fr;
+      align-items: end;
+      gap: clamp(20px, 4vw, 56px);
+      margin-bottom: clamp(48px, 8vh, 96px);
+    }
+    .section-head .roman {
+      font-family: var(--display);
+      font-style: italic;
+      font-size: 18px;
+      color: var(--ember);
+      letter-spacing: 0.04em;
+    }
+    .section-head h2 {
+      font-family: var(--display);
+      font-style: italic;
+      font-weight: 300;
+      font-size: clamp(40px, 6vw, 80px);
+      line-height: 0.95;
+      letter-spacing: -0.025em;
+      color: var(--paper);
+      font-variation-settings: "opsz" 144, "SOFT" 80, "WONK" 1;
+      max-width: 14ch;
+    }
+    .section-head .aside {
+      font-family: var(--body);
+      font-style: italic;
+      font-size: 17px;
+      color: var(--paper-dim);
+      max-width: 38ch;
+      justify-self: end;
+      text-align: right;
+    }
+
+    .pillars {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      border-top: var(--bezel);
+    }
+    .pillar {
+      padding: clamp(28px, 4vw, 48px) clamp(24px, 3vw, 40px);
+      border-right: var(--bezel);
+      border-bottom: var(--bezel);
+      position: relative;
+      min-height: clamp(280px, 36vh, 380px);
+      display: flex; flex-direction: column;
+      justify-content: space-between;
+      transition: background .5s ease;
+    }
+    .pillar:last-child { border-right: 0; }
+    .pillar:hover { background: var(--smoke); }
+
+    .pillar .index {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.24em;
+      color: var(--paper-mute);
+      text-transform: uppercase;
+    }
+    .pillar h3 {
+      font-family: var(--display);
+      font-style: italic;
+      font-weight: 300;
+      font-size: clamp(28px, 3.4vw, 42px);
+      line-height: 1;
+      letter-spacing: -0.02em;
+      color: var(--paper);
+      font-variation-settings: "opsz" 144, "SOFT" 80, "WONK" 1;
+      margin: 24px 0 18px;
+    }
+    .pillar p {
+      font-family: var(--body);
+      font-size: 15px;
+      line-height: 1.55;
+      color: var(--paper-dim);
+      max-width: 36ch;
+      font-variation-settings: "opsz" 18;
+    }
+    .pillar .icon {
+      width: 36px; height: 36px;
+      color: var(--ember);
+      margin-top: 24px;
+    }
+
+    @media (max-width: 880px) {
+      .pillars { grid-template-columns: 1fr; }
+      .pillar { border-right: 0; }
+      .section-head { grid-template-columns: 1fr; }
+      .section-head .aside { justify-self: start; text-align: left; }
+    }
+
+    /* ============================================================
+       COMPOSITION — featured fragrance pyramid
+       ============================================================ */
+
+    section.composition {
+      padding: clamp(80px, 14vh, 160px) 0;
+      background: linear-gradient(to bottom, transparent, rgba(106, 28, 28, 0.04), transparent);
+      border-top: var(--bezel);
+      border-bottom: var(--bezel);
+    }
+
+    .composition-inner {
+      display: grid;
+      grid-template-columns: 0.8fr 1.2fr;
+      gap: clamp(40px, 7vw, 100px);
+      align-items: center;
+    }
+
+    .composition .scroll-label {
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.32em;
+      color: var(--paper-mute);
+      text-transform: uppercase;
+    }
+
+    .feature {
+      position: relative;
+    }
+    .feature .opus {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.24em;
+      color: var(--ember);
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+    .feature h3 {
+      font-family: var(--display);
+      font-style: italic;
+      font-weight: 300;
+      font-size: clamp(56px, 8vw, 120px);
+      line-height: 0.85;
+      letter-spacing: -0.04em;
+      color: var(--paper);
+      font-variation-settings: "opsz" 144, "SOFT" 100, "WONK" 1;
+      margin-bottom: 28px;
+    }
+    .feature .epigraph {
+      font-family: var(--body);
+      font-style: italic;
+      font-size: 19px;
+      color: var(--paper-dim);
+      max-width: 44ch;
+      line-height: 1.45;
+      margin-bottom: 40px;
+      font-variation-settings: "opsz" 32;
+    }
+
+    .pyramid {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 18px 24px;
+      align-items: center;
+      padding: 28px 0;
+      border-block: var(--bezel);
+    }
+    .pyramid .tier {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.26em;
+      color: var(--paper-mute);
+      text-transform: uppercase;
+      padding-right: 24px;
+      border-right: 1px solid var(--rule);
+      align-self: stretch;
+      display: flex; align-items: center;
+    }
+    .pyramid .notes {
+      font-family: var(--display);
+      font-style: italic;
+      font-size: clamp(20px, 2vw, 26px);
+      color: var(--paper);
+      font-variation-settings: "opsz" 72, "SOFT" 80, "WONK" 1;
+      letter-spacing: -0.01em;
+    }
+    .pyramid .notes span {
+      display: inline-block;
+      transition: color .35s ease;
+    }
+    .pyramid .notes span:hover { color: var(--ember); }
+
+    .feature .meta-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 32px;
+      padding-top: 24px;
+    }
+    .meta-row .item .k {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.24em;
+      color: var(--paper-mute);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .meta-row .item .v {
+      font-family: var(--display);
+      font-style: italic;
+      font-size: 22px;
+      color: var(--paper);
+      font-variation-settings: "opsz" 72, "SOFT" 80;
+    }
+
+    .feature-art {
+      position: relative;
+      aspect-ratio: 4 / 5;
+      background:
+        radial-gradient(ellipse 60% 50% at 50% 40%, rgba(224, 133, 69, 0.20), transparent 70%),
+        linear-gradient(135deg, var(--smoke-2), var(--ink));
+      border: var(--bezel);
+      overflow: hidden;
+    }
+    .feature-art::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        repeating-linear-gradient(0deg, transparent 0 38px, rgba(239,230,212,0.04) 38px 39px),
+        repeating-linear-gradient(90deg, transparent 0 38px, rgba(239,230,212,0.04) 38px 39px);
+      mix-blend-mode: overlay;
+      pointer-events: none;
+    }
+    .feature-art .roman-large {
+      position: absolute;
+      top: clamp(20px, 4vw, 48px); left: clamp(20px, 4vw, 48px);
+      font-family: var(--display);
+      font-style: italic;
+      font-size: clamp(80px, 14vw, 200px);
+      line-height: 0.8;
+      color: var(--ember);
+      opacity: 0.85;
+      font-variation-settings: "opsz" 144, "wght" 200, "SOFT" 100, "WONK" 1;
+    }
+    .feature-art .caption {
+      position: absolute;
+      bottom: clamp(20px, 4vw, 40px); left: clamp(20px, 4vw, 40px); right: clamp(20px, 4vw, 40px);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 24px;
+      align-items: end;
+    }
+    .feature-art .caption .latin {
+      font-family: var(--display);
+      font-style: italic;
+      font-size: clamp(18px, 1.6vw, 24px);
+      color: var(--paper);
+      font-variation-settings: "opsz" 72, "SOFT" 80, "WONK" 1;
+      line-height: 1.2;
+    }
+    .feature-art .caption .ml {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      color: var(--paper-dim);
+      text-transform: uppercase;
+    }
+    .feature-art .bottle-big {
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 38%;
+      transform: translate(-50%, -45%);
+      animation: hoverBottle 6s ease-in-out infinite alternate;
+    }
+    @keyframes hoverBottle {
+      from { transform: translate(-50%, -45%) rotate(-1deg); }
+      to   { transform: translate(-50%, -42%) rotate(1deg); }
+    }
+
+    @media (max-width: 980px) {
+      .composition-inner { grid-template-columns: 1fr; }
+      .composition .scroll-label { display: none; }
+    }
+
+    /* ============================================================
+       COLLECTION — asymmetric grid
+       ============================================================ */
+
+    section.collection {
+      padding: clamp(80px, 14vh, 160px) 0;
+    }
+
+    .grid-asym {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: clamp(20px, 2.4vw, 36px);
+    }
+
+    .card {
+      position: relative;
+      background: var(--smoke);
+      border: var(--bezel);
+      padding: clamp(20px, 2.4vw, 32px);
+      overflow: hidden;
+      transition: transform .5s cubic-bezier(.2,.7,.2,1), border-color .5s ease, background .5s ease;
+      isolation: isolate;
+      min-height: clamp(320px, 44vh, 480px);
+      display: flex; flex-direction: column; justify-content: space-between;
+    }
+    .card::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(224, 133, 69, 0.15), transparent 65%);
+      opacity: 0;
+      transition: opacity .6s ease;
+      z-index: -1;
+    }
+    .card:hover { transform: translateY(-6px); border-color: var(--rule-strong); background: var(--smoke-2); }
+    .card:hover::before { opacity: 1; }
+
+    .card .num {
+      font-family: var(--display);
+      font-style: italic;
+      font-size: 14px;
+      letter-spacing: 0.05em;
+      color: var(--ember);
+      font-variation-settings: "opsz" 36;
+    }
+    .card .name {
+      font-family: var(--display);
+      font-style: italic;
+      font-weight: 300;
+      font-size: clamp(34px, 3.6vw, 48px);
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+      color: var(--paper);
+      font-variation-settings: "opsz" 144, "SOFT" 80, "WONK" 1;
+      margin-top: 18px;
+    }
+    .card .latin {
+      font-family: var(--body);
+      font-style: italic;
+      font-size: 15px;
+      color: var(--paper-mute);
+      margin-top: 6px;
+      font-variation-settings: "opsz" 18;
+    }
+    .card .notes {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      color: var(--paper-dim);
+      text-transform: uppercase;
+      line-height: 1.7;
+      margin-top: 28px;
+    }
+    .card .foot {
+      display: grid;
+      grid-template-columns: auto auto;
+      align-items: end;
+      justify-content: space-between;
+      gap: 20px;
+      margin-top: 32px;
+      padding-top: 20px;
+      border-top: var(--bezel);
+    }
+    .card .price {
+      font-family: var(--display);
+      font-style: italic;
+      font-size: 24px;
+      color: var(--paper);
+      font-variation-settings: "opsz" 72, "SOFT" 80;
+    }
+    .card .price small {
+      font-family: var(--mono);
+      font-style: normal;
+      font-size: 10px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--paper-mute);
+      display: block;
+      margin-top: 4px;
+    }
+    .card .arrow {
+      width: 36px; height: 36px;
+      border: 1px solid var(--rule-strong);
+      border-radius: 50%;
+      display: inline-flex; align-items: center; justify-content: center;
+      transition: background .35s ease, color .35s ease, border-color .35s ease;
+    }
+    .card:hover .arrow {
+      background: var(--ember); color: var(--ink); border-color: var(--ember);
+    }
+
+    /* asymmetric spans */
+    .c-a { grid-column: span 7; min-height: clamp(380px, 56vh, 560px); }
+    .c-b { grid-column: span 5; }
+    .c-c { grid-column: span 4; }
+    .c-d { grid-column: span 8; }
+
+    .c-a {
+      background:
+        radial-gradient(ellipse 60% 40% at 70% 30%, rgba(224, 133, 69, 0.18), transparent 70%),
+        var(--smoke);
+    }
+    .c-d {
+      background:
+        radial-gradient(ellipse 50% 50% at 20% 80%, rgba(106, 28, 28, 0.22), transparent 70%),
+        var(--smoke);
+    }
+
+    .card .accent-shape {
+      position: absolute;
+      top: clamp(20px, 2.4vw, 32px);
+      right: clamp(20px, 2.4vw, 32px);
+      width: clamp(80px, 8vw, 120px);
+      height: clamp(80px, 8vw, 120px);
+      pointer-events: none;
+    }
+
+    @media (max-width: 980px) {
+      .c-a, .c-b, .c-c, .c-d { grid-column: span 12; }
+    }
+
+    /* ============================================================
+       MANIFESTO — with rotating wax seal
+       ============================================================ */
+
+    section.manifesto {
+      padding: clamp(100px, 18vh, 200px) 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .manifesto::before {
+      content: '';
+      position: absolute;
+      inset: -50% -10% auto auto;
+      width: 80%; aspect-ratio: 1;
+      background: radial-gradient(circle, rgba(106, 28, 28, 0.15), transparent 60%);
+      pointer-events: none;
+    }
+
+    .manifesto-inner {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: clamp(40px, 6vw, 100px);
+      align-items: center;
+      position: relative;
+    }
+    .manifesto blockquote {
+      font-family: var(--display);
+      font-style: italic;
+      font-weight: 300;
+      font-size: clamp(28px, 3.6vw, 52px);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: var(--paper);
+      font-variation-settings: "opsz" 144, "SOFT" 100, "WONK" 1;
+      position: relative;
+      padding-left: clamp(40px, 5vw, 80px);
+    }
+    .manifesto blockquote::before {
+      content: '"';
+      position: absolute;
+      left: 0; top: -0.5em;
+      font-family: var(--display);
+      font-size: clamp(120px, 14vw, 200px);
+      line-height: 1;
+      color: var(--ember);
+      opacity: 0.85;
+      font-variation-settings: "opsz" 144, "wght" 200, "SOFT" 100;
+    }
+    .manifesto blockquote em {
+      color: var(--ember);
+      font-style: italic;
+    }
+    .manifesto cite {
+      display: block;
+      margin-top: 36px;
+      padding-top: 24px;
+      border-top: var(--bezel);
+      font-family: var(--mono);
+      font-style: normal;
+      font-size: 11px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--paper-dim);
+    }
+    .manifesto cite em {
+      display: block;
+      font-family: var(--display);
+      font-style: italic;
+      font-size: 22px;
+      text-transform: none;
+      letter-spacing: -0.01em;
+      color: var(--paper);
+      margin-top: 8px;
+      font-variation-settings: "opsz" 72, "SOFT" 80, "WONK" 1;
+    }
+
+    .seal {
+      justify-self: center;
+      width: clamp(220px, 28vw, 320px);
+      aspect-ratio: 1;
+      position: relative;
+    }
+    .seal .ring {
+      width: 100%; height: 100%;
+      animation: spin 38s linear infinite;
+    }
+    .seal .core {
+      position: absolute; inset: 18%;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 30% 30%, var(--ember-warm), var(--ember) 40%, var(--oxblood) 100%);
+      box-shadow:
+        inset 0 -8px 18px rgba(0,0,0,0.45),
+        inset 0 8px 14px rgba(255,225,180,0.25),
+        0 18px 48px rgba(224, 133, 69, 0.25);
+      display: grid; place-items: center;
+    }
+    .seal .core .mn {
+      font-family: var(--display);
+      font-style: italic;
+      font-size: clamp(38px, 5.6vw, 64px);
+      color: var(--ink);
+      font-variation-settings: "opsz" 144, "SOFT" 100, "WONK" 1;
+      letter-spacing: -0.02em;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    @media (max-width: 980px) {
+      .manifesto-inner { grid-template-columns: 1fr; }
+      .seal { order: -1; }
+    }
+
+    /* ============================================================
+       FOOTER
+       ============================================================ */
+
+    footer {
+      border-top: var(--bezel);
+      background: var(--ink-deep);
+      padding: clamp(60px, 10vh, 120px) 0 36px;
+    }
+    .foot-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr 1fr;
+      gap: clamp(20px, 4vw, 48px);
+    }
+    .foot-mark {
+      font-family: var(--display);
+      font-style: italic;
+      font-weight: 300;
+      font-size: clamp(34px, 4vw, 56px);
+      line-height: 0.95;
+      letter-spacing: -0.025em;
+      color: var(--paper);
+      font-variation-settings: "opsz" 144, "SOFT" 100, "WONK" 1;
+    }
+    .foot-mark em { color: var(--ember); font-style: italic; }
+    .foot-mark p {
+      font-family: var(--body);
+      font-style: italic;
+      font-size: 15px;
+      color: var(--paper-dim);
+      max-width: 30ch;
+      margin-top: 20px;
+      line-height: 1.5;
+    }
+    .foot-col h4 {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: var(--paper-mute);
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+    .foot-col ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+    .foot-col a {
+      font-family: var(--body);
+      font-size: 15px;
+      color: var(--paper);
+      transition: color .3s ease;
+    }
+    .foot-col a:hover { color: var(--ember); }
+
+    .foot-base {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 24px;
+      margin-top: clamp(60px, 10vh, 100px);
+      padding-top: 28px;
+      border-top: var(--bezel);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--paper-mute);
+    }
+    .foot-base .center {
+      font-family: var(--display);
+      font-style: italic;
+      font-size: 18px;
+      letter-spacing: 0;
+      text-transform: none;
+      color: var(--paper-dim);
+      font-variation-settings: "opsz" 72, "SOFT" 80, "WONK" 1;
+    }
+    .foot-base .right { text-align: right; }
+
+    @media (max-width: 880px) {
+      .foot-grid { grid-template-columns: 1fr 1fr; }
+      .foot-base { grid-template-columns: 1fr; text-align: center; }
+      .foot-base .right { text-align: center; }
+    }
+
+    /* reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+      }
+      .marquee-track { animation: none; }
+      .seal .ring { animation: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="grain" aria-hidden="true"></div>
+  <div class="vignette" aria-hidden="true"></div>
+  <div class="cursor" id="cursor" aria-hidden="true"></div>
+
+  <!-- ============================================================
+       HEADER
+       ============================================================ -->
+  <header class="bar">
+    <div class="shell bar-inner">
+      <a class="monogram" href="#" data-hover>
+        <span class="glyph">M</span>
+        <span>Maison Noctis</span>
+        <span class="est">Est. MMVII · Paris</span>
+      </a>
+      <nav class="primary" aria-label="Primary">
+        <a href="#philosophy" data-hover>Philosophy</a>
+        <a href="#composition" data-hover>Composition</a>
+        <a href="#collection" data-hover>Collection</a>
+        <a href="#journal" data-hover>Journal</a>
+        <a href="#atelier" data-hover>Atelier</a>
+      </nav>
+      <div class="clock" aria-label="Atelier hours">
+        <span>Atelier · Paris</span>
+        <span class="pulse" aria-hidden="true"></span>
+        <span class="time" id="clock">—</span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ============================================================
+         HERO
+         ============================================================ -->
+    <section class="hero shell" aria-label="Introduction">
+      <div class="hero-meta">
+        <span class="label left">№ 01 — Volume IV</span>
+        <span class="roman">— I —</span>
+        <span class="label right">An Independent House</span>
+      </div>
+
+      <div class="hero-stage">
+
+        <div class="bottle-wrap" aria-hidden="true">
+          <svg viewBox="0 0 200 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- cap -->
+            <rect x="78" y="6" width="44" height="36" rx="2" fill="#1a1612" stroke="#efe6d4" stroke-opacity="0.35"/>
+            <rect x="74" y="38" width="52" height="10" rx="1" fill="#0d0a08" stroke="#efe6d4" stroke-opacity="0.45"/>
+            <!-- neck -->
+            <rect x="86" y="48" width="28" height="22" fill="#0d0a08" stroke="#efe6d4" stroke-opacity="0.35"/>
+            <!-- body -->
+            <path d="M40 80 Q40 70 50 70 H150 Q160 70 160 80 V250 Q160 270 140 270 H60 Q40 270 40 250 Z"
+              fill="url(#bottleGrad)" stroke="#efe6d4" stroke-opacity="0.45"/>
+            <!-- liquid -->
+            <path class="liquid" d="M48 130 Q48 122 56 122 H144 Q152 122 152 130 V248 Q152 262 138 262 H62 Q48 262 48 248 Z"
+              fill="url(#liquidGrad)"/>
+            <!-- highlight -->
+            <path d="M56 90 Q56 84 62 84 H72 Q66 110 64 200 Q63 220 56 224 Z" fill="#efe6d4" fill-opacity="0.07"/>
+            <!-- label -->
+            <rect x="60" y="160" width="80" height="62" fill="#efe6d4" fill-opacity="0.08" stroke="#efe6d4" stroke-opacity="0.4"/>
+            <text x="100" y="184" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="18" fill="#efe6d4" letter-spacing="-0.5">N°IV</text>
+            <text x="100" y="204" text-anchor="middle" font-family="Geist Mono, monospace" font-size="6" fill="#efe6d4" fill-opacity="0.7" letter-spacing="2">NOX · NOCTIS</text>
+            <text x="100" y="214" text-anchor="middle" font-family="Geist Mono, monospace" font-size="5" fill="#efe6d4" fill-opacity="0.5" letter-spacing="2">50 ML · EAU DE PARFUM</text>
+            <defs>
+              <linearGradient id="bottleGrad" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0" stop-color="#1a1612"/>
+                <stop offset="1" stop-color="#050403"/>
+              </linearGradient>
+              <linearGradient id="liquidGrad" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0" stop-color="#e08545" stop-opacity="0.55"/>
+                <stop offset="1" stop-color="#6a1c1c" stop-opacity="0.8"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+
+        <h1 class="hero-title">
+          <span class="word w1"><span>Maison</span></span>
+          <span class="word w2 noctis"><span>Noctis</span></span>
+        </h1>
+      </div>
+
+      <div class="hero-foot">
+        <div class="number">
+          <span>14</span>
+          <small>Compositions in catalogue</small>
+        </div>
+        <p class="lede">
+          An apothecary of the night, hand-blended in small batches from raw absolutes, resins, smoked vetiver, and tinctures of our own distillation — bottled the same week they are made.
+        </p>
+        <div class="cta">
+          <a href="#collection" class="ink-btn" data-hover>Enter the cabinet</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         MARQUEE — botanical Latin
+         ============================================================ -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track">
+        <span>Boswellia sacra</span><span class="sep">✦</span>
+        <span>Cistus ladanifer</span><span class="sep">✦</span>
+        <span>Vetiveria zizanioides</span><span class="sep">✦</span>
+        <span>Iris pallida</span><span class="sep">✦</span>
+        <span>Cedrus atlantica</span><span class="sep">✦</span>
+        <span>Rosa damascena</span><span class="sep">✦</span>
+        <span>Styrax benzoin</span><span class="sep">✦</span>
+        <span>Citrus bergamia</span><span class="sep">✦</span>
+        <span>Pogostemon cablin</span><span class="sep">✦</span>
+        <!-- duplicate for seamless loop -->
+        <span>Boswellia sacra</span><span class="sep">✦</span>
+        <span>Cistus ladanifer</span><span class="sep">✦</span>
+        <span>Vetiveria zizanioides</span><span class="sep">✦</span>
+        <span>Iris pallida</span><span class="sep">✦</span>
+        <span>Cedrus atlantica</span><span class="sep">✦</span>
+        <span>Rosa damascena</span><span class="sep">✦</span>
+        <span>Styrax benzoin</span><span class="sep">✦</span>
+        <span>Citrus bergamia</span><span class="sep">✦</span>
+        <span>Pogostemon cablin</span><span class="sep">✦</span>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         PHILOSOPHY
+         ============================================================ -->
+    <section class="philosophy shell" id="philosophy">
+      <div class="section-head">
+        <span class="roman">— II —</span>
+        <h2>A method of <em>three</em> patiences.</h2>
+        <p class="aside">
+          We do not work to a brief. Each composition begins on a Tuesday in autumn, with a single material laid on the bench, and ends — sometimes years later — on the morning it ceases to surprise its maker.
+        </p>
+      </div>
+
+      <div class="pillars">
+        <div class="pillar">
+          <span class="index">i. Materia</span>
+          <h3>Raw, never reconstituted.</h3>
+          <p>Absolutes, resins, and tinctures sourced directly from growers — Bulgaria, Calabria, Mysore, Madagascar. No analogues, no captives, no shortcuts dressed in Latin.</p>
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+            <circle cx="12" cy="12" r="9"/>
+            <path d="M12 3v18M3 12h18"/>
+            <circle cx="12" cy="12" r="3" fill="currentColor"/>
+          </svg>
+        </div>
+        <div class="pillar">
+          <span class="index">ii. Maceration</span>
+          <h3>Six months in glass.</h3>
+          <p>Every batch matures in amber glass, untouched, for at least a hundred and eighty days. We wait until the formula stops asking questions of itself.</p>
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+            <path d="M8 3h8v3H8z"/>
+            <path d="M9 6c0 4-3 4-3 8v9c0 1 1 2 2 2h8c1 0 2-1 2-2v-9c0-4-3-4-3-8"/>
+            <path d="M7 16h10"/>
+          </svg>
+        </div>
+        <div class="pillar">
+          <span class="index">iii. Modesty</span>
+          <h3>No campaign, no influencer.</h3>
+          <p>Discovery is by letter, by friend, or by happenstance in our atelier on Rue de Sévigné. The work is the advertisement — there is no other.</p>
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+            <rect x="3" y="6" width="18" height="14" rx="1"/>
+            <path d="M3 8l9 6 9-6"/>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         COMPOSITION — featured fragrance
+         ============================================================ -->
+    <section class="composition" id="composition">
+      <div class="shell composition-inner">
+        <aside>
+          <span class="scroll-label">— Opus № IV / Featured —</span>
+        </aside>
+
+        <div class="feature">
+          <div class="opus">Opus N°IV · Released MMXXIV</div>
+          <h3>Nox &amp; Noctis</h3>
+          <p class="epigraph">
+            Composed across two winters from a single thought — the silence of a stone chapel after the candles have been snuffed but the smoke has not yet cleared.
+          </p>
+
+          <div class="pyramid">
+            <span class="tier">Tête</span>
+            <div class="notes">
+              <span>Bergamot</span> · <span>Pink Pepper</span> · <span>Frozen Mandarin</span>
+            </div>
+            <span class="tier">Cœur</span>
+            <div class="notes">
+              <span>Damask Rose</span> · <span>Black Iris</span> · <span>Olibanum Tears</span>
+            </div>
+            <span class="tier">Fond</span>
+            <div class="notes">
+              <span>Smoked Vetiver</span> · <span>Labdanum</span> · <span>Russian Birch Tar</span>
+            </div>
+          </div>
+
+          <div class="meta-row">
+            <div class="item">
+              <div class="k">Concentration</div>
+              <div class="v">Extrait</div>
+            </div>
+            <div class="item">
+              <div class="k">Sillage</div>
+              <div class="v">Discreet</div>
+            </div>
+            <div class="item">
+              <div class="k">Longevity</div>
+              <div class="v">14 h</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="shell" style="margin-top:clamp(60px,10vh,100px); display:grid; grid-template-columns: 1fr 1fr; gap: clamp(40px, 7vw, 100px); align-items:center;">
+        <div class="feature-art">
+          <span class="roman-large">IV</span>
+          <svg class="bottle-big" viewBox="0 0 200 280" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="78" y="6" width="44" height="36" rx="2" fill="#1a1612" stroke="#efe6d4" stroke-opacity="0.4"/>
+            <rect x="74" y="38" width="52" height="10" fill="#0d0a08" stroke="#efe6d4" stroke-opacity="0.5"/>
+            <rect x="86" y="48" width="28" height="22" fill="#0d0a08" stroke="#efe6d4" stroke-opacity="0.4"/>
+            <path d="M40 80 Q40 70 50 70 H150 Q160 70 160 80 V250 Q160 270 140 270 H60 Q40 270 40 250 Z"
+              fill="url(#bg2)" stroke="#efe6d4" stroke-opacity="0.5"/>
+            <path d="M48 130 Q48 122 56 122 H144 Q152 122 152 130 V248 Q152 262 138 262 H62 Q48 262 48 248 Z"
+              fill="url(#lg2)"/>
+            <rect x="60" y="160" width="80" height="62" fill="#efe6d4" fill-opacity="0.1" stroke="#efe6d4" stroke-opacity="0.5"/>
+            <text x="100" y="184" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="20" fill="#efe6d4">N°IV</text>
+            <text x="100" y="204" text-anchor="middle" font-family="Geist Mono, monospace" font-size="6" fill="#efe6d4" fill-opacity="0.8" letter-spacing="2">NOX · NOCTIS</text>
+            <text x="100" y="214" text-anchor="middle" font-family="Geist Mono, monospace" font-size="5" fill="#efe6d4" fill-opacity="0.6" letter-spacing="2">50 ML · EXTRAIT</text>
+            <defs>
+              <linearGradient id="bg2" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0" stop-color="#1a1612"/>
+                <stop offset="1" stop-color="#050403"/>
+              </linearGradient>
+              <linearGradient id="lg2" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0" stop-color="#e08545" stop-opacity="0.6"/>
+                <stop offset="1" stop-color="#6a1c1c" stop-opacity="0.85"/>
+              </linearGradient>
+            </defs>
+          </svg>
+
+          <div class="caption">
+            <div class="latin">Nox et Silentium —<br>a study in extinguished light</div>
+            <div class="ml">50 ML · 240€</div>
+          </div>
+        </div>
+
+        <div>
+          <a href="#" class="ink-btn" data-hover>Acquire Opus N°IV</a>
+          <p style="margin-top: 32px; font-family: var(--body); font-style: italic; color: var(--paper-dim); max-width: 38ch; line-height: 1.6;">
+            Each bottle is hand-numbered and accompanied by a letterpress booklet detailing the materials and the year in which they were gathered. We bottle 480 flacons per release; once exhausted, the composition is retired for two years before re-edition.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         COLLECTION
+         ============================================================ -->
+    <section class="collection shell" id="collection">
+      <div class="section-head">
+        <span class="roman">— III —</span>
+        <h2>The current <em>cabinet</em>.</h2>
+        <p class="aside">
+          Four compositions currently in circulation. Older opera return periodically as re-editions; those who wish to be notified may leave a card with the atelier.
+        </p>
+      </div>
+
+      <div class="grid-asym">
+
+        <article class="card c-a" data-hover>
+          <svg class="accent-shape" viewBox="0 0 100 100" aria-hidden="true">
+            <circle cx="50" cy="50" r="48" fill="none" stroke="#e08545" stroke-opacity="0.5"/>
+            <circle cx="50" cy="50" r="34" fill="none" stroke="#e08545" stroke-opacity="0.35"/>
+            <circle cx="50" cy="50" r="20" fill="#e08545" fill-opacity="0.15"/>
+            <text x="50" y="55" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="22" fill="#e08545">I</text>
+          </svg>
+          <div>
+            <div class="num">Opus N°I · MMXIX</div>
+            <h3 class="name">Cendre du Jardin</h3>
+            <div class="latin">Ash of the Garden</div>
+          </div>
+          <div class="notes">
+            Tomato leaf · Galbanum · Damp moss<br>
+            Hinoki smoke · Tonka bean
+          </div>
+          <div class="foot">
+            <div class="price">180€<small>50 ml · Eau de Parfum</small></div>
+            <span class="arrow">→</span>
+          </div>
+        </article>
+
+        <article class="card c-b" data-hover>
+          <svg class="accent-shape" viewBox="0 0 100 100" aria-hidden="true">
+            <path d="M50 5 L95 50 L50 95 L5 50 Z" fill="none" stroke="#e08545" stroke-opacity="0.5"/>
+            <path d="M50 25 L75 50 L50 75 L25 50 Z" fill="#e08545" fill-opacity="0.2"/>
+            <text x="50" y="55" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="20" fill="#e08545">II</text>
+          </svg>
+          <div>
+            <div class="num">Opus N°II · MMXXI</div>
+            <h3 class="name">Vénus, Tard</h3>
+            <div class="latin">Late Venus</div>
+          </div>
+          <div class="notes">
+            Iris butter · Heliotrope<br>
+            Ambrette · White suede
+          </div>
+          <div class="foot">
+            <div class="price">210€<small>50 ml · Extrait</small></div>
+            <span class="arrow">→</span>
+          </div>
+        </article>
+
+        <article class="card c-c" data-hover>
+          <svg class="accent-shape" viewBox="0 0 100 100" aria-hidden="true">
+            <polygon points="50,5 95,90 5,90" fill="none" stroke="#e08545" stroke-opacity="0.5"/>
+            <polygon points="50,30 75,75 25,75" fill="#e08545" fill-opacity="0.18"/>
+            <text x="50" y="65" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="18" fill="#e08545">III</text>
+          </svg>
+          <div>
+            <div class="num">Opus N°III · MMXXII</div>
+            <h3 class="name">Brouillard</h3>
+            <div class="latin">Mist</div>
+          </div>
+          <div class="notes">
+            Sea fog · Bergamot zest<br>
+            Vetiver · Sal tree resin
+          </div>
+          <div class="foot">
+            <div class="price">195€<small>50 ml · EdP</small></div>
+            <span class="arrow">→</span>
+          </div>
+        </article>
+
+        <article class="card c-d" data-hover>
+          <svg class="accent-shape" viewBox="0 0 100 100" aria-hidden="true">
+            <rect x="10" y="10" width="80" height="80" fill="none" stroke="#e08545" stroke-opacity="0.5"/>
+            <rect x="25" y="25" width="50" height="50" fill="#6a1c1c" fill-opacity="0.45"/>
+            <text x="50" y="58" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="20" fill="#efe6d4">IV</text>
+          </svg>
+          <div>
+            <div class="num">Opus N°IV · MMXXIV — Featured</div>
+            <h3 class="name">Nox &amp; Noctis</h3>
+            <div class="latin">Night and the Belonging of Night</div>
+          </div>
+          <div class="notes">
+            Frankincense tears · Smoked vetiver<br>
+            Black iris · Russian birch tar · Labdanum
+          </div>
+          <div class="foot">
+            <div class="price">240€<small>50 ml · Extrait — 480 flacons</small></div>
+            <span class="arrow">→</span>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+         MANIFESTO
+         ============================================================ -->
+    <section class="manifesto">
+      <div class="shell manifesto-inner">
+        <div>
+          <blockquote>
+            We are not in the business of <em>flattery</em>. A scent should remind you of something you have not yet decided whether to remember.
+          </blockquote>
+          <cite>
+            From the founder's first letter, October 2007
+            <em>— Hélène d'Auvergne, parfumeur</em>
+          </cite>
+        </div>
+
+        <div class="seal" aria-hidden="true">
+          <svg class="ring" viewBox="0 0 320 320">
+            <defs>
+              <path id="circlePath" d="M 160,160 m -130,0 a 130,130 0 1,1 260,0 a 130,130 0 1,1 -260,0" />
+            </defs>
+            <text font-family="Geist Mono, monospace" font-size="12" letter-spacing="6" fill="#efe6d4">
+              <textPath href="#circlePath" startOffset="0">
+                MAISON · NOCTIS · ATELIER · PARIS · MMVII · PETIT LOT · NON-COMMERCIAL · — ·
+              </textPath>
+            </text>
+            <circle cx="160" cy="160" r="148" fill="none" stroke="#efe6d4" stroke-opacity="0.4"/>
+            <circle cx="160" cy="160" r="108" fill="none" stroke="#efe6d4" stroke-opacity="0.25"/>
+          </svg>
+          <div class="core">
+            <span class="mn">M·N</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         FOOTER
+         ============================================================ -->
+    <footer id="atelier">
+      <div class="shell foot-grid">
+        <div class="foot-mark">
+          Visit the <em>atelier</em>.
+          <p>14 Rue de Sévigné, Paris IV. By appointment Thursday through Saturday, from the dusk hour until the door is locked.</p>
+        </div>
+        <div class="foot-col">
+          <h4>Catalogue</h4>
+          <ul>
+            <li><a href="#" data-hover>Current opera</a></li>
+            <li><a href="#" data-hover>Discovery set</a></li>
+            <li><a href="#" data-hover>Re-editions</a></li>
+            <li><a href="#" data-hover>The journal</a></li>
+          </ul>
+        </div>
+        <div class="foot-col">
+          <h4>Atelier</h4>
+          <ul>
+            <li><a href="#" data-hover>Visit by letter</a></li>
+            <li><a href="#" data-hover>Bespoke commissions</a></li>
+            <li><a href="#" data-hover>Press &amp; correspondents</a></li>
+            <li><a href="#" data-hover>Apprenticeship</a></li>
+          </ul>
+        </div>
+        <div class="foot-col">
+          <h4>Correspond</h4>
+          <ul>
+            <li><a href="mailto:atelier@maisonnoctis.fr" data-hover>atelier@maisonnoctis.fr</a></li>
+            <li><a href="#" data-hover>+33 1 42 78 04 14</a></li>
+            <li><a href="#" data-hover>The letter list</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="shell foot-base">
+        <div class="left">© MMVII — MMXXVI · Maison Noctis</div>
+        <div class="center"><em>Sub umbra alarum tuarum.</em></div>
+        <div class="right">No analytics · No newsletter · By post only</div>
+      </div>
+    </footer>
+
+  </main>
+
+  <script>
+    // ---------- Custom cursor (hover-capable devices only) ----------
+    (function () {
+      if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+      const cursor = document.getElementById('cursor');
+      if (!cursor) return;
+
+      let x = window.innerWidth / 2, y = window.innerHeight / 2;
+      let cx = x, cy = y;
+
+      window.addEventListener('mousemove', (e) => { x = e.clientX; y = e.clientY; });
+      window.addEventListener('mouseleave', () => { cursor.style.opacity = '0'; });
+      window.addEventListener('mouseenter', () => { cursor.style.opacity = '1'; });
+
+      function tick() {
+        cx += (x - cx) * 0.22;
+        cy += (y - cy) * 0.22;
+        cursor.style.transform = `translate(${cx}px, ${cy}px) translate(-50%, -50%)`;
+        requestAnimationFrame(tick);
+      }
+      tick();
+
+      document.querySelectorAll('[data-hover], a, button').forEach((el) => {
+        el.addEventListener('mouseenter', () => cursor.classList.add('is-hover'));
+        el.addEventListener('mouseleave', () => cursor.classList.remove('is-hover'));
+      });
+    })();
+
+    // ---------- Paris clock ----------
+    (function () {
+      const el = document.getElementById('clock');
+      if (!el) return;
+      function update() {
+        const now = new Date();
+        // Format in Paris timezone
+        const fmt = new Intl.DateTimeFormat('en-GB', {
+          timeZone: 'Europe/Paris',
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: false
+        });
+        el.textContent = fmt.format(now) + ' CET';
+      }
+      update();
+      setInterval(update, 30000);
+    })();
+  </script>
+
+</body>
+</html>

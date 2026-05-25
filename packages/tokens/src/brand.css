@@ -1,0 +1,82 @@
+/*
+ * @azeer/tokens — BRAND layer (دليل هوية أزير / Azeer Brand Book)
+ * ---------------------------------------------------------------------
+ * This is the MARKETING-BRAND surface, distinct from the product-UI tokens in
+ * tokens.css. The brand book defines five fixed colors with print-grade specs;
+ * the product design system re-derives an accessible indigo family from them
+ * (e.g. brand primary #7B61FF is a NON-TEXT identity color — for white-text
+ * CTAs the product uses --color-accent-fill #5238D1). Keep the two layers
+ * separate on purpose:
+ *
+ *   • Brand colors  → marketing site, decks, packaging, social, print.
+ *                     Consume via `--brand-*` vars or `bg-brand-*` utilities.
+ *   • Product tokens → app UI (Storybook primitives). Consume via the semantic
+ *                     `--color-*` tokens / utilities in tokens.css.
+ *
+ * Brand hex literals live here and ONLY here (the brand book's source values).
+ * This file is imported by tokens.css so the @theme block below joins the same
+ * Tailwind build and emits `bg-brand-primary`, `text-brand-accent`, etc.
+ */
+
+/* Marketing layer (Dub-grade type scale, neutral semantics, content
+ * max-widths, dot-grid + brand radial-wash utilities). Pulled in here so the
+ * product tokens.css stays untouched while still joining one Tailwind build.
+ * @import must precede other rules. */
+@import "./marketing.css";
+
+:root {
+  /* ── Brand palette — fixed values from the brand book (page: الألوان) ── */
+
+  /* Primary — اللون الأساسي. Brand indigo. Modern, dynamic, future-facing.
+   * Carries a heritage reference to Saudi culture. NON-TEXT identity color. */
+  --brand-primary: #7b61ff;
+
+  /* Secondary — اللون الثانوي. Deep navy. Stability, reliability, trust;
+   * the serious, professional base for long-term B2B relationships. */
+  --brand-secondary: #0a1f44;
+
+  /* Accent — اللون التمييزي. Optimistic amber. Energy + clarity; draws
+   * attention to CTAs and campaign messages. */
+  --brand-accent: #ffc857;
+
+  /* Neutral — اللون الحيادي. Near-black. Calm, organized base that lets the
+   * primary palette stand out; the seriousness behind everything visible. */
+  --brand-neutral: #2e2e2e;
+
+  /* Supportive — اللون الداعم. Light gray. Breathing room for the eye;
+   * clean, technical, content-first backgrounds. */
+  --brand-supportive: #f4f4f4;
+
+  /* On-color text pairings (brand applications) */
+  --brand-on-primary: #ffffff; /* white on indigo */
+  --brand-on-secondary: #ffffff; /* white on navy */
+  --brand-on-accent: #2e2e2e; /* near-black on amber (white fails) */
+
+  /* Channel-style RGB triplets — handy for rgb()/opacity composition on the
+   * marketing site (e.g. soft pattern fills, gradients). */
+  --brand-primary-rgb: 123 97 255;
+  --brand-secondary-rgb: 10 31 68;
+  --brand-accent-rgb: 255 200 87;
+  --brand-neutral-rgb: 46 46 46;
+  --brand-supportive-rgb: 244 244 244;
+}
+
+/*
+ * Tailwind utilities for the brand palette. `inline` keeps the values as
+ * var() references so they stay overridable per-surface. Emits:
+ *   bg-brand-primary  text-brand-primary  border-brand-primary  (+secondary,
+ *   accent, neutral, supportive, on-primary, on-secondary, on-accent)
+ *
+ * These names are namespaced `brand-*` so they never collide with the product
+ * semantic tokens. Keep them in sync with @azeer/ui cn.ts colorTokens.
+ */
+@theme inline {
+  --color-brand-primary: var(--brand-primary);
+  --color-brand-secondary: var(--brand-secondary);
+  --color-brand-accent: var(--brand-accent);
+  --color-brand-neutral: var(--brand-neutral);
+  --color-brand-supportive: var(--brand-supportive);
+  --color-brand-on-primary: var(--brand-on-primary);
+  --color-brand-on-secondary: var(--brand-on-secondary);
+  --color-brand-on-accent: var(--brand-on-accent);
+}

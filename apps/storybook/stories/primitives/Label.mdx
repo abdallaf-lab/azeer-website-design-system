@@ -1,0 +1,50 @@
+import { Meta, Title, Subtitle, Primary, Controls, Stories } from "@storybook/addon-docs/blocks";
+import * as LabelStories from "./Label.stories";
+
+<Meta of={LabelStories} />
+
+<Title />
+<Subtitle />
+
+The canonical form-control label. Always **top-aligned**, **sentence case**,
+no end punctuation. The system bans left-aligned labels, floating /
+Material-style labels, and placeholder-as-label patterns.
+
+## Live
+
+<Primary />
+<Controls />
+
+## All stories
+
+<Stories includePrimary={false} />
+
+## Required marker
+
+When `required` is set, a red `*` appears after the label text. The marker
+is `aria-hidden` — pair with `aria-required="true"` on the control itself
+so screen readers announce "required" without reading "asterisk". `FormField`
+wires both together automatically.
+
+## Tokens used
+
+| Token | Where |
+| --- | --- |
+| `--text-label-sm` (13 / 16 / 500) | Label typography |
+| `--color-fg-default` | Label text |
+| `--color-danger-text` | Required `*` color |
+
+## A11y
+
+- Renders a real `<label>` element. The `htmlFor` prop binds it to the control's `id` — screen readers announce the label when the control gets focus.
+- Click on the label focuses the associated control (HTML default for `<label htmlFor>`).
+- Casing follows the sentence-case rule (DS Casing.md): "Email address", not "Email Address". Acronyms stay uppercase ("API key", "Webhook URL").
+
+## Forbidden
+
+- Left-aligned (`label | input`) — top-aligned always
+- Floating / Material-style animated labels
+- Placeholder as label (placeholder is a hint, not a label — disappears on focus)
+- Title-case labels ("Email Address") — sentence case
+- `text-label-md` for form labels — that tier is for buttons; form labels are `text-label-sm`
+- `aria-required` without a visible `*` or `(optional)` indicator — screen readers and sighted users must get the same signal

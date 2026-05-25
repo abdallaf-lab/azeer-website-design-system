@@ -1,0 +1,50 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+import {
+  Callout,
+  LogoLockups,
+  LogoConstruction,
+  LogoRulesLists,
+} from "./_brand-specimens";
+
+<Meta title="Brand/Logo" />
+
+# Logo — الشعار
+
+The Azeer mark fuses a **Reuleaux triangle** (constant-width geometry →
+stability and reliability) with **sand waves** (flow and adaptability across
+channels). Rendered live below from the `<AzeerLogo>` component.
+
+<LogoLockups />
+
+<Callout intent="info" title="Sizing">
+The lockup scales with `font-size`: the mark and wordmark use `em` units, so
+`<AzeerLogo className="text-3xl" />` resizes the whole lockup proportionally.
+Always preserve aspect ratio — hold **Shift** when resizing in design tools.
+Clear space: keep at least **2x** around the logo (x = the construction-grid unit).
+</Callout>
+
+## Concept — جوهر العلامة
+
+<LogoConstruction />
+
+## Variants — أشكال الشعار
+
+`<AzeerLogo tone="…">` covers the approved color treatments:
+
+- `color` — indigo mark + navy wordmark (light surfaces)
+- `inverse` — all white (dark surfaces / `bg-brand-secondary`)
+- `mono` — single `currentColor` (caller sets it)
+- `black` — near-black neutral
+
+`variant` controls the lockup: `horizontal` (default), `stacked`, or `mark`
+(symbol only). `wordmark` picks `both` (default), `ar`, or `en`.
+
+## What not to do
+
+<LogoRulesLists />
+
+<Callout intent="danger" title="Protect the mark">
+Don't recolor, restyle, skew, add elements, build sub-logos, drop shadows, or
+reproduce the logo at low quality. Keep maximum contrast with the background and
+never place the color logo on a dark color or a busy image.
+</Callout>

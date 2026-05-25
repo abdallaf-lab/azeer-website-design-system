@@ -1,0 +1,60 @@
+import { Meta, Title, Subtitle, Primary, Controls, Stories } from "@storybook/addon-docs/blocks";
+import * as TextareaStories from "./Textarea.stories";
+
+<Meta of={TextareaStories} />
+
+<Title />
+<Subtitle />
+
+Multiline text-entry. **Single canonical size** (no `sm` / `md` / `lg`) per
+Variants.md — Textarea's "size" is the number of rows it starts at, plus
+user-driven vertical resize. State matrix matches Input.
+
+## Live
+
+<Primary />
+<Controls />
+
+## All stories
+
+<Stories includePrimary={false} />
+
+## Rows + resize
+
+- `rows={3}` by default — content area = 3 × 20 px line-height = 60 px, plus padding ≈ 80 px floor (`min-h-20`).
+- `resize-y` lets the user drag-extend vertically only. Horizontal resize is locked — keeps the field aligned with the parent form column.
+- For long-form bodies (descriptions, support replies), pass `rows={6}` or higher; users can always resize from there.
+
+## State matrix
+
+Identical to Input — see Primitives › Input docs for the table. State changes
+happen via attributes (`disabled`, `readOnly`, `aria-invalid`) — never a
+`variant` prop.
+
+## Tokens used
+
+| Token | Where |
+| --- | --- |
+| `--color-surface` / `--color-surface-sunken` | Default / disabled-or-readonly background |
+| `--color-border-strong` | Default border |
+| `--color-border-focus` | Focus border tint |
+| `--color-danger-border` | Invalid border tint |
+| `--color-fg-default` | Text |
+| `--color-fg-subtle` | Placeholder |
+| `--text-body-md` (14 / 20) | Typography |
+| `--radius-md` (6 px) | Corner |
+| `--duration-fast` + `--ease-standard` | Border transitions |
+
+## A11y
+
+- Always wrap in `FormField` (or pair with `Label` + `htmlFor`).
+- `FormField` auto-wires `aria-describedby` to helper / error and `aria-invalid` when `error` is present.
+- Maximum-length feedback: if you cap character count, show a `text-body-xs text-fg-muted` counter near the field (e.g. `262 / 280`); use `aria-describedby` to point at it.
+
+## Forbidden
+
+- Adding a `size` prop — there isn't one
+- `resize: none` — locks the user out of an essential affordance; the system locks resize to `y` and that's the canon
+- `resize: horizontal` or `resize: both` — break parent-column rhythm
+- Raw `<textarea>` in app code
+- Validating on every keystroke for length — let the user finish; show the counter as guidance

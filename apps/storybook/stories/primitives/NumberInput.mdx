@@ -1,0 +1,84 @@
+import { Meta, Title, Subtitle, Primary, Controls, Stories } from "@storybook/addon-docs/blocks";
+import * as NumberInputStories from "./NumberInput.stories";
+
+<Meta of={NumberInputStories} />
+
+<Title />
+<Subtitle />
+
+Numeric input with min/max clamp, step, and optional +/− stepper buttons.
+Uses `type="text"` + `inputMode="numeric"` (not `type="number"`) — DS
+canon bans `type="number"` for currency / quotas / counts because of
+scroll-wheel value changes, inconsistent browser UX, and locale
+decimal-separator quirks.
+
+## Live
+
+<Primary />
+<Controls />
+
+## All stories
+
+<Stories includePrimary={false} />
+
+## API
+
+```tsx
+const [count, setCount] = useState<number | undefined>(0);
+
+<NumberInput
+  value={count}
+  onValueChange={setCount}
+  min={0}
+  max={100}
+  step={5}
+  showStepper                  // default true
+/>
+```
+
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `value` / `defaultValue` | `number` | `undefined` = empty |
+| `onValueChange` | `(value \| undefined) => void` | Fires on every change including stepper clicks + arrow-key nudges + blur after clamp |
+| `min` / `max` | `number` | Clamped on blur and stepper clicks; arrow keys also respect bounds |
+| `step` | `number` | Default 1. Used by stepper + arrow keys |
+| `showStepper` | `boolean` | Default true. Arrow keys still work when false |
+| `size` | `"sm" \| "md" \| "lg"` | Same scale as Input |
+
+## Behavior
+
+| Action | Result |
+| --- | --- |
+| Type "75" + blur | Stored as `75` |
+| Type "150" + blur (max=100) | Clamps to `100` |
+| Type "abc" + blur | Reverts to previous value |
+| Arrow ↑ / ↓ | ±step, clamped |
+| Click +/− buttons | ±step, clamped |
+| Empty field + blur | `onValueChange(undefined)` |
+
+## Tokens used
+
+Inherits from `Input` (border / focus / disabled / aria-invalid). Adds:
+
+| Class | Why |
+| --- | --- |
+| `tabular-nums` | Column-aligned digit widths |
+| `text-end` | Right-aligned numbers (LTR end side, RTL also end side via logical alignment) |
+| `pe-16` (when stepper visible) | Reserves space for the two 28 × 28 stepper buttons |
+
+Stepper buttons use the same hover / active overlay tokens as ghost buttons.
+
+## A11y
+
+- Stepper buttons are real `<button>`s with `aria-label="Increment"` / `"Decrement"`.
+- Buttons go `disabled` when at min/max so screen-reader users get the boundary signal.
+- Arrow-up / arrow-down nudge from the keyboard work without the buttons.
+- For currency, label the field with the currency symbol via `FormField` label or a leading adornment (NumberInput doesn't bake in currency UI).
+
+## Forbidden
+
+- `type="number"` — DS bans (scroll-wheel hazard, locale quirks)
+- NumberInput for phone numbers — use `PhoneInput`
+- NumberInput for free-text identifiers (account IDs, even when numeric) — use `Input` with `inputMode="numeric"` if you want the mobile keyboard; clamp/step would be wrong
+- Negative `step` — pass a positive step; the sign is determined by which button (+/−) the user clicks
+- Off-grid step values (e.g., `step={3}` with `min=0 max=10` allows 0/3/6/9) — be explicit about the gap and document in helper text

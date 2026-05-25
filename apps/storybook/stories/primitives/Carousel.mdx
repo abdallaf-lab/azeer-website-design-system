@@ -1,0 +1,130 @@
+import { Meta, Title, Subtitle, Primary, Controls, Stories } from "@storybook/addon-docs/blocks";
+import * as CarouselStories from "./Carousel.stories";
+
+<Meta of={CarouselStories} />
+
+<Title />
+<Subtitle />
+
+Slide carousel for **onboarding tours** and **empty-state hero
+illustrations** — the two canonical uses called out by Components.md.
+
+Built on [`embla-carousel-react`](https://www.embla-carousel.com/) for the
+gesture, scroll-snap, keyboard, and reduced-motion engine. UI is
+slot-composed (`Carousel`, `CarouselContent`, `CarouselItem`,
+`CarouselPrevious`, `CarouselNext`, `CarouselDots`) so consumers can keep
+the parts they need and drop the ones they don't.
+
+**Auto-RTL**: the carousel reads `<html dir>` at mount and tells Embla to
+flip the slide direction. Chevrons on prev / next mirror via the system
+`Icon` wrapper's `flipOnRtl`, so the arrow always points "in the direction
+of travel" no matter the document direction.
+
+## Live
+
+<Primary />
+<Controls />
+
+## All stories
+
+<Stories includePrimary={false} />
+
+## API
+
+```tsx
+<Carousel options={{ loop: true, align: "center" }}>
+  <CarouselContent>
+    <CarouselItem>Slide 1</CarouselItem>
+    <CarouselItem>Slide 2</CarouselItem>
+  </CarouselContent>
+  <CarouselPrevious />
+  <CarouselNext />
+  <CarouselDots />
+</Carousel>
+```
+
+### `<Carousel>`
+
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `options` | `EmblaOptionsType` | Pass-through Embla options: `loop`, `align`, `slidesToScroll`, `dragFree`, `containScroll`, … |
+| `direction` | `"ltr" \| "rtl"` | Override the auto-detected document direction |
+| `orientation` | `"horizontal" \| "vertical"` | Layout axis. Default `"horizontal"`. |
+| `onApiReady` | `(api: EmblaCarouselType) => void` | Receive the Embla API once mounted — for autoplay plugins, external controls, or analytics |
+
+The Embla engine + API also live on context — `useCarousel()` returns
+`{ emblaApi, canPrev, canNext, selectedIndex, slideCount, scrollPrev, scrollNext, scrollTo, orientation }`
+inside any subcomponent.
+
+### `<CarouselContent>` / `<CarouselItem>`
+
+Layout primitives. `CarouselItem` defaults to `basis-full` (one slide per
+view) — override with `className="basis-1/2"` / `"basis-1/3"` / `"md:basis-1/4"`
+to show multiple slides per view. Pair with `options={{ slidesToScroll: 1 }}`
+or `2` etc to control how many advance per arrow click.
+
+### `<CarouselPrevious>` / `<CarouselNext>`
+
+Pre-styled icon buttons absolutely positioned at the start / end of the
+carousel. The chevrons auto-mirror in RTL. Override `label` for localized
+ARIA strings. To move them out of the carousel (e.g. below it), pass
+`className="static translate-y-0 rounded-md"` — see the
+**Onboarding tour** story.
+
+### `<CarouselDots>`
+
+Tab-list of dot indicators. The currently-selected dot stretches to a pill
+to give a stronger active signal than colour alone. Hidden automatically
+when there's ≤ 1 slide.
+
+## Interactions
+
+| Action | Behavior |
+| --- | --- |
+| Drag / swipe | Native Embla gesture |
+| Click `CarouselPrevious` / `Next` | Scroll one slide in that direction |
+| Click a dot | Jump to that slide |
+| ArrowLeft / ArrowRight (horizontal) | Scroll prev / next when the carousel root has focus |
+| ArrowUp / ArrowDown (vertical) | Scroll prev / next when the carousel root has focus |
+| `prefers-reduced-motion: reduce` | Embla automatically falls back to instant scroll (no animation) |
+
+## Tokens used
+
+| Token | Where |
+| --- | --- |
+| `--color-surface` / `-border-strong` | Default `Button.secondary` chrome on prev / next |
+| `--color-accent-fill` | Active dot color + selected pill |
+| `--color-border-strong` / `-border-focus` | Inactive dot / hover |
+| `--radius-full` | Dots + prev / next buttons (icon-sm overridden to `rounded-full`) |
+| `--duration-base` / `-fast` + `--ease-standard` | Dot transition + Embla's scroll easing |
+| Logical `start-2` / `end-2` | Prev / next button positioning (auto-flips RTL) |
+| `-ms-4` / `ps-4` | Inter-slide gap (16 px) using logical properties |
+
+## A11y
+
+- Carousel root has `role="region"` + `aria-roledescription="carousel"` — screen readers announce it as a carousel.
+- Each slide is `role="group"` + `aria-roledescription="slide"`.
+- Prev / next buttons are real `<button>`s with `aria-label` (override per locale).
+- Dots are `role="tablist"` + `role="tab"` with `aria-selected` / `aria-current="true"` on the active one.
+- Carousel root is keyboard-focusable (`tabIndex` inherited from default `<div>` semantics — pair with `tabIndex={0}` on the root if you need explicit keyboard control without arrow buttons in the DOM).
+- Embla respects `prefers-reduced-motion: reduce` automatically.
+
+## RTL behavior
+
+- `direction` defaults to `<html dir>` at mount — Arabic / Hebrew documents get RTL slide order for free.
+- Drag and arrow-key directions auto-flip via Embla's `direction: "rtl"` option.
+- Chevrons mirror via `Icon flipOnRtl` so the arrow always points in the direction of travel.
+- Positioning uses logical `start-*` / `end-*` so prev / next swap sides.
+
+Test it in the **RTL (auto-detected)** story — it sets `dir="rtl"` on a
+wrapper and the entire carousel inverts.
+
+## Forbidden
+
+- **Auto-rotate without user control** — DS canon bans auto-advancing carousels (WCAG 2.2.2). If you absolutely need autoplay (rare), provide a pause control and respect `prefers-reduced-motion`. The DS does not ship an autoplay plugin out of the box.
+- Carousel for primary navigation (menus, tabs, accordion content) — use `Tabs` / `Accordion` instead. Carousel is for *peripheral* content (illustrations, testimonials, onboarding) where missing a slide isn't a blocker.
+- Carousel for tabular data — that's `Table` with horizontal scroll, not slides.
+- Hijacking page-level scroll (full-screen carousels with body `overflow: hidden`) — keep the carousel inline within the page flow.
+- Custom prev / next icons that don't mirror in RTL — use the system `Icon` with `flipOnRtl`, or replace the slot entirely with your own RTL-aware control.
+- More than ~5 slides without dots and a slide counter — at that point users lose track of where they are. Either add a counter ("3 / 12") or switch to a grid view.
+- Carousel inside `Tooltip` / `Popover` — those primitives close on click-outside, which fights touch-drag. Keep carousels in stable surfaces (cards, sections, modals).

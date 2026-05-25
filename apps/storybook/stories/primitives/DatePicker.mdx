@@ -1,0 +1,142 @@
+import { Meta, Title, Subtitle, Primary, Controls, Stories } from "@storybook/addon-docs/blocks";
+import * as DatePickerStories from "./DatePicker.stories";
+
+<Meta of={DatePickerStories} />
+
+<Title />
+<Subtitle />
+
+Gregorian-only single-date picker. Wraps `react-day-picker@9` (calendar
+engine) and `date-fns@4` (formatting) inside a `Popover`. The trigger
+looks like an Input + `Calendar` icon; the popover hosts the calendar
+styled to DS tokens.
+
+**Hijri / Persian / Japanese calendars are deferred** per Numerals.md §9
+(v1 ships Gregorian only). When those land, they'll plug in as alternate
+`Calendar` props without changing the API.
+
+## Live
+
+<Primary />
+<Controls />
+
+## All stories
+
+<Stories includePrimary={false} />
+
+## API
+
+```tsx
+const [date, setDate] = useState<Date | undefined>();
+
+<DatePicker
+  value={date}
+  onValueChange={setDate}
+  placeholder="Pick a date"
+  size="md"
+  fromDate={new Date()}        // earliest selectable
+  toDate={addDays(new Date(), 30)}
+  disabledMatcher={(d) => d.getDay() === 0 || d.getDay() === 6}
+  displayFormat="PPP"           // date-fns format string
+  locale={arSA}                  // optional date-fns locale
+/>
+```
+
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `value` / `defaultValue` | `Date \| undefined` | Selected date |
+| `onValueChange` | `(Date \| undefined) => void` | Fires on day click; popover auto-closes on selection |
+| `placeholder` | `string` | Trigger placeholder. Default `"Select date"` |
+| `size` | `"sm" \| "md" \| "lg"` | Trigger size — matches Input scale |
+| `displayFormat` | `string` | `date-fns` format string. Default `"PPP"` ("May 17, 2026") |
+| `fromDate` / `toDate` | `Date` | Earliest / latest selectable |
+| `disabledMatcher` | `react-day-picker` matcher | Disable specific dates (weekends, holidays, custom logic) |
+| `defaultMonth` | `Date` | Calendar's initial month when no value |
+| `locale` | `date-fns` `Locale` | For Arabic / French / etc. month + weekday names |
+| `disabled` | `boolean` | Disables the entire trigger |
+| `id` / `aria-*` props | — | Pass-through for `FormField` integration |
+
+## Display formats
+
+`date-fns` format tokens — common patterns:
+
+| Pattern | Result (May 17, 2026) |
+| --- | --- |
+| `"PPP"` (default) | `May 17, 2026` |
+| `"PP"` | `May 17, 2026` |
+| `"P"` | `05/17/2026` |
+| `"MMMM d, yyyy"` | `May 17, 2026` |
+| `"d MMM yyyy"` | `17 May 2026` (RTL-friendly) |
+| `"yyyy-MM-dd"` | `2026-05-17` (ISO-like) |
+
+For Arabic, pair with `locale={arSA}` from `date-fns/locale/ar-SA` —
+month names render as `مايو 2026`. Numerals stay Latin per the locked
+Numerals.md policy.
+
+## Calendar visual tokens
+
+| State | Visual |
+| --- | --- |
+| Day (resting) | `text-fg-default`, no background |
+| Day (hover) | `bg-state-hover` overlay |
+| **Selected** | `bg-accent-fill` + `text-fg-on-accent` (white on indigo) |
+| **Today** | `bg-accent-bg-subtle` + `text-accent-text` (lavender + deep indigo) |
+| Outside month | `text-fg-subtle` + opacity 50% (still clickable to navigate months) |
+| Disabled | `text-fg-disabled` + cursor not-allowed |
+
+Selected + Today (same day) stacks correctly — the selected style wins
+(filled accent), and the text remains readable.
+
+## Tokens used
+
+| Token | Where |
+| --- | --- |
+| `--color-surface` / `-border-strong` | Trigger surface + border |
+| `--color-border-focus` | Trigger focus / open border tint |
+| `--color-fg-default` / `-fg-subtle` | Trigger text / placeholder |
+| `--color-surface-overlay` | Popover background |
+| `--color-accent-fill` + `-fg-on-accent` | Selected day |
+| `--color-accent-bg-subtle` + `-accent-text` | Today |
+| `--color-state-hover` / `-state-active` | Day hover / active |
+| `--text-body-sm` / `-text-label-md` / `-label-xs` | Day / caption / weekday typography |
+| `--radius-md` / `-lg` | Day cell / popover corner |
+| `--shadow-elev-2` | Popover shadow |
+| `--z-popover` (100) | Popover z-index |
+
+## Keyboard
+
+`react-day-picker` wires the WAI-ARIA grid pattern:
+
+| Key | Behavior |
+| --- | --- |
+| `Enter` / `Space` on trigger | Open popover |
+| `←` / `→` | Previous / next day (auto-mirrors under RTL) |
+| `↑` / `↓` | Previous / next week |
+| `Home` / `End` | First / last day of week |
+| `PageUp` / `PageDown` | Previous / next month |
+| `Shift + PageUp` / `PageDown` | Previous / next year |
+| `Enter` | Select focused day → closes popover |
+| `Esc` | Close popover without selecting |
+
+## A11y
+
+- Trigger is a real `<button>` with `aria-haspopup="dialog"`, `aria-expanded`.
+- `FormField` wires `aria-required` / `aria-describedby` / `aria-invalid` onto the trigger.
+- Calendar grid uses native `<table>` semantics — screen readers parse it as a date grid.
+- Day buttons announce as `"Monday, May 17, 2026"` (per the date-fns locale).
+- Today / selected states announced via `aria-current="date"` / `aria-selected="true"` (react-day-picker default).
+
+## RTL behavior
+
+- Trigger layout mirrors automatically (calendar icon on logical end side).
+- Calendar grid uses `dir="rtl"` when the document is RTL (react-day-picker reads `<html dir>` via `Intl`).
+- Arrow keys in RTL: `←` becomes "next day" (start → end direction), `→` becomes "previous day". Native expectation for RTL users.
+
+## Forbidden
+
+- `DatePicker` for time-only entry — use the deferred `TimePicker` (v1.2+) or `<input type="time">` as a stopgap
+- Hijri / Persian calendar — deferred to v1.5+
+- Date-range picker — deferred; use two adjacent `DatePicker`s inside a `FieldGroup` for now (see FieldGroup stories)
+- Date format with Arabic-Indic numerals — DS-locked Latin only via the `numberingSystem: 'latn'` cascade from Numerals.md
+- Pre-set "quick picks" inside the popover (Today / Yesterday / This Week) — deferred to a future enhancement; for now compose externally with `Button`s alongside the DatePicker
+- Manual time-zone gymnastics inside the picker — DatePicker emits a plain JavaScript `Date`; time-zone handling lives at the consumer (UTC vs local convention is feature-specific)

@@ -1,0 +1,113 @@
+import { Meta, Title, Subtitle, Primary, Controls, Stories } from "@storybook/addon-docs/blocks";
+import * as PinInputStories from "./PinInput.stories";
+
+<Meta of={PinInputStories} />
+
+<Title />
+<Subtitle />
+
+`N`-digit code entry primitive for 2FA, OTP, magic-link verification, and
+recovery-code flows. Per-digit `<input>` boxes with focus-forward on type,
+paste-to-spread support, and `onComplete` callback fired when all boxes
+fill — which lets consumers auto-submit without an extra Verify click.
+
+The value is **always contiguous from the start** — clearing box `N` drops
+everything from `N` onward. That keeps the mental model simple and matches
+what most OTP UIs do; consumers don't have to reason about gaps.
+
+## Live
+
+<Primary />
+<Controls />
+
+## All stories
+
+<Stories includePrimary={false} />
+
+## API
+
+```tsx
+const [code, setCode] = useState("");
+
+<PinInput
+  length={6}
+  value={code}
+  onValueChange={setCode}
+  onComplete={(value) => verify(value)}
+  mask                       // password-style boxes
+  autoFocus
+  size="md"
+/>
+```
+
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `length` | `number` | Number of digit boxes. Default `6`. Typical: 4 – 8. |
+| `value` / `defaultValue` | `string` | Contiguous digit string. Length ≤ `length`. |
+| `onValueChange` | `(value: string) => void` | Fires on every change |
+| `onComplete` | `(value: string) => void` | Fires when all `length` boxes are filled. Fires once per completion. |
+| `mask` | `boolean` | Mask digits (`type="password"`). Default `false`. |
+| `autoFocus` | `boolean` | Auto-focus the first box on mount |
+| `size` | `"sm" \| "md" \| "lg"` | Box dimensions. Default `"md"` (44 × 48 px). |
+| `disabled` | `boolean` | Disables the entire group |
+| `id` / `aria-*` | — | Pass-through for `FormField` integration |
+
+## Interactions
+
+| Action | Behavior |
+| --- | --- |
+| Type a digit | Auto-focuses the next box; non-digits ignored |
+| Backspace on filled box | Clears the digit, stays focused |
+| Backspace on empty box | Focuses + clears the previous box |
+| ArrowLeft / ArrowRight | Navigate between boxes |
+| Home / End | Jump to first / last box |
+| Paste 6 digits anywhere | Spreads across all boxes (non-digits stripped) |
+| Focus a box | Selects its content (overwrites on next keystroke) |
+| Complete the code | `onComplete(value)` fires |
+
+## Size scale
+
+| Size | Box dimensions | Type |
+| --- | --- | --- |
+| `sm` | 36 × 40 | `text-body-md` |
+| `md` (default) | 44 × 48 | `text-heading-sm` |
+| `lg` | 48 × 56 | `text-heading-md` |
+
+Boxes are intentionally slightly taller than wide — convention for OTP /
+PIN entry that keeps the digit visually centered without looking squat.
+
+## Tokens used
+
+| Token | Where |
+| --- | --- |
+| `--color-surface` / `-border-strong` | Box surface + resting border |
+| `--color-border-focus` | Focused box border tint |
+| `--color-accent-fill` | **Filled-digit** border tint (visual progress signal) |
+| `--color-danger-border` / `-danger-fill` | `aria-invalid` border (resting / focused) |
+| `--color-fg-default` / `-fg-subtle` | Digit text |
+| `--text-body-md` / `-heading-sm` / `-heading-md` | Per size |
+| `--radius-md` | Corner radius |
+
+## A11y
+
+- Outer container renders `role="group"` with `aria-label="Verification code"` (override via prop).
+- Each box has `aria-label="Digit N of M"` so screen readers announce position.
+- First box gets `autoComplete="one-time-code"` — iOS / Android can offer to paste a code from SMS.
+- `aria-invalid` on the container is forwarded to every box for consistent border tint and SR announcement.
+- `aria-required` and `aria-describedby` pass through for `FormField` wiring.
+- All boxes share keyboard semantics — `Tab` enters the group, then arrow keys + typing handle intra-group navigation per the WAI-ARIA composite-widget pattern.
+
+## RTL behavior
+
+- The group container is locked to `dir="ltr"` — codes read left-to-right universally (the digits themselves are Latin per Numerals.md).
+- Surrounding layout (label, helper, helper position relative to the group) follows the document direction via logical properties from `FormField`.
+- Arrow-key semantics inside the group are physical (`ArrowLeft` always moves to the visually-previous box) — this is intentional, matching the LTR-locked digit order.
+
+## Forbidden
+
+- Alphanumeric codes via PinInput — the primitive is **digit-only** by design (inputs filter non-digits). For alphanumeric, use 6 chained `Input` controls or a single masked `Input`.
+- Gaps inside the value (e.g. `"12_34"`) — the value is always contiguous from the start. If the user clears a middle box, everything after it is dropped.
+- Submitting on every change — wait for `onComplete`. Re-submitting partial codes hits the verification endpoint with garbage.
+- Splitting `PinInput` into a `PinInputItem` / `PinInputSeparator` slot API — DS canon ships a single composed primitive. If a future flow needs a separator (e.g. `123-456`), we'll add a `separator={3}` prop, not split the API.
+- Auto-resend on `onComplete` failure — the consumer wires retry / resend UX (see the **TwoFactorFlow** story for the canonical pattern).
+- Using PinInput for credit-card CVC or postal codes — those are `Input` with `inputMode="numeric"` and `maxLength`, not a code-entry primitive.

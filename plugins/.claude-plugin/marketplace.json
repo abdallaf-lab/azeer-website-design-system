@@ -1,0 +1,20 @@
+{
+  "name": "azeer",
+  "owner": {
+    "name": "Azeer"
+  },
+  "metadata": {
+    "description": "Local marketplace for Azeer first-party Claude Code plugins.",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "azeer-brand",
+      "source": "./azeer-brand",
+      "description": "Enforces Azeer brand identity, voice, and marketing design rules when building website, landing, or marketing UI.",
+      "version": "0.1.0",
+      "category": "design",
+      "keywords": ["brand", "design-system", "marketing", "rtl", "gcc", "azeer"]
+    }
+  ]
+}

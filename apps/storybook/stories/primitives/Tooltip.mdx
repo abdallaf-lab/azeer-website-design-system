@@ -1,0 +1,72 @@
+import { Meta, Title, Subtitle, Primary, Stories } from "@storybook/addon-docs/blocks";
+import * as TooltipStories from "./Tooltip.stories";
+
+<Meta of={TooltipStories} />
+
+<Title />
+<Subtitle />
+
+Dark-surface tooltip built on `@radix-ui/react-tooltip`. **Delays are locked
+at the provider** — 500 ms to open, 100 ms close-and-reopen (per
+Components.md). Mount `<TooltipProvider>` once at the app root; Storybook's
+global decorator already does this.
+
+## Live
+
+<Primary />
+
+## All stories
+
+<Stories includePrimary={false} />
+
+## Anatomy
+
+```tsx
+import { Tooltip, TooltipTrigger, TooltipContent } from "@azeer/ui";
+
+<Tooltip>
+  <TooltipTrigger asChild>
+    <Button>Hover me</Button>
+  </TooltipTrigger>
+  <TooltipContent>Tooltip text</TooltipContent>
+</Tooltip>
+```
+
+| Property | Value |
+| --- | --- |
+| Open delay | 500 ms |
+| Close-and-reopen delay | 100 ms |
+| Side offset | 6 px |
+| Max width | 240 px |
+| z-index | `--z-tooltip` (200) — above popovers |
+| Surface | `surface-inverse` (deep indigo) + `fg-on-inverse` (white) |
+| Typography | `text-body-sm` |
+| Radius | `rounded-md` (6 px) |
+| Shadow | `--elev-2` |
+
+## Tokens used
+
+| Token | Where |
+| --- | --- |
+| `--color-surface-inverse` (`#1F1450`) | Tooltip background — only place this surface appears |
+| `--color-fg-on-inverse` (white, 17.2 : 1) | Tooltip text |
+| `--text-body-sm` (13 / 18) | Typography |
+| `--radius-md` (6 px) | Shape |
+| `--shadow-elev-2` | Shadow |
+| `--z-tooltip` (200) | Above popovers — tooltips often explain popover triggers |
+
+## A11y
+
+- Radix wires `aria-describedby` from trigger → content automatically when the tooltip is open.
+- Triggers must be focusable — pass `asChild` and wrap a real `<button>` / `<a>` / `Button`. Never wrap a `<div>` (screen readers won't announce the tooltip).
+- For icon-only buttons, the `aria-label` on the button is the *accessible name*; the tooltip is the *description*. Both should be present — the tooltip echoes the label for sighted users, while screen-reader users hear the label directly.
+- `prefers-reduced-motion` collapses the enter/exit animations (tokens.css global rule).
+
+## Forbidden
+
+- Tooltip on non-focusable elements (`<div>`, `<span>`) — keyboard users can't see it
+- Multiple TooltipProvider mounts — wire one at the app root only
+- Overriding the open/close delays per-tooltip — DS-locked at the provider level
+- Tooltip carrying critical info — anything important goes in visible body text; tooltip is supplementary
+- Tooltip with interactive content (links, buttons inside) — use `HoverCard` instead (coming in a later batch)
+- Wrapping body text just to "explain a phrase" — write clearer copy or use a HelpBubble

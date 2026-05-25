@@ -1,0 +1,39 @@
+{
+  "name": "@azeer/website",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Azeer marketing site — Next.js 15 App Router, built on @azeer/website-ui + @azeer/ui",
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@azeer/tokens": "workspace:*",
+    "@azeer/ui": "workspace:*",
+    "@azeer/website-ui": "workspace:*",
+    "@sanity/client": "^6.22.0",
+    "@sanity/image-url": "^1.1.0",
+    "@vercel/og": "^0.6.5",
+    "lucide-react": "^1.16.0",
+    "next": "^15.5.0",
+    "next-intl": "^3.20.0",
+    "next-themes": "^0.4.0",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6"
+  },
+  "devDependencies": {
+    "@azeer/config-eslint": "workspace:*",
+    "@azeer/config-tsconfig": "workspace:*",
+    "@tailwindcss/postcss": "^4.3.0",
+    "@types/node": "^25.8.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "eslint": "^9.39.4",
+    "tailwindcss": "^4.3.0",
+    "typescript": "^6.0.3"
+  }
+}

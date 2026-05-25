@@ -1,0 +1,96 @@
+import { Meta, Title, Subtitle, Primary, Controls, Stories } from "@storybook/addon-docs/blocks";
+import * as EmptyStateStories from "./EmptyState.stories";
+
+<Meta of={EmptyStateStories} />
+
+<Title />
+<Subtitle />
+
+Locked 5-slot structure per Empty.md:
+
+1. Icon (Lucide, muted gray on `surface-sunken` circle)
+2. Headline (sentence case, 3–7 words, no end punctuation)
+3. Body (one sentence, 80–120 chars)
+4. Primary CTA (optional)
+5. Secondary link (optional)
+
+**No 6th slot.** If your empty state needs more, the feature has a UX
+problem — redesign the feature, not the empty state.
+
+## Live
+
+<Primary />
+<Controls />
+
+## All stories
+
+<Stories includePrimary={false} />
+
+## Sizes
+
+| Size | Container | Icon | Type | Padding |
+| --- | --- | --- | --- | --- |
+| `inline` | max-w 360 | 40 px circle, 20 px icon | `text-heading-md` (18) | `py-12` |
+| `page` | max-w 480 | 64 px circle, 24 px icon | `text-heading-xl` (20) | `py-24` |
+
+Use `inline` inside list panels / cards; `page` for whole-route empty
+states. The icon for page is 24 px (locked icon scale max) rather than the
+28 px the spec suggests — strict icon-scale compliance, marginal visual
+difference.
+
+## When to include each CTA
+
+| Scenario | Primary CTA? | Secondary? |
+| --- | --- | --- |
+| First-time (never used) | ✓ Yes | Optional ("Learn more") |
+| Filter / search no results | ✗ No | ✓ "Clear filter" |
+| Permission denied | ✗ No | ✓ "Contact admin" |
+| Recoverable error | Optional ("Refresh") | — |
+| AI no suggestions | Optional ("Draft manually") | — |
+
+## Copy formulas
+
+**Headline:** `No [thing] [yet | here | match | available]`
+
+- ✓ "No conversations yet"
+- ✓ "No results"
+- ✗ "There are no conversations" (verbose)
+- ✗ "We couldn't find anything" (apologetic)
+
+**Body:** `[Why empty]. [What to do OR what will appear].`
+
+- ✓ "When customers reach out on WhatsApp, they'll appear here."
+- ✓ "Reports populate after your first week of activity."
+- ✗ Two sentences (redesign the feature, not the empty state)
+
+## Tokens used
+
+| Token | Where |
+| --- | --- |
+| `--color-surface-sunken` | Icon container background |
+| `--color-fg-muted` | Icon color (never brand color) |
+| `--color-fg-default` | Headline text |
+| `--color-fg-muted` | Body text |
+| `--text-heading-md` / `-heading-xl` | Inline / page headline tier |
+| `--text-body-md` | Body text |
+| `--radius-full` | Icon container shape |
+
+## A11y
+
+- Headline renders as `<h3>` — keeps the heading hierarchy consistent across pages where EmptyState sits inside a section.
+- Icon is `aria-hidden="true"` — decorative; meaning is carried by the headline + body.
+- Container is centered visually (`mx-auto + text-center`) but reads top-to-bottom for screen readers.
+
+## Forbidden
+
+- Empty state with no icon — always use `FileQuestion` as the generic fallback
+- Two-sentence body — one sentence only
+- Punctuation in headline (`?`, `!`, `.`) — sentence-case statement, no end punctuation
+- Exclamation marks ("Get started!") — calm direct language
+- Multiple primary CTAs — one max; secondary as a link
+- "Please" / "Sorry" copy — direct, not apologetic
+- Custom SVG illustration — use Lucide only (`FileQuestion` is the fallback)
+- Branded-color icon — `text-fg-muted` only, never brand color
+- Inline empty state with `page` size or vice versa — match the size to the container
+- Empty state when **data is loading** — use `Skeleton`, not EmptyState
+- Empty state when **the API call failed** — use `ErrorState` (separate primitive, coming later)

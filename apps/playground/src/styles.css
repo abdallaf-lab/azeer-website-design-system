@@ -1,0 +1,33 @@
+@import "@azeer/tokens/tokens.css";
+
+/*
+ * Tailwind content sources live inside tokens.css alongside @import
+ * "tailwindcss" so the v4 plugin sees them as one chain. Add app-specific
+ * @source directives here only if this app's source lies outside the standard
+ * monorepo globs (apps/*​/src, apps/*​/stories, apps/*​/.storybook).
+ */
+
+html {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  color: var(--color-fg-default);
+  background-color: var(--color-canvas);
+  outline: none;
+}
+
+html[dir="rtl"] {
+  font-family: var(--font-arabic);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+}
+
+
+code, pre, kbd, samp {
+  font-family: var(--font-mono);
+}

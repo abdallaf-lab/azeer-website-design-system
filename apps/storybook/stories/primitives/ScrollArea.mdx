@@ -1,0 +1,71 @@
+import { Meta, Title, Subtitle, Primary, Stories } from "@storybook/addon-docs/blocks";
+import * as ScrollAreaStories from "./ScrollArea.stories";
+
+<Meta of={ScrollAreaStories} />
+
+<Title />
+<Subtitle />
+
+Themed scrollbar built on `@radix-ui/react-scroll-area`. Use whenever a
+fixed-height container holds scrollable content and the **native browser
+scrollbar isn't acceptable** — most often inside cards, popovers, and the
+Inbox panes. For full-page scroll, let the browser handle it natively.
+
+## Live
+
+<Primary />
+
+## All stories
+
+<Stories includePrimary={false} />
+
+## Anatomy
+
+```tsx
+<ScrollArea className="h-72 w-72 rounded-lg border …">
+  <div className="p-4">
+    {/* tall content */}
+  </div>
+</ScrollArea>
+```
+
+ScrollArea renders a viewport (the scroll container) + a custom thumb. The
+container needs an explicit height (`h-72`, `max-h-…`, or
+`h-[calc(100vh-…)]`) — without one, content expands and there's nothing to
+scroll.
+
+For horizontal scroll, set `max-w-…` on the ScrollArea + `w-max` on the
+inner content (see the **Horizontal** story).
+
+## Tokens used
+
+| Token | Where |
+| --- | --- |
+| `--color-scrollbar-track` (transparent) | Scrollbar track |
+| `--color-scrollbar-thumb` (`border-strong`) | Thumb resting |
+| `--color-scrollbar-thumb-hover` (`fg-subtle`) | Thumb hover |
+| `--color-scrollbar-thumb-active` (`fg-muted`) | Thumb dragging |
+| `--duration-fast` + `--ease-standard` | Thumb color transitions |
+| `--radius-full` | Thumb shape |
+
+Scrollbar width is **8 px** (Foundation §scrollbar canon).
+
+## A11y
+
+- The Viewport is a `role="region"` — screen readers treat it as a scrollable section.
+- Native keyboard scrolling preserved (Page Up / Page Down / Arrow keys when focused inside).
+- Touch-scroll works natively; `touch-none` on the scrollbar prevents accidental drag-scroll on the bar itself while letting content swipe normally.
+- `prefers-reduced-motion` collapses thumb hover transitions.
+
+## When NOT to use
+
+- Whole-page scroll — let the browser handle it
+- Inside a Dialog with `DialogBody` — `DialogBody` already manages overflow with `overflow-y-auto`
+- For an extremely short overflow (1–2 line clip) — consider clipping with `truncate` instead of adding a scroll surface
+
+## Forbidden
+
+- ScrollArea without an explicit container height — silently does nothing
+- Custom scrollbar colors per-component — single token set, system-wide
+- Native `overflow: scroll` on long lists when the surface is supposed to feel system-tokenized — use ScrollArea
+- Hiding the scrollbar (`scrollbar-width: none`) when content overflows — users lose the affordance entirely

@@ -1,0 +1,67 @@
+import { Meta, Title, Subtitle, Primary, Stories } from "@storybook/addon-docs/blocks";
+import * as ToggleGroupStories from "./ToggleGroup.stories";
+
+<Meta of={ToggleGroupStories} />
+
+<Title />
+<Subtitle />
+
+Segmented control built on `@radix-ui/react-toggle-group`. Two modes:
+
+| `type` | Behavior | Typical use |
+| --- | --- | --- |
+| `"single"` | At most one item pressed; clicking the active one toggles it off (`defaultValue` is a string) | Alignment picker, view switcher |
+| `"multiple"` | Each item toggles independently (`defaultValue` is a string[]) | Composer toolbar (Bold + Italic active together) |
+
+Each `ToggleGroupItem` shares Toggle's visual + variants.
+
+## Live
+
+<Primary />
+
+## All stories
+
+<Stories includePrimary={false} />
+
+## Tokens used
+
+Inherits from Toggle — same `--color-state-hover` / `-accent-bg-subtle` /
+`-accent-text` / `-accent-border` chain. The group container itself adds
+nothing visually beyond `inline-flex gap-1`.
+
+## Keyboard
+
+Radix wires the WAI-ARIA toolbar pattern:
+
+| Key | Behavior |
+| --- | --- |
+| `Tab` | Single tab-stop on the group; focus lands on the pressed item (or first item if none pressed) |
+| `←` / `→` | Move focus between items (RTL mirrors automatically) |
+| `Space` / `Enter` | Toggle the focused item |
+| `Home` / `End` | First / last item |
+
+## A11y
+
+- Group is `role="group"`; items carry `role="button"` with `aria-pressed`.
+- For `type="single"`, only one item has `aria-pressed="true"` at a time — Radix enforces.
+- Icon-only items **require `aria-label`** — the stories above pass them.
+
+## When ToggleGroup vs. Tabs vs. Radio
+
+| Need | Use |
+| --- | --- |
+| Switch between **content panels** | `Tabs` |
+| Pick **one of several values** (no content swap) | `RadioGroup` (form field) OR `ToggleGroup type="single"` (compact inline) |
+| Pick **multiple independent values** | `ToggleGroup type="multiple"` OR group of `Checkbox`es |
+
+ToggleGroup vs RadioGroup specifically: use **ToggleGroup** when the
+choice is inline / compact / icon-driven (alignment, view picker, theme
+picker). Use **RadioGroup** when the choice sits inside a form with a
+visible Label and multiple options described in text.
+
+## Forbidden
+
+- Mixed sizes inside one group — all items same size
+- ToggleGroup `type="single"` without `defaultValue` and without `collapsible` semantics — Radix allows it but users often miss the "click again to deselect" affordance. Default to a pre-selected option.
+- ToggleGroup with > 5 items — switch to Tabs or a Select
+- Manual `aria-pressed` — let Radix manage

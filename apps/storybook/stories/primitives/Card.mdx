@@ -1,0 +1,82 @@
+import { Meta, Title, Subtitle, Primary, Controls, Stories } from "@storybook/addon-docs/blocks";
+import * as CardStories from "./Card.stories";
+
+<Meta of={CardStories} />
+
+<Title />
+<Subtitle />
+
+The resting surface primitive. Border-only elevation (`--elev-1`) — no
+shadow on resting cards per the Elevation canon. Composed via slot
+sub-components: `CardHeader` → (`CardTitle` + `CardDescription`) → `CardBody`
+→ `CardFooter`. Use any subset; layout is `flex flex-col gap-{padding}`.
+
+## Live
+
+<Primary />
+<Controls />
+
+## All stories
+
+<Stories includePrimary={false} />
+
+## Padding presets
+
+| Preset | Padding | Internal gap |
+| --- | --- | --- |
+| `default` | `p-5` (20 px) | `gap-3` (12 px) |
+| `compact` | `p-4` (16 px) | `gap-2` (8 px) |
+| `none` | — | — |
+
+These come straight from Spacing §locked per-surface defaults. Don't reach
+for `p-3`, `p-6`, or other off-preset values — pick one of the three or
+compose with `padding="none"` and manage padding inside.
+
+## Composition
+
+```tsx
+<Card>
+  <CardHeader>
+    <CardTitle>WhatsApp Business API</CardTitle>
+    <CardDescription>Connected · Last sync 2 minutes ago</CardDescription>
+  </CardHeader>
+  <CardBody>…</CardBody>
+  <CardFooter>
+    <Button variant="ghost" size="sm">Cancel</Button>
+    <Button size="sm">Save</Button>
+  </CardFooter>
+</Card>
+```
+
+| Slot | Layout |
+| --- | --- |
+| `CardHeader` | `flex flex-col gap-1.5` — Title + Description, tight |
+| `CardTitle` | `<h3>` with `text-heading-sm` (16 / 22 / 600) |
+| `CardDescription` | `<p>` with `text-body-sm` + `text-fg-muted` |
+| `CardBody` | `flex flex-col gap-3` + `text-body-md` — primary content |
+| `CardFooter` | `flex items-center justify-end gap-2` — actions, primary at the logical end |
+
+## Tokens used
+
+| Token | Where |
+| --- | --- |
+| `--color-surface` | Background |
+| `--color-border-default` | 1 px resting border (= `--elev-1`) |
+| `--radius-xl` (12 px) | Card corner — ceiling per the radius scale |
+| `--color-fg-default` | Title + body text |
+| `--color-fg-muted` | Description text |
+| `--text-heading-sm` / `-body-md` / `-body-sm` | Slot typography |
+| `--spacing` base × 4 / 5 | Padding presets |
+
+## A11y
+
+- Renders semantic HTML — `<h3>` for title, `<p>` for description. Don't pass `as=` to retag without considering heading hierarchy on the surrounding page.
+- Card itself has no ARIA role — it's a presentational grouping. If the card represents a discrete navigable item (e.g. a clickable contact card), wrap it in an `<a>` or `<button>` at the consumer level.
+
+## Forbidden
+
+- `shadow-{md,lg,xl}` on a resting Card — borders-first; floating surfaces (Dialog, Popover) use shadow tokens
+- Off-preset padding (`p-3`, `p-6`, `p-7`, `p-8`) — three presets, period
+- Radius override (`rounded-2xl`) — 12 px is the ceiling
+- Skipping `CardHeader` and putting a raw `<h2>` inside — use the slot so typography stays consistent
+- Card without a body — if you have only a header, you want a `<header>` or a different primitive

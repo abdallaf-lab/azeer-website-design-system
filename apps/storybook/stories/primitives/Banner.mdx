@@ -1,0 +1,135 @@
+import { Meta, Title, Subtitle, Primary, Controls, Stories } from "@storybook/addon-docs/blocks";
+import * as BannerStories from "./Banner.stories";
+
+<Meta of={BannerStories} />
+
+<Title />
+<Subtitle />
+
+Shell-level system message. **48 px content-level row** that sits above the
+module body — content-level, not viewport-fixed, so modals fully cover it
+when open. Use Banner when a system-wide condition must remain visible until
+**resolved** or **dismissed**.
+
+## Live
+
+<Primary />
+<Controls />
+
+## All stories
+
+<Stories includePrimary={false} />
+
+## When Banner vs the other error surfaces
+
+Per Errors.md error-surface hierarchy:
+
+| Need | Surface |
+| --- | --- |
+| Validation per-field | `FormField error` (inline) |
+| User must decide before continuing | `Dialog` / `ConfirmDialog` |
+| Ephemeral action feedback | `Toast` |
+| Content-level callout in a section | `Alert` |
+| **Persistent system-wide state** | **`Banner`** |
+
+Canonical Banner copy from Shell.md:
+
+- Trial expiring — "Your trial expires in 3 days — upgrade to keep your data"
+- Maintenance — "Scheduled maintenance Friday 2:00 AM UTC — 15 min downtime expected"
+- Past due — "Your subscription is past due — update payment"
+- System status — "WhatsApp Business API is currently experiencing delays"
+- Feature announcement — "New: AI Summary is now available in your plan"
+
+## Locked anatomy
+
+| Property | Value |
+| --- | --- |
+| Height | **48 px** (`h-12`) |
+| Padding | `px-5` |
+| Layout | `flex items-center gap-3` — icon + body + (action) + (dismiss) |
+| Border | `border-b` only (banner sits above content with a bottom divider) |
+| z-index | `--z-banner` (35) — content tier; modals (1300) cover it |
+
+**Shell-level singleton** — `AppShell.banner` is the only slot. Features
+cannot render their own banner.
+
+## Intents
+
+| Intent | Default for | Icon |
+| --- | --- | --- |
+| `accent` (default) | Trial / upgrade / feature announcement | `Sparkles` |
+| `info` | Maintenance / status / informational | `Info` |
+| `success` | Recovery confirmation ("webhook reconnected") | `CheckCircle2` |
+| `warning` | Approaching quota / soft caps | `TriangleAlert` |
+| `destructive` | Past-due / failing / system error | `AlertCircle` |
+
+Like `Alert`, body text stays `fg-default` regardless of intent — variant
+signals via icon + border + bg (never color alone, WCAG 1.4.1).
+
+## API
+
+```tsx
+<Banner
+  intent="accent"                                        // default
+  title="Your trial expires in 3 days"
+  action={<Button size="sm">Upgrade now</Button>}
+  dismissible                                             // shows X
+  onDismiss={() => setOpen(false)}
+>
+  Upgrade now to keep your data and team access.
+</Banner>
+```
+
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `intent` | `"accent" \| "info" \| "success" \| "warning" \| "destructive"` | Default `"accent"` |
+| `title` | `ReactNode` | Bold text at the start of the message |
+| `icon` | `LucideIcon` | Override the variant's default icon |
+| `children` | `ReactNode` | Body text after the title (inline) |
+| `action` | `ReactNode` | Trailing action button, e.g. `<Button size="sm">…</Button>` |
+| `dismissible` | `boolean` | Renders the X close button |
+| `onDismiss` | `() => void` | Fires when dismiss clicks |
+| `dismissLabel` | `string` | `aria-label` for X. Default `"Dismiss"` |
+
+## Tokens used
+
+| Token | Where |
+| --- | --- |
+| `--color-{intent}-bg-subtle` | Background per intent |
+| `--color-{intent}-border` | Bottom border per intent |
+| `--color-{intent}-text` | Icon color (only — text body stays `fg-default`) |
+| `--color-fg-default` | Title + body text |
+| `--color-fg-muted` | Dismiss X icon |
+| `--text-body-md` | Typography |
+| `--color-state-hover` / `-state-active` | Dismiss-button overlay |
+
+## A11y
+
+Role split mirrors Toast canon:
+
+| Intent | ARIA role |
+| --- | --- |
+| `destructive` | `role="alert"` — announced immediately |
+| Everything else | `role="status"` — polite |
+
+Other a11y:
+- Icon is `aria-hidden` (visual + intent border carry the message).
+- Dismiss button has `aria-label="Dismiss"` (override via `dismissLabel`).
+- Variant's intent communicated by **icon + border + bg + text label** — never color alone.
+
+## RTL behavior
+
+- `border-b` and `h-12` are direction-neutral.
+- `gap-3` flows start → end — icon stays on the start side, dismiss on the end.
+- Action button stays before dismiss (action is the secondary edge, dismiss is the trailing extreme).
+
+## Forbidden
+
+- Banner rendered from feature code — use `AppShell.banner` slot (single source of truth)
+- Multiple banners stacked — one slot, one message at a time
+- Banner for one-time success ("Profile updated") — that's a `Toast`
+- Banner for blocking decisions — that's a `Dialog`
+- Banner for per-field validation — that's `FormField` inline error
+- Custom heights / paddings — locked 48 px / `px-5`
+- Non-dismissible banners for non-blocking state — when the user can't act on it, give them dismiss
+- Both `action` + `dismissible` is fine; both `action` + `children` is fine; just don't overcrowd the row beyond ~80 chars
