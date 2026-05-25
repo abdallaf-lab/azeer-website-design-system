@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<link rel="stylesheet" href="../colors_and_type.css"/>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<style>
+  body { padding: 20px; }
+  .grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 10px; }
+  .cell {
+    display:flex; flex-direction:column; align-items:center; gap: 6px;
+    padding: 10px 6px; border: 1px solid var(--border); border-radius: 8px; text-align:center;
+  }
+  .cell svg { width: 20px; height: 20px; stroke-width: 1.5; color: #2E2E2E; }
+  .cell .n { font-size: 10px; color: var(--muted-foreground); font-family: var(--font-mono); }
+  .tag { font-size: 10px; text-transform: uppercase; letter-spacing:0.06em; opacity:0.7; font-weight:600; display:block; margin-bottom: 12px; }
+  .sizes-row { display:flex; gap: 18px; align-items:center; padding: 10px 0; }
+  .size-cell { display:flex; flex-direction:column; align-items:center; gap: 4px; }
+  .size-cell small { font-size: 10px; color: var(--muted-foreground); font-family: var(--font-mono); }
+</style>
+</head>
+<body>
+<span class="tag">Icons · Lucide · native at display size</span>
+<div class="sizes-row">
+  <div class="size-cell"><i data-lucide="grip-vertical" style="width:14px;height:14px"></i><small>14 · drag</small></div>
+  <div class="size-cell"><i data-lucide="send" style="width:16px;height:16px"></i><small>16 · default</small></div>
+  <div class="size-cell"><i data-lucide="calendar" style="width:20px;height:20px"></i><small>20 · header</small></div>
+  <div class="size-cell"><i data-lucide="phone-call" style="width:24px;height:24px"></i><small>24 · page</small></div>
+  <div class="size-cell"><i data-lucide="sparkles" style="width:32px;height:32px"></i><small>32 · hero</small></div>
+</div>
+<div style="height: 14px"></div>
+<div class="grid">
+  <div class="cell"><i data-lucide="inbox"></i><span class="n">inbox</span></div>
+  <div class="cell"><i data-lucide="message-circle"></i><span class="n">chat</span></div>
+  <div class="cell"><i data-lucide="phone"></i><span class="n">phone</span></div>
+  <div class="cell"><i data-lucide="phone-incoming"></i><span class="n">phone-in</span></div>
+  <div class="cell"><i data-lucide="voicemail"></i><span class="n">voicemail</span></div>
+  <div class="cell"><i data-lucide="calendar"></i><span class="n">calendar</span></div>
+  <div class="cell"><i data-lucide="users"></i><span class="n">contacts</span></div>
+  <div class="cell"><i data-lucide="bar-chart-3"></i><span class="n">analytics</span></div>
+  <div class="cell"><i data-lucide="send"></i><span class="n">send</span></div>
+  <div class="cell"><i data-lucide="paperclip"></i><span class="n">attach</span></div>
+  <div class="cell"><i data-lucide="mic"></i><span class="n">mic</span></div>
+  <div class="cell"><i data-lucide="smile"></i><span class="n">emoji</span></div>
+  <div class="cell"><i data-lucide="search"></i><span class="n">search</span></div>
+  <div class="cell"><i data-lucide="filter"></i><span class="n">filter</span></div>
+  <div class="cell"><i data-lucide="check"></i><span class="n">check</span></div>
+  <div class="cell"><i data-lucide="x"></i><span class="n">close</span></div>
+  <div class="cell"><i data-lucide="chevron-right"></i><span class="n">next (RTL)</span></div>
+  <div class="cell"><i data-lucide="arrow-right"></i><span class="n">arrow (RTL)</span></div>
+  <div class="cell"><i data-lucide="bell"></i><span class="n">notify</span></div>
+  <div class="cell"><i data-lucide="settings"></i><span class="n">settings</span></div>
+</div>
+<script>lucide.createIcons();</script>
+</body>
+</html>

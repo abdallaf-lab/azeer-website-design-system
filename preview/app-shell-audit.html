@@ -1,0 +1,1287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>App Shell Audit — Azeer DS (Intercom tokens)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@18.3.1",
+    "react-dom": "https://esm.sh/react-dom@18.3.1",
+    "react-dom/client": "https://esm.sh/react-dom@18.3.1/client",
+    "lucide-react": "https://esm.sh/lucide-react@0.456.0?deps=react@18.3.1",
+    "sonner": "https://esm.sh/sonner@1.7.4?deps=react@18.3.1,react-dom@18.3.1"
+  }
+}
+</script>
+<style>
+/* ===========================================================================
+   TWERLO DESIGN SYSTEM — CANON v1.0  (locked 2026-05-15)
+   Intercom skeleton + Twerlo skin. Light only.
+   =========================================================================== */
+
+/* §2 — PRIMITIVES (raw palette; never consumed by app code directly) */
+:root {
+  /* Neutral — Intercom warm-gray foundation (NOT indigo-bled).
+     fg-default, fg-muted, borders all derive from this. */
+  --neutral-0:   #FFFFFF;
+  --neutral-50:  #FBFBFD;
+  --neutral-100: #F0F1EF;
+  --neutral-200: #E9EAE6;   /* default 1px hairline */
+  --neutral-300: #C6C9C0;
+  --neutral-400: #B8B8B3;
+  --neutral-500: #81817E;
+  --neutral-600: #646462;
+  --neutral-700: #3F3F3E;
+  --neutral-800: #1A1A1A;   /* default primary CTA "neutral black" */
+  --neutral-900: #1A1A1A;
+
+  /* Indigo — Twerlo brand. Anchored at #5146CE. */
+  --indigo-50:  #F3F1FC;
+  --indigo-100: #E7E2FD;
+  --indigo-200: #D9D4F2;
+  --indigo-300: #C9C1F5;
+  --indigo-400: #9794E7;
+  --indigo-500: #5146CE;
+  --indigo-600: #4138B8;
+  --indigo-700: #352BA0;
+  --indigo-800: #3D33A8;   /* accent text on subtle bg */
+
+  /* Lavender — canvas + AI surface family (Twerlo DNA moment) */
+  --lavender-canvas:    #F4F3FB;
+  --lavender-ai:        #E7E2FD;
+  --lavender-ai-strong: #D0C6FB;
+  --lavender-ai-border: #B09EFA;
+  --lavender-ai-fill:   #6E54E4;
+  --lavender-ai-text:   #4C3E8E;
+
+  /* Intent — canon §3.5 exact values */
+  --success-fill:       #158613;
+  --success-fill-hover: #117010;
+  --success-bg-subtle:  #C7F1C6;
+  --success-border:     #69CC66;
+  --success-text:       #117010;
+
+  --danger-fill:        #DF2020;
+  --danger-fill-hover:  #B21A1A;
+  --danger-bg-subtle:   #FFDBDB;
+  --danger-border:      #F98686;
+  --danger-text:        #C41C1C;
+
+  --warning-fill:       #F2B232;
+  --warning-fill-hover: #D9941F;
+  --warning-bg-subtle:  #FEECAF;
+  --warning-border:     #F7D669;
+  --warning-text:       #8A570D;
+
+  --info-fill:          #165FC6;
+  --info-fill-hover:    #0F4DA6;
+  --info-bg-subtle:     #D7E7FE;
+  --info-border:        #89B6F6;
+  --info-text:          #0F4DA6;
+
+  --premium-fill:       #5F4DB2;
+  --premium-bg-subtle:  #E7E2FD;
+  --premium-border:     #B09EFA;
+  --premium-text:       #4C3E8E;
+}
+
+/* §3 — SEMANTIC tokens (the only thing app code reads) */
+:root {
+  /* §3.1 Surfaces — canvas lavender is THE Twerlo identity */
+  --color-bg-canvas:         var(--lavender-canvas);   /* #F4F3FB */
+  --color-bg-surface:        var(--neutral-0);
+  --color-bg-surface-raised: var(--neutral-0);          /* lift via --elev-1, not bg */
+  --color-bg-surface-sunken: var(--neutral-50);         /* sub-nav, secondary surfaces */
+  --color-bg-overlay:        rgba(15, 14, 24, 0.40);
+  --color-bg-inverse:        var(--neutral-800);
+
+  /* §3.2 Foreground */
+  --color-fg-default:    var(--neutral-900);
+  --color-fg-muted:      var(--neutral-600);
+  --color-fg-subtle:     var(--neutral-500);            /* placeholders/captions ONLY, never body < 16px */
+  --color-fg-disabled:   var(--neutral-400);
+  --color-fg-on-accent:  var(--neutral-0);
+  --color-fg-on-inverse: #FAFAF7;
+  --color-fg-link:       var(--info-fill);
+
+  /* §3.3 Brand accent — Twerlo indigo */
+  --color-accent-fill:            var(--indigo-500);
+  --color-accent-fill-hover:      var(--indigo-600);
+  --color-accent-fill-active:     var(--indigo-700);
+  --color-accent-bg-subtle:       var(--indigo-100);    /* #E7E2FD */
+  --color-accent-bg-subtle-hover: var(--indigo-200);
+  --color-accent-border:          var(--indigo-300);
+  --color-accent-border-strong:   var(--indigo-400);
+  --color-accent-text:            var(--indigo-800);    /* #3D33A8 */
+  --color-accent-text-on-fill:    var(--neutral-0);
+
+  /* §3.4 AI surface — same family as canvas (Twerlo DNA) */
+  --color-ai-bg-subtle:        var(--lavender-ai);
+  --color-ai-bg-subtle-strong: var(--lavender-ai-strong);
+  --color-ai-border:           var(--lavender-ai-border);
+  --color-ai-fill:             var(--lavender-ai-fill);
+  --color-ai-text:             var(--lavender-ai-text);
+  --color-ai-accent:           var(--indigo-500);
+
+  /* §3.5 Intent semantic aliases */
+  --color-success-fill:       var(--success-fill);
+  --color-success-bg-subtle:  var(--success-bg-subtle);
+  --color-success-border:     var(--success-border);
+  --color-success-text:       var(--success-text);
+  --color-danger-fill:        var(--danger-fill);
+  --color-danger-bg-subtle:   var(--danger-bg-subtle);
+  --color-danger-border:      var(--danger-border);
+  --color-danger-text:        var(--danger-text);
+  --color-warning-fill:       var(--warning-fill);
+  --color-warning-bg-subtle:  var(--warning-bg-subtle);
+  --color-warning-border:     var(--warning-border);
+  --color-warning-text:       var(--warning-text);
+  --color-info-fill:          var(--info-fill);
+  --color-info-bg-subtle:     var(--info-bg-subtle);
+  --color-info-border:        var(--info-border);
+  --color-info-text:          var(--info-text);
+  --color-premium-fill:       var(--premium-fill);
+  --color-premium-bg-subtle:  var(--premium-bg-subtle);
+  --color-premium-text:       var(--premium-text);
+
+  /* Back-compat aliases — older rules still use these */
+  --color-accent-bg:        var(--color-accent-fill);
+  --color-accent-fg:        var(--color-accent-text);
+  --color-success-fg:       var(--color-success-text);
+  --color-warning-fg:       var(--color-warning-text);
+  --color-warning-bg:       var(--color-warning-fill);
+  --color-danger-fg:        var(--color-danger-text);
+  --color-danger-bg:        var(--color-danger-fill);
+  --color-info-fg:          var(--color-info-text);
+  --color-info-bg:          var(--color-info-fill);
+
+  /* §3.6 Borders */
+  --color-border-subtle:  var(--neutral-100);
+  --color-border-default: var(--neutral-200);
+  --color-border-strong:  var(--neutral-300);
+  --color-border-focus:   var(--color-accent-fill);
+  --color-border-inverse: var(--neutral-700);
+
+  /* §3.7 Channel colors (icons/badges only — never page bg) */
+  --color-channel-whatsapp:  #25D366;
+  --color-channel-voice:     var(--indigo-500);
+  --color-channel-sms:       #5B8DEF;
+  --color-channel-email:     #6B7280;
+  --color-channel-instagram: #E1306C;
+  --color-channel-messenger: #0084FF;
+  --color-channel-telegram:  #229ED9;
+
+  /* §3.8 Charts */
+  --chart-1: var(--indigo-500);
+  --chart-2: var(--warning-fill);     /* amber — "today/latest" only */
+  --chart-3: #7370DF;
+  --chart-4: var(--indigo-800);
+  --chart-5: var(--success-fill);
+  --chart-6: var(--danger-fill);
+  --chart-grid: var(--neutral-100);
+  --chart-axis: var(--neutral-400);
+
+  /* §3.9 State overlays */
+  --color-state-hover:    rgba(20, 20, 20, 0.04);
+  --color-state-active:   rgba(20, 20, 20, 0.08);
+  --color-state-focus:    rgba(81, 70, 206, 0.20);   /* accent @ 20% */
+  --color-state-selected: var(--color-accent-bg-subtle);
+  --color-state-disabled: rgba(20, 20, 20, 0.04);
+
+  /* §5.1 Spacing scale */
+  --space-0\.5: 2px;
+  --space-1:    4px;
+  --space-1\.5: 6px;
+  --space-2:    8px;
+  --space-3:   12px;
+  --space-4:   16px;
+  --space-5:   20px;
+  --space-6:   24px;
+  --space-8:   32px;
+  --space-10:  40px;
+  --space-12:  48px;
+  --space-16:  64px;
+
+  /* §5.2 Control heights */
+  --control-h-sm: 32px;
+  --control-h-md: 40px;
+  --control-h-lg: 48px;
+
+  /* §6 Radius */
+  --radius-none:  0;
+  --radius-sm:    6px;     /* chips, badges, small inputs */
+  --radius-md:    8px;     /* DEFAULT — buttons (square), icon buttons, list items */
+  --radius-lg:   12px;     /* cards, textareas */
+  --radius-xl:   16px;     /* modals, sheets, shell panels */
+  --radius-2xl:  24px;
+  --radius-pill: 9999px;
+
+  /* §7 Elevation — Intercom-exact (border ring + tiny shadow) */
+  --elev-0: none;
+  --elev-1: 0 0 0 1px var(--color-border-default), 0 1px 4px 0 rgba(20, 20, 20, 0.10);
+  --elev-2: 0 0 0 1px var(--color-border-default), 0 4px 8px 0 rgba(20, 20, 20, 0.12);
+  --elev-3: 0 0 0 1px var(--color-border-default), 0 16px 32px 0 rgba(20, 20, 20, 0.18);
+  --elev-ai: 0 0 0 1px var(--color-ai-border), 0 4px 14px 0 rgba(81, 70, 206, 0.18);
+
+  /* §8 Motion */
+  --motion-instant:  60ms;
+  --motion-fast:    120ms;
+  --motion-default: 180ms;
+  --motion-slow:    240ms;
+  --motion-page:    320ms;
+  --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in:     cubic-bezier(0.4, 0, 1, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* §9 Z-index */
+  --z-base: 0;
+  --z-raised: 10;
+  --z-sticky-nav: 20;
+  --z-dropdown: 1000;
+  --z-sticky: 1100;
+  --z-drawer: 1200;
+  --z-modal:  1300;
+  --z-popover: 1400;
+  --z-tooltip: 1500;
+  --z-toast:   1600;
+  --z-call-bar: 1700;
+  --z-command:  1800;
+
+  /* §11 Shell layout constants — Intercom-exact dimensions */
+  --rail-w:           196px;
+  --subnav-w:         230px;
+  --inbox-folders-w:  200px;
+  --inbox-list-w:     271px;
+  --details-w:        300px;
+  --module-header-h:   64px;
+  --banner-h:          49px;
+  --call-bar-h:        56px;
+  --gutter:             4px;   /* §5.5 shell gutter — Intercom signature */
+
+  /* §11.4 Sidebar active state — lavender bg + 3px indigo bar */
+  --sidebar-bg:                      var(--color-bg-surface-sunken);
+  --sidebar-active-bg:               var(--color-accent-bg-subtle);   /* #E7E2FD */
+  --sidebar-active-text:             var(--color-accent-text);        /* #3D33A8 */
+  --sidebar-active-indicator:        var(--color-accent-fill);
+  --sidebar-active-indicator-width:  3px;
+
+  /* Avatar — humans = circle, workspaces = squircle */
+  --avatar-radius:         var(--radius-pill);
+  --workspace-icon-radius: var(--radius-md);
+
+  /* Back-compat aliases used by older inline styles */
+  --duration-fast:    var(--motion-fast);
+  --duration-default: var(--motion-default);
+  --neutral-25:  var(--neutral-50);
+  --neutral-75:  var(--neutral-100);
+  --neutral-950: var(--neutral-900);
+  --primary-50:  var(--indigo-50);
+  --primary-100: var(--indigo-100);
+  --primary-200: var(--indigo-200);
+  --primary-300: var(--indigo-300);
+  --primary-400: var(--indigo-400);
+  --primary-500: var(--indigo-500);
+  --primary-600: var(--indigo-600);
+  --primary-700: var(--indigo-700);
+  --primary-800: var(--indigo-800);
+  --accent-500: var(--indigo-500);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --motion-instant: 0ms; --motion-fast: 0ms; --motion-default: 0ms; --motion-slow: 0ms; }
+}
+
+/* ========== BASE ========== */
+html, body, #root { height: 100%; }
+body {
+  margin: 0;
+  background: var(--color-bg-canvas);
+  color: var(--color-fg-default);
+  font-family: 'Inter', "Inter Variable", system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans Arabic', "IBM Plex Sans Arabic", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  font-size: 14px;                              /* §4.2 canon: body-md DEFAULT 14/20 */
+  line-height: 20px;
+}
+*, *::before, *::after { box-sizing: border-box; }
+
+/* §14 Iconography — Lucide stroke 1.5 across the board. Sizes set per context by JSX. */
+svg.lucide { stroke-width: 1.5; }
+
+/* §3.9 Focus ring — accent at 20% opacity, 2px, 2px offset */
+:where(button, a, input, select, textarea, [role="button"], [tabindex]):focus-visible {
+  outline: 2px solid var(--color-state-focus);
+  outline-offset: 2px;
+  border-radius: var(--radius-md);
+}
+
+/* Hyperlinks — info-blue default, no underline (per canon link token) */
+a { color: var(--color-fg-link); text-decoration: none; }
+a:hover { text-decoration: underline; text-underline-offset: 2px; }
+.banner a { color: var(--color-fg-default); text-decoration: underline; text-underline-offset: 2px; }
+
+/* §4.2 Type ramp — Intercom-exact, all 14 sizes locked */
+.text-display-md { font-size: 28px; line-height: 36px; font-weight: 600; letter-spacing: -0.5px; }
+.text-display-sm { font-size: 24px; line-height: 32px; font-weight: 600; letter-spacing: -0.4px; }
+.text-heading-xl { font-size: 20px; line-height: 28px; font-weight: 600; letter-spacing: -0.4px; }
+.text-heading-lg { font-size: 20px; line-height: 24px; font-weight: 600; letter-spacing: -0.4px; }
+.text-heading-md { font-size: 18px; line-height: 24px; font-weight: 600; }
+.text-heading-sm { font-size: 16px; line-height: 24px; font-weight: 600; }
+.text-heading-xs { font-size: 14px; line-height: 20px; font-weight: 600; }
+.text-body-lg    { font-size: 16px; line-height: 24px; font-weight: 400; }
+.text-body-md    { font-size: 14px; line-height: 20px; font-weight: 400; }
+.text-body-sm    { font-size: 13px; line-height: 18px; font-weight: 400; }
+.text-body-xs    { font-size: 12px; line-height: 16px; font-weight: 400; }
+.text-label-md   { font-size: 14px; line-height: 16px; font-weight: 600; }
+.text-label-sm   { font-size: 13px; line-height: 16px; font-weight: 500; }
+.text-label-xs   { font-size: 11px; line-height: 14px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
+.tabular         { font-variant-numeric: tabular-nums; }
+.fg-muted        { color: var(--color-fg-muted); }
+.fg-subtle       { color: var(--color-fg-subtle); }
+.tabular { font-variant-numeric: tabular-nums; }
+.fg-muted  { color: var(--color-fg-muted); }
+.fg-subtle { color: var(--color-fg-subtle); }
+
+/* ========== SHELL LAYOUT ========== */
+.shell {
+  display: grid;
+  grid-template-columns: var(--rail-w) 1fr;
+  height: 100vh;
+  padding: var(--gutter);
+  gap: var(--gutter);
+  background: var(--color-bg-canvas);
+}
+.workspace { display: flex; flex-direction: column; gap: var(--gutter); min-width: 0; }
+.module-body { flex: 1; min-height: 0; display: grid; gap: var(--gutter); }
+.module-body.variant-a { grid-template-columns: var(--subnav-w) 1fr; }
+.module-body.variant-b { grid-template-columns: var(--inbox-folders-w) var(--inbox-list-w) 1fr var(--details-w); }
+
+/* §11.1 Panels — floating islands separated by 4px lavender gutter (Intercom signature). No column dividers. */
+.panel { background: var(--color-bg-surface); border-radius: var(--radius-xl); min-width: 0; min-height: 0; overflow: hidden; }
+.panel-subnav {
+  background: var(--sidebar-bg);                       /* canon: --color-bg-surface-sunken #FBFBFD */
+  border-radius: var(--radius-xl);
+  display: flex; flex-direction: column;
+  padding: var(--space-4) var(--space-3);              /* 16 / 12 — no 10 (forbidden) */
+}
+.panel-content { display: flex; flex-direction: column; }
+
+/* §11.3 L1 Primary Rail items */
+.rail-item {
+  position: relative;
+  display: flex; align-items: center; gap: 12px;
+  padding: 8px var(--space-3);                          /* 8 / 12 */
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  color: var(--color-fg-default);
+  font-size: 14px; line-height: 20px; font-weight: 400;
+  height: 38px;
+  transition: background var(--motion-fast) var(--ease-out);
+}
+.rail-item:hover { background: var(--color-state-hover); }
+.rail-item.active {
+  background: var(--sidebar-active-bg);
+  color: var(--sidebar-active-text);
+  font-weight: 600;
+}
+.rail-item.active::before {
+  content: '';
+  position: absolute;
+  inset-inline-start: 0; top: 0; bottom: 0;
+  width: var(--sidebar-active-indicator-width);
+  background: var(--sidebar-active-indicator);
+  border-radius: 0 1px 1px 0;
+}
+.rail-item .count {
+  margin-inline-start: auto;
+  font-size: 12px; line-height: 16px;
+  color: var(--color-fg-muted);
+  padding: 1px 8px;
+  border-radius: var(--radius-pill);
+}
+.rail-item.active .count { background: var(--color-accent-fill); color: var(--color-fg-on-accent); font-weight: 600; }
+
+/* §11.4 L2 sub-nav items */
+.nav-item {
+  position: relative;
+  display: flex; align-items: center; gap: 12px;
+  padding: 8px var(--space-3);                          /* 8 / 12 */
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-size: 14px; line-height: 20px;
+  color: var(--color-fg-default);
+  transition: background var(--motion-fast) var(--ease-out);
+}
+.nav-item:hover { background: var(--color-state-hover); }
+.nav-item.active {
+  background: var(--sidebar-active-bg);
+  color: var(--sidebar-active-text);
+  font-weight: 600;
+}
+.nav-item.active::before {
+  content: '';
+  position: absolute;
+  inset-inline-start: 0; top: 0; bottom: 0;
+  width: var(--sidebar-active-indicator-width);
+  background: var(--sidebar-active-indicator);
+  border-radius: 0 1px 1px 0;
+}
+.nav-item .count { margin-inline-start: auto; font-size: 12px; color: var(--color-fg-muted); }
+
+/* §4.2 Section headers — text-label-xs (11/14/600 uppercase 0.04em) */
+.section-header {
+  font-size: 11px;
+  line-height: 14px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 16px var(--space-3) 6px;
+  color: var(--color-fg-muted);
+}
+
+/* ========== MODULE HEADER ========== */
+.module-header {
+  height: var(--module-header-h);
+  padding: 0 var(--space-5);
+  border-bottom: 1px solid var(--color-border-default);
+  display: flex; align-items: center; justify-content: space-between;
+  flex-shrink: 0;
+}
+.module-body-inner { flex: 1; min-height: 0; overflow: auto; padding: var(--space-6) var(--space-6) 80px; }
+
+/* ========== BUTTONS ========== */
+.icon-btn {
+  width: var(--control-h-sm); height: var(--control-h-sm);
+  border-radius: var(--radius-md);
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(--color-fg-default);
+  background: transparent; border: none; cursor: pointer;
+  transition: background var(--duration-fast) var(--ease-out);
+}
+.icon-btn:hover { background: var(--color-state-hover); }
+
+/* §12.1 / §12.2 Buttons — primary pill, secondary/ghost rounded */
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  height: var(--control-h-sm); padding: 0 var(--space-4);
+  font-size: 14px; font-weight: 600; line-height: 16px;
+  cursor: pointer; border: 1px solid transparent;
+  transition: background var(--motion-fast) var(--ease-out), border-color var(--motion-fast) var(--ease-out);
+}
+.btn-primary {
+  background: var(--color-fg-default);             /* canon default: neutral black #1A1A1A */
+  color: var(--color-fg-on-inverse);
+  border-radius: var(--radius-pill);
+}
+.btn-primary:hover { background: var(--neutral-700); }
+.btn-brand {
+  background: var(--color-accent-fill);            /* indigo — brand moments (auth, hero, Upgrade plan) */
+  color: var(--color-accent-text-on-fill);
+  border-radius: var(--radius-pill);
+}
+.btn-brand:hover { background: var(--color-accent-fill-hover); }
+.btn-secondary {
+  background: var(--color-bg-surface);
+  border-color: var(--color-border-default);
+  color: var(--color-fg-default);
+  border-radius: var(--radius-md);
+}
+.btn-secondary:hover { background: var(--color-state-hover); border-color: var(--color-border-strong); }
+.btn-ghost { background: transparent; color: var(--color-fg-default); border-radius: var(--radius-md); }
+.btn-ghost:hover { background: var(--color-state-hover); }
+
+/* §11 Trial/announcement banner — lavender, 49px */
+.banner {
+  height: var(--banner-h);
+  background: var(--color-accent-bg-subtle);   /* lavender #E7E2FD */
+  border-radius: var(--radius-xl);
+  padding: 0 var(--space-4);
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 14px; line-height: 20px;
+  color: var(--color-fg-default);
+}
+.banner a { color: var(--color-accent-text); text-decoration: underline; text-underline-offset: 2px; }
+
+/* ========== HELP BUBBLE ========== */
+.help-bubble {
+  position: fixed; right: 16px; bottom: 16px;
+  width: 44px; height: 44px;
+  border-radius: var(--radius-pill);
+  background: var(--color-bg-inverse); color: var(--color-fg-on-inverse);
+  display: flex; align-items: center; justify-content: center;
+  z-index: var(--z-bubble);
+  cursor: pointer;
+  box-shadow: var(--elev-2);
+  border: none;
+}
+
+/* ========== CALL BAR ========== */
+.call-bar {
+  height: var(--call-bar-h);
+  background: var(--color-bg-surface);
+  border-top: 1px solid var(--color-border-default);
+  padding: 0 var(--space-5);
+  display: flex; align-items: center; justify-content: space-between;
+  flex-shrink: 0;
+}
+.call-control {
+  width: 34px; height: 34px; border-radius: var(--radius-pill);
+  background: var(--color-bg-surface-raised);
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid var(--color-border-default); cursor: pointer;
+  color: var(--color-fg-default);
+}
+.call-control:hover { background: var(--color-bg-surface-sunken); }
+.call-control.danger { background: var(--color-danger-bg); color: var(--color-fg-on-accent); border-color: transparent; }
+.call-control.danger:hover { background: var(--danger-600); }
+
+.pulse {
+  width: 8px; height: 8px; border-radius: var(--radius-pill);
+  background: var(--success-500);
+  box-shadow: 0 0 0 0 rgba(31,157,38, 0.6);
+  animation: pulse 1.8s infinite;
+}
+@keyframes pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(31,157,38, 0.55); }
+  70%  { box-shadow: 0 0 0 6px rgba(31,157,38, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(31,157,38, 0); }
+}
+
+/* §12.4 Card — canon: bg surface, radius-lg (12), padding 24, elev-1 (border + tiny shadow) */
+.kpi {
+  padding: var(--space-6);
+  background: var(--color-bg-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--elev-1);
+}
+.kpi-label { font-size: 13px; line-height: 18px; color: var(--color-fg-muted); }
+.kpi-value {
+  font-size: 20px; line-height: 28px;
+  font-weight: 600;
+  letter-spacing: -0.4px;
+  margin-top: 8px;
+  color: var(--color-fg-default);
+  font-variant-numeric: tabular-nums;
+}
+.kpi-delta { font-size: 13px; line-height: 18px; margin-top: 4px; font-variant-numeric: tabular-nums; }
+.kpi-delta.up   { color: var(--color-success-text); }
+.kpi-delta.down { color: var(--color-danger-text); }
+
+/* §12.5 List row — 56px, lavender bg + 2px indigo left bar when active */
+.list-row {
+  position: relative;
+  display: flex; gap: 12px; align-items: center;
+  min-height: 56px;
+  padding: 0 var(--space-4);
+  border-bottom: 1px solid var(--color-border-default);
+  cursor: pointer;
+  transition: background var(--motion-fast) var(--ease-out);
+}
+.list-row:hover { background: var(--color-state-hover); }
+.list-row.active { background: var(--color-accent-bg-subtle); }
+.list-row.active::before {
+  content: '';
+  position: absolute;
+  inset-inline-start: 0; top: 0; bottom: 0;
+  width: 2px;
+  background: var(--color-accent-fill);
+}
+
+/* §12.7 Avatar — humans = circle, sunken bg, muted text. Workspaces = 8px squircle. */
+.avatar {
+  width: 32px; height: 32px;
+  border-radius: var(--avatar-radius);                    /* pill = circle for humans */
+  background: var(--color-bg-surface-sunken);
+  color: var(--color-fg-muted);
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 13px; line-height: 16px; font-weight: 500;
+  flex-shrink: 0;
+}
+.avatar.workspace { border-radius: var(--workspace-icon-radius); }   /* 8px squircle for orgs only */
+.avatar.neutral   { background: var(--color-bg-surface-sunken); color: var(--color-fg-muted); }
+
+/* §12.7 Details panel property rows */
+.prop-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; font-size: 14px; }
+.prop-row .label {
+  font-size: 11px;
+  line-height: 14px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-fg-muted);
+}
+.prop-row .value { color: var(--color-fg-default); font-weight: 500; font-size: 14px; }
+
+/* Conversation message bubbles (canon §17 anti-pattern: do NOT strip bubbles — keep them subtle) */
+.msg { display: flex; gap: 12px; align-items: flex-start; }
+.msg .avatar { width: 32px; height: 32px; }
+.msg-body { flex: 1; min-width: 0; }
+.msg-meta { font-size: 12px; line-height: 16px; color: var(--color-fg-muted); margin-bottom: 4px; }
+.msg-bubble {
+  padding: 12px var(--space-4);
+  border-radius: var(--radius-lg);
+  font-size: 14px; line-height: 20px;
+}
+.msg-bubble.incoming { background: var(--color-bg-surface-sunken); }
+.msg-bubble.outgoing { background: var(--color-bg-surface); box-shadow: var(--elev-1); }
+
+/* ========== AUDIT TOGGLE PILL ========== */
+.audit-pill {
+  position: fixed; left: 50%; top: 12px;
+  transform: translateX(-50%);
+  z-index: var(--z-command);
+  display: inline-flex; padding: 4px; gap: 4px;
+  background: var(--color-bg-inverse);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--elev-2);
+}
+.audit-pill button {
+  background: transparent; border: none;
+  color: rgba(250,250,247,0.65);
+  padding: 6px 14px; border-radius: var(--radius-pill);
+  font-size: 13px; font-weight: 600; cursor: pointer;
+}
+.audit-pill button.active { background: var(--color-bg-surface); color: var(--color-fg-default); }
+
+.chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  background: var(--color-bg-surface-raised);
+  font-size: 13px; line-height: 18px;
+  color: var(--color-fg-muted);
+  border: 1px solid var(--color-border-default);
+}
+
+/* Craft pass: chart restraint — hide axis lines, gridlines at neutral-100, single color bars */
+.chart-stub {
+  height: 240px;
+  border: none;
+  border-radius: 0;
+  display: flex; align-items: end; gap: 8px;
+  padding: 0;
+  background-color: transparent;
+  background-image: repeating-linear-gradient(
+    to top,
+    transparent 0,
+    transparent 59px,
+    var(--neutral-100) 59px,
+    var(--neutral-100) 60px
+  );
+}
+.bar { flex: 1; background: var(--chart-1); border-radius: 4px 4px 0 0; }
+
+.logo-mark {
+  width: 28px; height: 28px; border-radius: var(--radius-md);
+  background: var(--color-bg-inverse); color: var(--color-fg-on-inverse);
+  display: inline-flex; align-items: center; justify-content: center;
+  font-weight: 600; font-size: 13px;
+}
+
+/* ========== TOAST CARDS (Sonner custom render) ========== */
+@keyframes spin { to { transform: rotate(360deg); } }
+.toast-card {
+  display: flex; align-items: flex-start; gap: 12px;
+  width: 380px;
+  padding: 12px var(--space-4);
+  background: var(--color-bg-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--elev-3);
+  font-family: 'Inter', system-ui, sans-serif;
+  position: relative;
+  border-inline-start: 3px solid transparent;
+}
+.toast-card[data-variant="success"] { border-inline-start-color: var(--color-success-fg); }
+.toast-card[data-variant="warning"] { border-inline-start-color: var(--color-warning-bg); }
+.toast-card[data-variant="error"]   { border-inline-start-color: var(--color-danger-bg); }
+.toast-card[data-variant="info"]    { border-inline-start-color: var(--color-info-bg); }
+.toast-card[data-variant="loading"] { border-inline-start-color: var(--color-accent-bg); }
+.toast-card[data-variant="ai"] {
+  border-inline-start-color: var(--color-ai-accent);
+  box-shadow: var(--elev-2), 0 4px 14px 0 rgba(217,119,87,0.18);
+}
+.toast-icon { flex-shrink: 0; margin-top: 1px; }
+.toast-icon.spin { animation: spin 1s linear infinite; }
+.toast-body { flex: 1; min-width: 0; }
+.toast-message { font-size: 14px; line-height: 20px; font-weight: 600; color: var(--color-fg-default); }
+.toast-desc    { font-size: 13px; line-height: 18px; color: var(--color-fg-muted); margin-top: 2px; }
+.toast-action {
+  flex-shrink: 0;
+  background: transparent;
+  border: 1px solid var(--color-border-default);
+  color: var(--color-fg-default);
+  height: 28px; padding: 0 12px;
+  border-radius: var(--radius-md);
+  font-size: 13px; font-weight: 600; line-height: 18px;
+  cursor: pointer;
+  align-self: center;
+}
+.toast-action:hover { background: var(--color-state-hover); }
+.toast-dismiss {
+  position: absolute;
+  top: 8px; inset-inline-end: 8px;
+  width: 22px; height: 22px;
+  border: none; background: transparent;
+  border-radius: var(--radius-sm);
+  color: var(--color-fg-subtle);
+  cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.toast-dismiss:hover { background: var(--color-state-hover); color: var(--color-fg-default); }
+
+/* Incoming call full-card variant */
+.toast-call {
+  display: flex; align-items: center; gap: 12px;
+  width: 400px;
+  padding: 12px var(--space-4);
+  background: var(--color-bg-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--elev-3);
+}
+.toast-call .caller { flex: 1; min-width: 0; }
+.toast-call .caller .name { font-size: 14px; font-weight: 600; color: var(--color-fg-default); }
+.toast-call .caller .meta { font-size: 13px; color: var(--color-fg-muted); margin-top: 2px; }
+.toast-call .actions { display: flex; gap: 8px; flex-shrink: 0; }
+.call-btn {
+  height: 34px; padding: 0 14px;
+  border-radius: var(--radius-pill);
+  font-size: 13px; font-weight: 600; line-height: 1;
+  display: inline-flex; align-items: center; gap: 6px;
+  cursor: pointer; border: none;
+}
+.call-btn.answer  { background: var(--success-500); color: white; }
+.call-btn.answer:hover  { background: var(--success-600); }
+.call-btn.decline { background: var(--danger-500); color: white; }
+.call-btn.decline:hover { background: var(--danger-600); }
+.call-icon-wrap {
+  width: 40px; height: 40px; border-radius: var(--radius-pill);
+  background: var(--color-success-bg-subtle); color: var(--color-success-fg);
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 0 rgba(31,157,38, 0.45);
+  animation: pulse 1.8s infinite;
+}
+
+/* Override Sonner's default toast wrapper styling — we render unstyled */
+[data-sonner-toaster] [data-sonner-toast] {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  width: auto !important;
+}
+
+/* §12.4 Playground card — canon: elev-1, radius-lg, 24px padding */
+.playground {
+  border: none;
+  box-shadow: var(--elev-1);
+  border-radius: var(--radius-lg);
+  background: var(--color-bg-surface);
+  padding: var(--space-6);
+  margin-bottom: var(--space-4);
+}
+.playground h3 {
+  margin: 0 0 4px 0; font-size: 16px; line-height: 22px; font-weight: 600; color: var(--color-fg-default);
+}
+.playground p { margin: 0 0 12px 0; font-size: 13px; color: var(--color-fg-muted); }
+.playground-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
+.playground-row:last-child { margin-bottom: 0; }
+.pg-btn {
+  height: 32px; padding: 0 12px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border-default);
+  background: var(--color-bg-surface);
+  color: var(--color-fg-default);
+  font-size: 13px; font-weight: 600; line-height: 1; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.pg-btn:hover { background: var(--color-state-hover); }
+.pg-btn[data-tone="success"] { color: var(--color-success-fg); border-color: var(--success-100); }
+.pg-btn[data-tone="warning"] { color: var(--color-warning-fg); border-color: var(--warning-100); }
+.pg-btn[data-tone="error"]   { color: var(--color-danger-fg);  border-color: var(--danger-100); }
+.pg-btn[data-tone="info"]    { color: var(--color-info-fg);    border-color: var(--info-100); }
+.pg-btn[data-tone="ai"]      { color: var(--color-ai-fg);      border-color: var(--ai-surface-300); }
+.pg-btn[data-tone="call"]    { color: var(--color-success-fg); border-color: var(--success-100); background: var(--color-success-bg-subtle); }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="module">
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import { Toaster, toast } from 'sonner';
+import {
+  Inbox, Bot, BookOpen, BarChart3, Send, Users, Search, Settings, User, Pin,
+  Plus, ChevronDown, ChevronLeft, Filter, MoreHorizontal, MessageCircleQuestion,
+  Mic, Pause, ArrowRightLeft, PhoneOff, Sparkles, Star, Tag, AtSign,
+  Bell, CheckCircle2, AlertTriangle, AlertCircle, Info, Loader2, X,
+  PhoneIncoming, Phone, Zap
+} from 'lucide-react';
+
+const e = React.createElement;
+
+/* ---------- Toast system (Sonner custom render) ---------- */
+
+const VARIANTS = {
+  default: { icon: Bell,          color: 'var(--color-fg-default)' },
+  success: { icon: CheckCircle2,  color: 'var(--color-success-fg)' },
+  warning: { icon: AlertTriangle, color: 'var(--color-warning-fg)' },
+  error:   { icon: AlertCircle,   color: 'var(--color-danger-fg)' },
+  info:    { icon: Info,          color: 'var(--color-info-fg)' },
+  loading: { icon: Loader2,       color: 'var(--color-accent-fg)' },
+  ai:      { icon: Sparkles,      color: 'var(--color-ai-fg)' },
+};
+
+function ToastCard({ id, variant, message, description, action }) {
+  const v = VARIANTS[variant] || VARIANTS.default;
+  const Icon = v.icon;
+  return e('div', { className: 'toast-card', 'data-variant': variant, role: variant === 'error' ? 'alert' : 'status' },
+    e(Icon, { size: 18, className: 'toast-icon' + (variant === 'loading' ? ' spin' : ''), style: { color: v.color } }),
+    e('div', { className: 'toast-body' },
+      e('div', { className: 'toast-message' }, message),
+      description ? e('div', { className: 'toast-desc' }, description) : null
+    ),
+    action ? e('button', {
+      className: 'toast-action',
+      onClick: () => { action.onClick?.(); toast.dismiss(id); }
+    }, action.label) : null,
+    e('button', { className: 'toast-dismiss', onClick: () => toast.dismiss(id), 'aria-label': 'Dismiss' }, e(X, { size: 14 }))
+  );
+}
+
+function IncomingCallToast({ id, caller, location }) {
+  return e('div', { className: 'toast-call', role: 'alert' },
+    e('div', { className: 'call-icon-wrap' }, e(PhoneIncoming, { size: 18 })),
+    e('div', { className: 'caller' },
+      e('div', { className: 'name' }, 'Incoming call · ' + caller),
+      e('div', { className: 'meta' }, location)
+    ),
+    e('div', { className: 'actions' },
+      e('button', { className: 'call-btn decline', onClick: () => { toast.dismiss(id); azToast.info('Call declined'); } },
+        e(PhoneOff, { size: 14 }), 'Decline'),
+      e('button', { className: 'call-btn answer', onClick: () => { toast.dismiss(id); azToast.success('Call connected', { description: caller + ' · ' + location }); } },
+        e(Phone, { size: 14 }), 'Answer')
+    )
+  );
+}
+
+/* Duration policy per spec: success=3s, info=4s, warning=5s, error=∞, loading=∞ */
+const DURATIONS = { default: 4000, success: 3000, info: 4000, warning: 5000, error: Infinity, loading: Infinity, ai: 5000 };
+
+function fire(variant, message, opts = {}) {
+  return toast.custom(
+    (id) => e(ToastCard, { id, variant, message, description: opts.description, action: opts.action }),
+    { duration: opts.duration ?? DURATIONS[variant] }
+  );
+}
+
+const azToast = {
+  default: (msg, opts) => fire('default', msg, opts),
+  success: (msg, opts) => fire('success', msg, opts),
+  warning: (msg, opts) => fire('warning', msg, opts),
+  error:   (msg, opts) => fire('error',   msg, opts),
+  info:    (msg, opts) => fire('info',    msg, opts),
+  ai:      (msg, opts) => fire('ai',      msg, opts),
+  promise: (promise, msgs) => {
+    const id = toast.custom(
+      (tid) => e(ToastCard, { id: tid, variant: 'loading', message: msgs.loading }),
+      { duration: Infinity }
+    );
+    Promise.resolve(promise).then((data) => {
+      toast.dismiss(id);
+      azToast.success(typeof msgs.success === 'function' ? msgs.success(data) : msgs.success);
+    }).catch((err) => {
+      toast.dismiss(id);
+      azToast.error(typeof msgs.error === 'function' ? msgs.error(err) : msgs.error);
+    });
+    return id;
+  },
+  incomingCall: ({ caller, location }) => {
+    return toast.custom(
+      (id) => e(IncomingCallToast, { id, caller, location }),
+      { duration: Infinity }
+    );
+  },
+};
+
+// ---------- L1 Primary Rail ----------
+function PrimaryRail({ activeId }) {
+  const modules = [
+    { id: 'inbox',     icon: Inbox,     label: 'Inbox',         count: 24 },
+    { id: 'fin',       icon: Bot,       label: 'Fin AI Agent' },
+    { id: 'knowledge', icon: BookOpen,  label: 'Knowledge' },
+    { id: 'reports',   icon: BarChart3, label: 'Reports' },
+    { id: 'outbound',  icon: Send,      label: 'Outbound' },
+    { id: 'contacts',  icon: Users,     label: 'Contacts' },
+  ];
+  return e('nav', { 'aria-label': 'Primary', style: { padding: '12px 12px', display: 'flex', flexDirection: 'column', gap: 2, zIndex: 'var(--z-l1)' } },
+    e('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '4px 6px 16px' } },
+      e('div', { className: 'logo-mark' }, 'A'),
+      e('button', { className: 'icon-btn', style: { width: 24, height: 24 }, 'aria-label': 'Pin rail' }, e(Pin, { size: 16 }))
+    ),
+    ...modules.map(m =>
+      e('div', { key: m.id, className: 'rail-item' + (activeId === m.id ? ' active' : '') },
+        e(m.icon, { size: 16 }),
+        e('span', null, m.label),
+        m.count != null ? e('span', { className: 'count tabular' }, m.count) : null
+      )
+    ),
+    e('div', { style: { flex: 1 } }),
+    // Get set up pill
+    e('div', { style: { background: 'var(--color-bg-inverse)', color: 'var(--color-fg-on-inverse)', borderRadius: 'var(--radius-lg)', padding: 12, marginBottom: 8 } },
+      e('div', { style: { display: 'flex', alignItems: 'center', gap: 8, fontWeight: 600, fontSize: 14 } }, e(Sparkles, { size: 14 }), 'Get set up'),
+      e('div', { style: { fontSize: 12, lineHeight: '16px', color: 'rgba(250,250,247,0.6)', marginTop: 4 } }, '3 of 7 steps left')
+    ),
+    e('div', { className: 'rail-item' }, e(Search, { size: 16 }), 'Search'),
+    e('div', { className: 'rail-item' }, e(Settings, { size: 16 }), 'Settings'),
+    e('div', { className: 'rail-item' }, e(User, { size: 16 }), 'Profile')
+  );
+}
+
+// ---------- Banner ----------
+function Banner() {
+  return e('div', { className: 'banner', role: 'status' },
+    e('span', null,
+      e('span', { style: { fontWeight: 600, marginInlineEnd: 6 } }, 'Your trial ends in 9 days.'),
+      e('a', { href: '#' }, 'Apply 20% startup discount')
+    ),
+    e('button', { className: 'btn btn-brand' }, 'Upgrade plan')          /* canon §12.1: "Upgrade plan" is a brand moment — indigo */
+  );
+}
+
+// ---------- Secondary Nav (Variant A — Reports) ----------
+function ReportsSubnav() {
+  return e('aside', { className: 'panel-subnav', 'aria-label': 'Secondary', style: { zIndex: 'var(--z-l2)' } },
+    e('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16, padding: '0 4px' } },
+      e('div', { className: 'text-heading-lg' }, 'Reports'),
+      e('button', { className: 'icon-btn', style: { width: 28, height: 28 }, 'aria-label': 'New report' }, e(Plus, { size: 16 }))
+    ),
+    e('div', { className: 'nav-item active' }, e(BarChart3, { size: 16 }), 'Overview'),
+    e('div', { className: 'nav-item' }, e(Inbox, { size: 16 }), 'Inbox performance'),
+    e('div', { className: 'nav-item' }, e(Bot, { size: 16 }), 'Fin performance'),
+    e('div', { className: 'nav-item' }, e(Users, { size: 16 }), 'Teammate activity'),
+    e('div', { className: 'section-header' }, 'Saved'),
+    e('div', { className: 'nav-item' }, e(Star, { size: 16, style: { color: 'var(--warning-300)' } }), 'Weekly snapshot'),
+    e('div', { className: 'nav-item' }, e(Star, { size: 16, style: { color: 'var(--warning-300)' } }), 'SLA breaches'),
+    e('div', { style: { flex: 1 } }),
+    e('div', { style: { borderTop: '1px solid var(--color-border-default)', paddingTop: 8, marginTop: 8 } },
+      e('div', { className: 'nav-item' }, e(Settings, { size: 16 }), 'Manage')
+    )
+  );
+}
+
+// ---------- Module Header ----------
+function ModuleHeader({ title, actions }) {
+  return e('header', { className: 'module-header' },
+    e('div', { style: { display: 'flex', alignItems: 'center', gap: 12 } },
+      e('div', { className: 'text-heading-xl' }, title),                                /* §11.5 page title — 20/28/600 */
+      e('span', { className: 'chip' }, 'Last 30 days', e(ChevronDown, { size: 14 }))
+    ),
+    e('div', { style: { display: 'flex', gap: 4, alignItems: 'center' } }, actions)
+  );
+}
+
+// ---------- Reports body ----------
+function ReportsBody() {
+  const kpis = [
+    { label: 'Conversations',         value: '12,408',  delta: '+8.4%',  dir: 'up' },
+    { label: 'Median first response', value: '1m 42s',  delta: '−12s',   dir: 'up' },
+    { label: 'CSAT',                  value: '94%',     delta: '+1.2pt', dir: 'up' },
+    { label: 'Fin resolution rate',   value: '37%',     delta: '−0.6pt', dir: 'down' },
+  ];
+  const bars = [42, 60, 38, 72, 55, 80, 64, 90, 70, 55, 78, 88];
+  return e('div', { className: 'module-body-inner' },
+    // ---------- Toast playground ----------
+    e('div', { className: 'playground' },
+      e('h3', null, 'Toast & notifications playground'),
+      e('p', null, 'Sonner-backed, top-end position, max stack 3. Helpers: azToast.success/.error/.warning/.info/.ai/.promise/.incomingCall.'),
+      e('div', { className: 'playground-row' },
+        e('button', { className: 'pg-btn', 'data-tone': 'success', onClick: () => azToast.success('Report saved', { description: 'Weekly snapshot · 3s auto-dismiss' }) }, e(CheckCircle2, { size: 14 }), 'Success'),
+        e('button', { className: 'pg-btn', 'data-tone': 'info', onClick: () => azToast.info('Export queued', { description: 'You\'ll get an email when it\'s ready · 4s' }) }, e(Info, { size: 14 }), 'Info'),
+        e('button', { className: 'pg-btn', 'data-tone': 'warning', onClick: () => azToast.warning('SLA at risk', { description: '3 conversations unanswered > 30m · 5s', action: { label: 'View', onClick: () => {} } }) }, e(AlertTriangle, { size: 14 }), 'Warning'),
+        e('button', { className: 'pg-btn', 'data-tone': 'error', onClick: () => azToast.error('Couldn\'t save changes', { description: 'Network error — your edits are kept locally', action: { label: 'Retry', onClick: () => azToast.success('Saved') } }) }, e(AlertCircle, { size: 14 }), 'Error (persistent)'),
+        e('button', { className: 'pg-btn', onClick: () => azToast.default('New comment on Weekly snapshot') }, e(Bell, { size: 14 }), 'Default'),
+        e('button', { className: 'pg-btn', 'data-tone': 'ai', onClick: () => azToast.ai('Fin drafted a reply', { description: 'Review and send · STARTUP20 discount eligibility', action: { label: 'Open', onClick: () => {} } }) }, e(Sparkles, { size: 14 }), 'AI / Fin')
+      ),
+      e('div', { className: 'playground-row' },
+        e('button', { className: 'pg-btn', onClick: () => azToast.promise(new Promise(r => setTimeout(() => r({ rows: 12408 }), 1800)), { loading: 'Generating export…', success: (d) => 'Exported ' + d.rows.toLocaleString() + ' rows', error: 'Export failed' }) }, e(Loader2, { size: 14 }), 'Promise · resolves'),
+        e('button', { className: 'pg-btn', onClick: () => azToast.promise(new Promise((_, rej) => setTimeout(() => rej(), 1600)), { loading: 'Sending broadcast…', success: 'Broadcast sent', error: 'Broadcast failed — check sender' }) }, e(Loader2, { size: 14 }), 'Promise · rejects'),
+        e('button', { className: 'pg-btn', 'data-tone': 'call', onClick: () => azToast.incomingCall({ caller: 'Rana K.', location: 'Lisbon · +351 91 234 5678' }) }, e(PhoneIncoming, { size: 14 }), 'Incoming call (custom render)'),
+        e('button', { className: 'pg-btn', onClick: () => { for (let i = 0; i < 5; i++) setTimeout(() => azToast.info('Stack test #' + (i + 1)), i * 200); } }, e(Zap, { size: 14 }), 'Spam 5 (max stack 3)')
+      )
+    ),
+    e('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, marginBottom: 24 } },
+      ...kpis.map(k =>
+        e('div', { key: k.label, className: 'kpi' },
+          e('div', { className: 'kpi-label' }, k.label),
+          e('div', { className: 'kpi-value' }, k.value),
+          e('div', { className: 'kpi-delta ' + k.dir }, k.delta + ' vs prior 30d')
+        )
+      )
+    ),
+    e('div', { style: { boxShadow: 'var(--elev-1)', borderRadius: 'var(--radius-lg)', padding: 'var(--space-6)', marginBottom: 'var(--space-4)', background: 'var(--color-bg-surface)' } },
+      e('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 } },
+        e('div', { className: 'text-heading-sm' }, 'Volume by day'),
+        e('div', { style: { display: 'flex', gap: 6 } },
+          e('span', { className: 'chip' }, 'All channels'),
+          e('span', { className: 'chip' }, 'All teammates')
+        )
+      ),
+      e('div', { className: 'chart-stub' }, ...bars.map((h, i) => e('div', { key: i, className: 'bar', style: { height: h + '%' } })))
+    ),
+    e('div', { style: { boxShadow: 'var(--elev-1)', borderRadius: 'var(--radius-lg)', background: 'var(--color-bg-surface)' } },
+      e('div', { style: { padding: '16px var(--space-6)', borderBottom: '1px solid var(--color-border-default)' }, className: 'text-heading-sm' }, 'Top tags'),
+      ...['billing', 'onboarding', 'integration', 'pricing', 'cancellation'].map((t, i) =>
+        e('div', { key: t, style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: 'var(--space-4) var(--space-6)', borderTop: i === 0 ? 'none' : '1px solid var(--color-border-default)' } },
+          e('div', { style: { display: 'flex', gap: 10, alignItems: 'center' } }, e(Tag, { style: { color: 'var(--color-fg-subtle)' } }), t),
+          e('div', { className: 'text-body-sm fg-muted tabular' }, (2400 - i * 320).toLocaleString() + ' conversations')
+        )
+      )
+    )
+  );
+}
+
+// ---------- Inbox folders (L2 — Variant B) ----------
+function InboxFolders() {
+  return e('aside', { className: 'panel-subnav', 'aria-label': 'Secondary', style: { zIndex: 'var(--z-l2)' } },
+    e('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16, padding: '0 4px' } },
+      e('div', { className: 'text-heading-lg' }, 'Inbox'),
+      e('button', { className: 'icon-btn', style: { width: 28, height: 28 }, 'aria-label': 'New view' }, e(Plus, { size: 16 }))
+    ),
+    e('div', { className: 'nav-item' },
+      e(Search, { size: 16 }), 'Search',
+      e('span', { style: { marginInlineStart: 'auto', fontSize: 12, color: 'var(--color-fg-subtle)' } }, '⌘K')
+    ),
+    e('div', { className: 'nav-item' }, e(Inbox, { size: 16 }), 'Your inbox', e('span', { className: 'count tabular' }, 12)),
+    e('div', { className: 'nav-item' }, e(AtSign, { size: 16 }), 'Mentions'),
+    e('div', { className: 'nav-item' }, e(Star, { size: 16, style: { color: 'var(--warning-300)' } }), 'Created by you'),
+    e('div', { className: 'section-header' }, 'Views'),
+    e('div', { className: 'nav-item active' }, '🔥', 'Urgent', e('span', { className: 'count tabular' }, 4)),
+    e('div', { className: 'nav-item' }, '💸', 'Billing', e('span', { className: 'count tabular' }, 9)),
+    e('div', { className: 'nav-item' }, '⏳', 'Awaiting reply'),
+    e('div', { className: 'section-header' }, 'Teammates'),
+    e('div', { className: 'nav-item' }, e('span', { className: 'avatar', style: { width: 20, height: 20, fontSize: 10 } }, 'MA'), 'Maya A.'),
+    e('div', { className: 'nav-item' }, e('span', { className: 'avatar', style: { width: 20, height: 20, fontSize: 10 } }, 'JO'), 'Jonas O.'),
+    e('div', { style: { flex: 1 } }),
+    e('div', { style: { borderTop: '1px solid var(--color-border-default)', paddingTop: 8, marginTop: 8 } },
+      e('div', { className: 'nav-item' }, e(Settings, { size: 16 }), 'Manage')
+    )
+  );
+}
+
+// ---------- List column (conversations) ----------
+function ConversationList({ activeId, onSelect }) {
+  const rows = [
+    { id: 1, who: 'Rana K.',           initials: 'RK', preview: "Can't apply the discount on annual plan — checkout shows error", time: '2m',   unread: true },
+    { id: 2, who: 'Amir S.',           initials: 'AS', preview: 'Webhook is firing twice for new contacts. Logs attached.',       time: '14m' },
+    { id: 3, who: 'Studio NoorMail',   initials: 'SN', preview: 'Re: integration with HubSpot — Yes, this works on the Pro plan.',time: '1h' },
+    { id: 4, who: 'Hessa M.',          initials: 'HM', preview: 'Where do I export the contact CSV from?',                        time: '3h' },
+    { id: 5, who: 'Karim Z.',          initials: 'KZ', preview: 'Thanks! That fixed it.',                                          time: 'Yest' },
+    { id: 6, who: 'Layla F.',          initials: 'LF', preview: 'Setting up SSO with Okta — getting a 403 on callback URL',        time: '2d' },
+  ];
+  return e('section', { className: 'panel' },
+    e('div', { style: { padding: 'var(--space-4)', borderBottom: '1px solid var(--color-border-default)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' } },
+      e('div', { style: { display: 'flex', alignItems: 'center', gap: 10 } },
+        e('button', { className: 'icon-btn', style: { width: 28, height: 28 }, 'aria-label': 'Back' }, e(ChevronLeft, { size: 16 })),
+        e('div', { className: 'text-heading-sm' }, 'Urgent')
+      ),
+      e('button', { className: 'icon-btn', style: { width: 32, height: 32, borderRadius: 'var(--radius-pill)' }, 'aria-label': 'Search' }, e(Search, { size: 14 }))
+    ),
+    e('div', { style: { padding: '8px var(--space-4)', display: 'flex', justifyContent: 'space-between' } },
+      e('span', { className: 'text-body-sm fg-muted tabular' }, rows.length + ' Open'),
+      e('span', { className: 'text-body-sm fg-muted', style: { display: 'inline-flex', alignItems: 'center', gap: 4 } }, 'Newest', e(ChevronDown, { size: 12 }))
+    ),
+    e('div', null, ...rows.map(r =>
+      e('div', { key: r.id, className: 'list-row' + (activeId === r.id ? ' active' : ''), onClick: () => onSelect(r.id) },
+        e('div', { className: 'avatar' }, r.initials),
+        e('div', { style: { minWidth: 0, flex: 1 } },
+          e('div', { style: { display: 'flex', justifyContent: 'space-between', gap: 8 } },
+            e('span', { style: { fontWeight: r.unread ? 600 : 400, fontSize: 14, lineHeight: '20px' } }, r.who),
+            e('span', { className: 'text-body-xs fg-subtle tabular' }, r.time)
+          ),
+          e('div', { className: 'text-body-sm fg-muted', style: { overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', marginTop: 2 } }, r.preview)
+        )
+      )
+    ))
+  );
+}
+
+// ---------- Conversation content ----------
+function ConversationContent() {
+  return e(React.Fragment, null,
+    e('header', { className: 'module-header' },
+      e('div', { style: { display: 'flex', alignItems: 'center', gap: 10 } },
+        e('div', { className: 'avatar neutral', style: { width: 28, height: 28 } }, 'RK'),
+        e('div', null,
+          e('div', { className: 'text-heading-sm' }, 'Rana K.'),
+          e('div', { className: 'text-body-sm fg-muted' }, 'rana@noormail.studio · Last reply 2m ago')
+        )
+      ),
+      e('div', { style: { display: 'flex', gap: 4 } },
+        e('button', { className: 'icon-btn', title: 'Snooze' }, e(MessageCircleQuestion, { size: 20 })),
+        e('button', { className: 'icon-btn', title: 'More' }, e(MoreHorizontal, { size: 20 })),
+        e('button', { className: 'btn btn-primary', style: { marginInlineStart: 8 } }, 'Close')
+      )
+    ),
+    e('div', { className: 'module-body-inner', style: { padding: 'var(--space-6)' } },
+      e('div', { style: { maxWidth: 720, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 16 } },
+        // Rana — incoming bubble (sunken bg), canon §17: bubbles stay
+        e('div', { className: 'msg' },
+          e('div', { className: 'avatar' }, 'RK'),
+          e('div', { className: 'msg-body' },
+            e('div', { className: 'msg-meta' }, e('span', { style: { fontWeight: 600, color: 'var(--color-fg-default)' } }, 'Rana K.'), ' · 11:42'),
+            e('div', { className: 'msg-bubble incoming' }, 'Hi — I\'m on the annual checkout and the 20% startup discount won\'t apply. The code (STARTUP20) shows valid on the pricing page but errors at the final step.')
+          )
+        ),
+        // You — outgoing bubble (white card with elev-1)
+        e('div', { className: 'msg' },
+          e('div', { className: 'avatar' }, 'You'),
+          e('div', { className: 'msg-body' },
+            e('div', { className: 'msg-meta' }, e('span', { style: { fontWeight: 600, color: 'var(--color-fg-default)' } }, 'You'), ' · 11:44'),
+            e('div', { className: 'msg-bubble outgoing' }, 'Thanks Rana — looking into this now. Can you share the email used on the discount form?')
+          )
+        ),
+        // Copilot — §12.8 AI suggestion card
+        e('div', { style: { background: 'var(--color-ai-bg-subtle)', padding: 'var(--space-4)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--color-ai-border)' } },
+          e('div', { style: { display: 'inline-flex', alignItems: 'center', gap: 6, fontWeight: 600, color: 'var(--color-ai-text)', fontSize: 13, lineHeight: '16px', marginBottom: 8 } },
+            e(Sparkles, { size: 16 }), 'Copilot · suggested reply'
+          ),
+          e('div', { style: { fontSize: 14, lineHeight: '20px' } }, 'STARTUP20 is restricted to workspaces under 6 months old. NoorMail Studio is 4 months old — eligible. Likely a checkout race condition; ask Rana to refresh and re-enter the code at the totals step.')
+        )
+      )
+    ),
+    e('div', { className: 'call-bar', role: 'region', 'aria-label': 'Active call' },
+      e('div', { style: { display: 'flex', alignItems: 'center', gap: 10 } },
+        e('div', { className: 'pulse' }),
+        e('div', { style: { fontWeight: 600, fontSize: 14 } }, 'Rana K. — Lisbon'),
+        e('div', { className: 'text-body-sm fg-muted tabular' }, '02:14')
+      ),
+      e('div', { style: { display: 'flex', gap: 8 } },
+        e('button', { className: 'call-control', title: 'Mute' }, e(Mic, { size: 14 })),
+        e('button', { className: 'call-control', title: 'Hold' }, e(Pause, { size: 14 })),
+        e('button', { className: 'call-control', title: 'Transfer' }, e(ArrowRightLeft, { size: 14 })),
+        e('button', { className: 'call-control danger', title: 'End call' }, e(PhoneOff, { size: 14 }))
+      )
+    )
+  );
+}
+
+// ---------- Details panel ----------
+function DetailsPanel() {
+  const [tab, setTab] = React.useState('details');
+  return e('aside', { className: 'panel', 'aria-label': 'Details', style: { display: 'flex', flexDirection: 'column' } },
+    e('div', { style: { display: 'flex', borderBottom: '1px solid var(--color-border-default)' } },
+      ...['details', 'copilot'].map(t =>
+        e('button', {
+          key: t,
+          onClick: () => setTab(t),
+          className: 'text-label-md',
+          style: {
+            flex: 1, padding: '12px 0',
+            background: 'transparent', border: 'none',
+            color: tab === t ? 'var(--color-fg-default)' : 'var(--color-fg-muted)',
+            borderBottom: tab === t ? '2px solid var(--color-warning-bg)' : '2px solid transparent',
+            cursor: 'pointer', textTransform: 'capitalize'
+          }
+        }, t)
+      )
+    ),
+    e('div', { style: { padding: 'var(--space-4)', overflow: 'auto', flex: 1 } },
+      tab === 'details' ? e(React.Fragment, null,
+        e('div', { style: { display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14 } },
+          e('div', { className: 'avatar neutral' }, 'RK'),
+          e('div', null,
+            e('div', { className: 'text-label-md' }, 'Rana K.'),
+            e('div', { className: 'text-body-sm fg-muted' }, 'rana@noormail.studio')
+          )
+        ),
+        e('div', { style: { borderTop: '1px solid var(--color-border-default)', paddingTop: 10 } },
+          e('div', { className: 'text-heading-xs', style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '6px 0' } },
+            'Conversation', e(ChevronDown, { size: 14 })
+          ),
+          e('div', { className: 'prop-row' }, e('span', { className: 'label' }, 'Status'),    e('span', { className: 'value' }, 'Open')),
+          e('div', { className: 'prop-row' }, e('span', { className: 'label' }, 'Priority'),  e('span', { className: 'value' }, 'Urgent')),
+          e('div', { className: 'prop-row' }, e('span', { className: 'label' }, 'Assignee'),  e('span', { className: 'value' }, 'You')),
+          e('div', { className: 'prop-row' }, e('span', { className: 'label' }, 'Team'),      e('span', { className: 'value' }, 'Billing')),
+          e('div', { className: 'prop-row' }, e('span', { className: 'label' }, 'Tag'),       e('span', { className: 'value' }, 'billing · discount'))
+        ),
+        e('div', { style: { borderTop: '1px solid var(--color-border-default)', paddingTop: 10, marginTop: 10 } },
+          e('div', { className: 'text-heading-xs', style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '6px 0' } },
+            'User', e(ChevronDown, { size: 14 })
+          ),
+          e('div', { className: 'prop-row' }, e('span', { className: 'label' }, 'Plan'),       e('span', { className: 'value' }, 'Trial · 9d left')),
+          e('div', { className: 'prop-row' }, e('span', { className: 'label' }, 'Workspace'),  e('span', { className: 'value' }, 'NoorMail Studio')),
+          e('div', { className: 'prop-row' }, e('span', { className: 'label' }, 'Country'),    e('span', { className: 'value' }, 'Portugal'))
+        )
+      ) : e('div', { style: { padding: '12px 0' } },
+        e('div', { className: 'text-heading-xs', style: { display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8, color: 'var(--color-ai-fg)' } },
+          e(Sparkles, { size: 14 }), 'Copilot suggestions'
+        ),
+        e('div', { className: 'text-body-md fg-muted' },
+          'STARTUP20 is restricted to workspaces under 6 months old. NoorMail Studio was created 4 months ago — eligible. Likely a checkout race condition; ask Rana to refresh and re-enter the code at the totals step.'
+        ),
+        e('button', { className: 'btn btn-secondary', style: { marginTop: 12, width: '100%', justifyContent: 'center' } }, 'Insert as draft reply')
+      )
+    )
+  );
+}
+
+function HelpBubble() {
+  return e('button', { className: 'help-bubble', 'aria-label': 'Open help' }, e(MessageCircleQuestion, { size: 20 }));
+}
+
+function App() {
+  const [variant, setVariant] = React.useState('a');
+  const [activeConv, setActiveConv] = React.useState(1);
+
+  const reportsActions = [
+    e('button', { key: 'flt', className: 'icon-btn', title: 'Filter' }, e(Filter, { size: 20 })),
+    e('button', { key: 'mor', className: 'icon-btn', title: 'More' }, e(MoreHorizontal, { size: 20 })),
+    e('button', { key: 'shr', className: 'btn btn-secondary', style: { marginInlineStart: 4 } }, 'Share'),
+    e('button', { key: 'new', className: 'btn btn-primary', style: { marginInlineStart: 4 } }, e(Plus, { size: 16 }), 'New report')
+  ];
+
+  return e('div', null,
+    e('div', { className: 'audit-pill', role: 'tablist', 'aria-label': 'Variant' },
+      e('button', { className: variant === 'a' ? 'active' : '', onClick: () => setVariant('a') }, 'Variant A · Standard (Reports)'),
+      e('button', { className: variant === 'b' ? 'active' : '', onClick: () => setVariant('b') }, 'Variant B · Object detail (Inbox)')
+    ),
+    e('div', { className: 'shell' },
+      e(PrimaryRail, { activeId: variant === 'a' ? 'reports' : 'inbox' }),
+      e('div', { className: 'workspace' },
+        e(Banner),
+        variant === 'a'
+          ? e('div', { className: 'module-body variant-a' },
+              e(ReportsSubnav),
+              e('section', { className: 'panel panel-content' },
+                e(ModuleHeader, { title: 'Overview', actions: reportsActions }),
+                e(ReportsBody)
+              )
+            )
+          : e('div', { className: 'module-body variant-b' },
+              e(InboxFolders),
+              e(ConversationList, { activeId: activeConv, onSelect: setActiveConv }),
+              e('section', { className: 'panel panel-content' }, e(ConversationContent)),
+              e(DetailsPanel)
+            )
+      ),
+      e(HelpBubble),
+      e(Toaster, {
+        position: 'top-right',
+        visibleToasts: 3,
+        gap: 8,
+        offset: 16,
+        dir: 'ltr',
+        toastOptions: { unstyled: true }
+      })
+    )
+  );
+}
+
+createRoot(document.getElementById('root')).render(e(App));
+</script>
+</body>
+</html>

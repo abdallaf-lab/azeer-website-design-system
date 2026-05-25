@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<link rel="stylesheet" href="../colors_and_type.css"/>
+<style>
+  body { padding: 20px; }
+  .card-wrap { display: flex; flex-direction: column; gap: 14px; }
+  .row { display: flex; gap: 10px; }
+  .swatch {
+    flex: 1; height: 76px; border-radius: var(--radius);
+    border: 1px solid var(--border);
+    padding: 8px 10px; display:flex; flex-direction:column; justify-content: space-between;
+  }
+  .name { font-size: 11px; font-weight: 600; line-height: 1; }
+  .hex { font-size: 10px; font-family: var(--font-mono); opacity: 0.72; }
+  .label-row { display:flex; justify-content: space-between; align-items:baseline; }
+  .tag { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; opacity: 0.7; }
+  .caption { color: var(--muted-foreground); font-size: 12px; }
+</style>
+</head>
+<body>
+<div class="card-wrap">
+  <div class="label-row"><span class="tag">Neutrals &amp; surfaces</span><span class="caption">Light mode</span></div>
+  <div class="row">
+    <div class="swatch" style="background:#FFFFFF;color:#2E2E2E;"><span class="name">background</span><span class="hex">#FFFFFF</span></div>
+    <div class="swatch" style="background:#FFFFFF;color:#2E2E2E;"><span class="name">card</span><span class="hex">#FFFFFF</span></div>
+    <div class="swatch" style="background:#F5F5F5;color:#2E2E2E;"><span class="name">muted</span><span class="hex">#F5F5F5</span></div>
+    <div class="swatch" style="background:#E4E4E4;color:#2E2E2E;"><span class="name">border</span><span class="hex">#E4E4E4</span></div>
+    <div class="swatch" style="background:#2E2E2E;color:#FCFCFC;"><span class="name">foreground</span><span class="hex">#2E2E2E</span></div>
+    <div class="swatch" style="background:#4D4D4D;color:#FCFCFC;"><span class="name">muted-fg</span><span class="hex">#4D4D4D</span></div>
+  </div>
+  <div class="label-row"><span class="tag">Neutrals &amp; surfaces</span><span class="caption">Dark mode</span></div>
+  <div class="row">
+    <div class="swatch" style="background:#090909;color:#FCFCFC;border-color:#222;"><span class="name">background</span><span class="hex">#090909</span></div>
+    <div class="swatch" style="background:#161616;color:#FCFCFC;border-color:#222;"><span class="name">card</span><span class="hex">#161616</span></div>
+    <div class="swatch" style="background:#1A1A1A;color:#FCFCFC;border-color:#222;"><span class="name">muted</span><span class="hex">#1A1A1A</span></div>
+    <div class="swatch" style="background:#2A2A2A;color:#FCFCFC;border-color:#333;"><span class="name">border 10%</span><span class="hex">rgba(255,255,255,0.10)</span></div>
+    <div class="swatch" style="background:#FCFCFC;color:#090909;"><span class="name">foreground</span><span class="hex">#FCFCFC</span></div>
+    <div class="swatch" style="background:#A1A1A1;color:#090909;"><span class="name">muted-fg</span><span class="hex">#A1A1A1</span></div>
+  </div>
+</div>
+</body>
+</html>

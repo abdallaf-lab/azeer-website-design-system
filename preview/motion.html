@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<link rel="stylesheet" href="../colors_and_type.css"/>
+<style>
+  body { padding: 20px; }
+  .row { display:flex; gap: 14px; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border); }
+  .row:last-child { border-bottom: 0; }
+  .name { width: 130px; font-size: 12px; font-weight: 600; font-family: var(--font-mono); }
+  .spec { font-size: 11px; color: var(--muted-foreground); font-family: var(--font-mono); margin-inline-start: auto; }
+  .demo { width: 120px; height: 10px; background: #E4E4E4; border-radius: 99px; overflow: hidden; position: relative; }
+  .fill {
+    height: 100%; width: 30%; background: #7C64FE; border-radius: 99px;
+    animation: slide 2s infinite;
+  }
+  @keyframes slide {
+    0%   { transform: translateX(-40%); }
+    100% { transform: translateX(350%); }
+  }
+  .fill.fast    { animation-duration: 1s; animation-timing-function: cubic-bezier(0.87,0,0.13,1); }
+  .fill.base    { animation-duration: 2s; animation-timing-function: cubic-bezier(0.16,1,0.3,1); }
+  .fill.slow    { animation-duration: 3s; animation-timing-function: cubic-bezier(0.7,0,0.84,0); }
+  .tag { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; opacity: 0.7; font-weight: 600; display:block; margin-bottom: 10px; }
+</style>
+</head>
+<body>
+<span class="tag">Motion · 3 durations × 3 curves × 4 presets</span>
+<div class="row"><span class="name">fast · 100ms</span><div class="demo"><div class="fill fast"></div></div><span class="spec">state-change · hover, tab, focus</span></div>
+<div class="row"><span class="name">base · 200ms</span><div class="demo"><div class="fill base"></div></div><span class="spec">exit · ease-in-quint</span></div>
+<div class="row"><span class="name">slow · 400ms</span><div class="demo"><div class="fill slow"></div></div><span class="spec">enter · ease-out-quint</span></div>
+<div class="row"><span class="name">pulse</span><div class="demo" style="width:auto;flex:0 0 40px;height:40px;border-radius:99px;background:transparent;"><div class="azeer-pulse" style="width:24px;height:24px;border-radius:99px;background:#E5484D;margin:8px"></div></div><span class="spec">1.5s infinite · voice only (recording, ringing)</span></div>
+</body>
+</html>

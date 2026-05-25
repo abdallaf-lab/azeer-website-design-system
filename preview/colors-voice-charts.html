@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<link rel="stylesheet" href="../colors_and_type.css"/>
+<style>
+  body { padding: 20px; }
+  .card-wrap { display: flex; flex-direction: column; gap: 16px; }
+  .row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+  .voice {
+    display:flex; align-items:center; gap: 10px;
+    padding: 14px 16px; border-radius: var(--radius); border: 1px solid var(--border);
+    background: var(--card);
+  }
+  .voice .dot { width: 12px; height: 12px; border-radius: var(--radius-full); }
+  .voice .name { font-size: 13px; font-weight: 600; color: var(--foreground); }
+  .voice .hex { font-size: 11px; font-family: var(--font-mono); color: var(--muted-foreground); margin-inline-start: auto; }
+  .tag { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; opacity: 0.7; }
+  .chart-row { display:flex; gap:8px; align-items: end; height: 80px; padding: 0 4px; }
+  .bar { flex:1; border-radius: 6px 6px 0 0; }
+</style>
+</head>
+<body>
+<div class="card-wrap">
+  <div><span class="tag">Voice tokens · pulse motion on recording &amp; ringing</span></div>
+  <div class="row">
+    <div class="voice"><span class="dot azeer-pulse" style="background:#E5484D;"></span><span class="name">recording</span><span class="hex">#E5484D</span></div>
+    <div class="voice"><span class="dot" style="background:#12BFA5;"></span><span class="name">on-call</span><span class="hex">#12BFA5</span></div>
+    <div class="voice"><span class="dot azeer-pulse" style="background:#FEB343;"></span><span class="name">ringing</span><span class="hex">#FEB343</span></div>
+  </div>
+  <div><span class="tag">Chart series · chart-1 … chart-5</span></div>
+  <div class="chart-row">
+    <div class="bar" style="background:#7C64FE;height:70%"></div>
+    <div class="bar" style="background:#00BCFF;height:85%"></div>
+    <div class="bar" style="background:#FEB343;height:55%"></div>
+    <div class="bar" style="background:#FF655A;height:40%"></div>
+    <div class="bar" style="background:#12BFA5;height:92%"></div>
+  </div>
+</div>
+</body>
+</html>

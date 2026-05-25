@@ -1,0 +1,231 @@
+{
+  "common": {
+    "loading": "جاري التحميل…",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "duplicate": "نسخ",
+    "close": "إغلاق",
+    "back": "رجوع",
+    "next": "التالي",
+    "search": "بحث",
+    "actions": "إجراءات",
+    "yes": "نعم",
+    "no": "لا",
+    "english": "English",
+    "arabic": "العربية"
+  },
+  "nav": {
+    "primary": "التنقل الرئيسي",
+    "secondary": "التنقل الفرعي",
+    "modules": {
+      "inbox": "صندوق الوارد",
+      "fin": "وكيل Fin AI",
+      "knowledge": "المعرفة",
+      "reports": "التقارير",
+      "outbound": "الحملات الصادرة",
+      "contacts": "جهات الاتصال",
+      "apps": "التطبيقات"
+    },
+    "search": "بحث…",
+    "settings": "الإعدادات",
+    "help": "مساعدة"
+  },
+  "apps": {
+    "section": "التطبيقات",
+    "whatsappFlow": "نماذج واتساب",
+    "templates": "قوالب الرسائل",
+    "broadcasts": "البث",
+    "automations": "الأتمتة"
+  },
+  "flow": {
+    "title": "نماذج واتساب",
+    "subtitle": "أنشئ وأرسل وحلِّل نماذج واتساب التفاعلية",
+    "breadcrumb": {
+      "apps": "التطبيقات",
+      "flow": "نماذج واتساب"
+    },
+    "create": "إنشاء نموذج واتساب",
+    "tabs": {
+      "active": "نشطة",
+      "archived": "مؤرشفة",
+      "all": "كل النماذج"
+    },
+    "search": "ابحث بالاسم أو المعرّف…",
+    "filters": {
+      "addFilter": "إضافة فلتر",
+      "status": "الحالة",
+      "category": "الفئة",
+      "clear": "مسح الفلاتر"
+    },
+    "table": {
+      "name": "الاسم",
+      "id": "معرّف النموذج",
+      "status": "الحالة",
+      "category": "الفئة",
+      "deliveries": "المرسلة",
+      "completionRate": "نسبة الإكمال",
+      "lastUpdated": "آخر تحديث",
+      "rowsPerPage": "صفوف لكل صفحة",
+      "page": "صفحة {{current}} من {{total}}",
+      "showing": "عرض {{from}}–{{to}} من {{total}} نموذج"
+    },
+    "rowMenu": {
+      "open": "فتح",
+      "edit": "تعديل",
+      "duplicate": "نسخ",
+      "submitForReview": "إرسال للمراجعة",
+      "publish": "نشر",
+      "unpublish": "إلغاء النشر",
+      "archive": "أرشفة",
+      "restore": "استعادة",
+      "copyId": "نسخ المعرّف",
+      "copyJson": "نسخ JSON من Meta",
+      "delete": "حذف"
+    },
+    "status": {
+      "DRAFT": "مسودة",
+      "IN_REVIEW": "قيد المراجعة",
+      "APPROVED": "معتمد",
+      "PUBLISHED": "منشور",
+      "REJECTED": "مرفوض",
+      "THROTTLED": "مُقيّد",
+      "BLOCKED": "محظور",
+      "ARCHIVED": "مؤرشف"
+    },
+    "categories": {
+      "SIGN_UP": "تسجيل جديد",
+      "SIGN_IN": "تسجيل دخول",
+      "APPOINTMENT_BOOKING": "حجز موعد",
+      "LEAD_GENERATION": "توليد عملاء",
+      "CONTACT_US": "تواصل معنا",
+      "CUSTOMER_SUPPORT": "دعم العملاء",
+      "SURVEY": "استبيان",
+      "OTHER": "أخرى"
+    },
+    "empty": {
+      "title": "لا توجد نماذج بعد",
+      "description": "أنشئ أول نموذج واتساب لجمع البيانات داخل المحادثة مباشرة — بدون احتكاك أو روابط خارجية.",
+      "starters": "أو ابدأ من قالب جاهز",
+      "templates": {
+        "appointment": {
+          "title": "حجز موعد",
+          "description": "اجمع التاريخ والوقت وبيانات التواصل لحجز خدمة."
+        },
+        "lead": {
+          "title": "التقاط العملاء المحتملين",
+          "description": "أهِّل العملاء بالاسم وحجم الشركة والاحتياج."
+        },
+        "nps": {
+          "title": "استبيان NPS",
+          "description": "تقييم 0–10 مع حقل سبب اختياري."
+        },
+        "support": {
+          "title": "استلام طلبات الدعم",
+          "description": "صنّف التذاكر حسب النوع والأولوية ورقم الطلب."
+        },
+        "feedback": {
+          "title": "ملاحظات المنتج",
+          "description": "نص حر مع تقييم لتغذية خارطة الطريق."
+        }
+      }
+    },
+    "filteredEmpty": {
+      "title": "لا توجد نماذج تطابق هذه الفلاتر",
+      "description": "جرّب توسيع البحث أو إزالة أحد الفلاتر."
+    },
+    "permissionEmpty": {
+      "title": "لا تملك صلاحية الوصول إلى نماذج واتساب",
+      "description": "اطلب من المسؤول تفعيل الصلاحية لدورك."
+    },
+    "noWaba": {
+      "title": "اربط حساب واتساب للأعمال",
+      "description": "تحتاج نماذج واتساب إلى حساب WABA متّصل قبل إنشاء أو نشر النماذج.",
+      "cta": "ربط واتساب"
+    },
+    "errors": {
+      "load": "تعذر تحميل النماذج.",
+      "loadHelp": "Meta تواجه مشكلة — تم العرض من الذاكرة المؤقتة (آخر مزامنة: قبل {{ago}}).",
+      "retry": "إعادة المحاولة",
+      "concurrentEdit": "قام شخص آخر بتعديل هذا النموذج للتو. أعد التحميل لرؤية التغييرات."
+    },
+    "banners": {
+      "submissionsWarn": "استخدمت {{used, number}} من {{cap, number}} إرسال هذا الشهر. ارفع الباقة إلى Enterprise للحصول على عدد غير محدود.",
+      "submissionsCap": "وصلت إلى الحد الشهري للإرسالات. يمكنك إنشاء نماذج كمسودات لكن لا يمكن نشرها.",
+      "publishedCap": "وصلت إلى الحد الأقصى ({{cap, number}}) للنماذج المنشورة في باقتك.",
+      "metaCategoryChange": "أعادت Meta تصنيف هذا النموذج إلى {{category}}.",
+      "upgrade": "ترقية الباقة"
+    },
+    "create": {
+      "title": "إنشاء نموذج واتساب",
+      "subtitle": "الخطوة 1 من 2 · الاسم والفئة",
+      "nameLabel": "اسم النموذج",
+      "namePlaceholder": "مثال: حجز — أورا هايتس",
+      "nameHelp": "يظهر للمسؤولين فقط، ولا يراه العميل.",
+      "categoryLabel": "الفئة",
+      "categoryHelp": "تستخدم Meta الفئة لتوجيه المحادثات وتسعيرها.",
+      "endpointLabel": "إرسال البيانات إلى خادمك (مع endpoint)",
+      "endpointHelp": "استلم Webhook موقّع HMAC لكل إرسال. غير متاح في باقة Pro — رقّ إلى Enterprise.",
+      "endpointGated": "متاح في Enterprise",
+      "submit": "المتابعة إلى المُنشئ",
+      "validation": {
+        "nameRequired": "اسم النموذج مطلوب",
+        "nameTooLong": "اجعل الاسم أقل من 100 حرف"
+      }
+    },
+    "builder": {
+      "title": "{{name}} · المُنشئ",
+      "screensPanel": "الشاشات",
+      "addScreen": "إضافة شاشة",
+      "blocksPanel": "المحتوى",
+      "previewPanel": "معاينة مباشرة",
+      "blocks": {
+        "Heading": "عنوان رئيسي",
+        "SubHeading": "عنوان فرعي",
+        "Caption": "تعليق",
+        "TextBody": "فقرة نصية",
+        "TextInput": "حقل نصي",
+        "TextArea": "نص متعدد الأسطر",
+        "Date": "تاريخ",
+        "Dropdown": "قائمة منسدلة",
+        "RadioButton": "أزرار خيار",
+        "CheckboxGroup": "خانات اختيار",
+        "OptIn": "خانة موافقة",
+        "Image": "صورة",
+        "EmbeddedLink": "رابط مدمج",
+        "Footer": "زر سفلي"
+      },
+      "copyJson": "نسخ JSON من Meta",
+      "copiedJson": "تم نسخ JSON إلى الحافظة",
+      "saveExit": "حفظ وخروج",
+      "unsaved": {
+        "title": "تجاهل التغييرات؟",
+        "description": "لديك تعديلات غير محفوظة على هذا النموذج.",
+        "confirm": "تجاهل",
+        "keep": "متابعة التعديل"
+      }
+    },
+    "delete": {
+      "title": "حذف هذا النموذج؟",
+      "description": "سيتم حذف «{{name}}» نهائيًا. ستُحفظ الإرسالات وفق سياسة الاحتفاظ.",
+      "confirm": "حذف النموذج"
+    },
+    "toasts": {
+      "created": "تم إنشاء النموذج كمسودة",
+      "submitted": "أُرسل إلى Meta للمراجعة",
+      "published": "النموذج منشور الآن",
+      "unpublished": "تم إلغاء نشر النموذج",
+      "archived": "تم أرشفة النموذج",
+      "restored": "تم استعادة النموذج إلى المسودات",
+      "deleted": "تم حذف النموذج",
+      "duplicated": "تم نسخ النموذج"
+    }
+  },
+  "time": {
+    "justNow": "الآن",
+    "minutesAgo": "قبل {{count}} د",
+    "hoursAgo": "قبل {{count}} س",
+    "daysAgo": "قبل {{count}} يوم"
+  }
+}

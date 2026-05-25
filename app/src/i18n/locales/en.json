@@ -1,0 +1,231 @@
+{
+  "common": {
+    "loading": "Loading…",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "duplicate": "Duplicate",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "search": "Search",
+    "actions": "Actions",
+    "yes": "Yes",
+    "no": "No",
+    "english": "English",
+    "arabic": "العربية"
+  },
+  "nav": {
+    "primary": "Primary navigation",
+    "secondary": "Secondary navigation",
+    "modules": {
+      "inbox": "Inbox",
+      "fin": "Fin AI Agent",
+      "knowledge": "Knowledge",
+      "reports": "Reports",
+      "outbound": "Outbound",
+      "contacts": "Contacts",
+      "apps": "Apps"
+    },
+    "search": "Search…",
+    "settings": "Settings",
+    "help": "Help"
+  },
+  "apps": {
+    "section": "Apps",
+    "whatsappFlow": "WhatsApp Flow",
+    "templates": "Message Templates",
+    "broadcasts": "Broadcasts",
+    "automations": "Automations"
+  },
+  "flow": {
+    "title": "WhatsApp Flow",
+    "subtitle": "Build, send, and analyse interactive WhatsApp Forms",
+    "breadcrumb": {
+      "apps": "Apps",
+      "flow": "WhatsApp Flow"
+    },
+    "create": "Create WhatsApp Flow",
+    "tabs": {
+      "active": "Active",
+      "archived": "Archived",
+      "all": "All flows"
+    },
+    "search": "Search flows by name or ID…",
+    "filters": {
+      "addFilter": "Add filter",
+      "status": "Status",
+      "category": "Category",
+      "clear": "Clear filters"
+    },
+    "table": {
+      "name": "Name",
+      "id": "Flow ID",
+      "status": "Status",
+      "category": "Category",
+      "deliveries": "Deliveries",
+      "completionRate": "Completion rate",
+      "lastUpdated": "Last updated",
+      "rowsPerPage": "Rows per page",
+      "page": "Page {{current}} of {{total}}",
+      "showing": "Showing {{from}}–{{to}} of {{total}} flows"
+    },
+    "rowMenu": {
+      "open": "Open",
+      "edit": "Edit",
+      "duplicate": "Duplicate",
+      "submitForReview": "Submit for review",
+      "publish": "Publish",
+      "unpublish": "Unpublish",
+      "archive": "Archive",
+      "restore": "Restore",
+      "copyId": "Copy ID",
+      "copyJson": "Copy Meta JSON",
+      "delete": "Delete"
+    },
+    "status": {
+      "DRAFT": "Draft",
+      "IN_REVIEW": "In review",
+      "APPROVED": "Approved",
+      "PUBLISHED": "Published",
+      "REJECTED": "Rejected",
+      "THROTTLED": "Throttled",
+      "BLOCKED": "Blocked",
+      "ARCHIVED": "Archived"
+    },
+    "categories": {
+      "SIGN_UP": "Sign up",
+      "SIGN_IN": "Sign in",
+      "APPOINTMENT_BOOKING": "Appointment booking",
+      "LEAD_GENERATION": "Lead generation",
+      "CONTACT_US": "Contact us",
+      "CUSTOMER_SUPPORT": "Customer support",
+      "SURVEY": "Survey",
+      "OTHER": "Other"
+    },
+    "empty": {
+      "title": "No flows yet",
+      "description": "Create your first WhatsApp Flow to capture structured data right inside the chat — no friction, no form links.",
+      "starters": "Or start from a template",
+      "templates": {
+        "appointment": {
+          "title": "Appointment booking",
+          "description": "Collect date, time and contact details for a service booking."
+        },
+        "lead": {
+          "title": "Lead capture",
+          "description": "Qualify inbound leads with name, company size and need."
+        },
+        "nps": {
+          "title": "NPS survey",
+          "description": "0–10 score plus an optional reason field."
+        },
+        "support": {
+          "title": "Support intake",
+          "description": "Triage tickets by category, severity and order ID."
+        },
+        "feedback": {
+          "title": "Product feedback",
+          "description": "Free-text plus rating to feed your roadmap."
+        }
+      }
+    },
+    "filteredEmpty": {
+      "title": "No flows match these filters",
+      "description": "Try widening your search or clearing one of the filters."
+    },
+    "permissionEmpty": {
+      "title": "WhatsApp Flow access not enabled",
+      "description": "Ask your admin to enable WhatsApp Flow for your role."
+    },
+    "noWaba": {
+      "title": "Connect a WhatsApp Business Account",
+      "description": "WhatsApp Flow needs a connected WABA before flows can be created or published.",
+      "cta": "Connect WhatsApp"
+    },
+    "errors": {
+      "load": "We couldn't load your flows.",
+      "loadHelp": "Meta is having issues — list shown from cache (last sync: {{ago}}).",
+      "retry": "Retry",
+      "concurrentEdit": "Someone else just edited this flow. Reload to see changes."
+    },
+    "banners": {
+      "submissionsWarn": "You've used {{used, number}} of {{cap, number}} submissions this month. Upgrade to Enterprise for unlimited.",
+      "submissionsCap": "You've reached this month's submission cap. New flows can be drafted but not published.",
+      "publishedCap": "You've reached the limit of {{cap, number}} published flows on your plan.",
+      "metaCategoryChange": "Meta re-categorised this flow as {{category}}.",
+      "upgrade": "Upgrade plan"
+    },
+    "create": {
+      "title": "Create WhatsApp Flow",
+      "subtitle": "Step 1 of 2 · Name and category",
+      "nameLabel": "Flow name",
+      "namePlaceholder": "e.g. Booking — Aura Heights",
+      "nameHelp": "Visible to admins only. Customers never see this.",
+      "categoryLabel": "Category",
+      "categoryHelp": "Meta uses category to route conversations and price the conversation.",
+      "endpointLabel": "Send submissions to your server (with endpoint)",
+      "endpointHelp": "Receive a signed webhook for every submission. Pro plan: disabled — upgrade to Enterprise.",
+      "endpointGated": "Available on Enterprise",
+      "submit": "Continue to builder",
+      "validation": {
+        "nameRequired": "Flow name is required",
+        "nameTooLong": "Keep flow name under 100 characters"
+      }
+    },
+    "builder": {
+      "title": "{{name}} · Builder",
+      "screensPanel": "Screens",
+      "addScreen": "Add screen",
+      "blocksPanel": "Content",
+      "previewPanel": "Live preview",
+      "blocks": {
+        "Heading": "Heading",
+        "SubHeading": "Sub-heading",
+        "Caption": "Caption",
+        "TextBody": "Text body",
+        "TextInput": "Text input",
+        "TextArea": "Text area",
+        "Date": "Date",
+        "Dropdown": "Dropdown",
+        "RadioButton": "Radio buttons",
+        "CheckboxGroup": "Checkbox group",
+        "OptIn": "Opt-in checkbox",
+        "Image": "Image",
+        "EmbeddedLink": "Embedded link",
+        "Footer": "Footer button"
+      },
+      "copyJson": "Copy Meta JSON",
+      "copiedJson": "Meta Flow JSON copied to clipboard",
+      "saveExit": "Save and exit",
+      "unsaved": {
+        "title": "Discard your changes?",
+        "description": "You have unsaved edits to this flow.",
+        "confirm": "Discard",
+        "keep": "Keep editing"
+      }
+    },
+    "delete": {
+      "title": "Delete this flow?",
+      "description": "This will permanently delete \"{{name}}\". Submissions will be retained per the data retention policy.",
+      "confirm": "Delete flow"
+    },
+    "toasts": {
+      "created": "Flow created as draft",
+      "submitted": "Submitted to Meta for review",
+      "published": "Flow is live",
+      "unpublished": "Flow unpublished",
+      "archived": "Flow archived",
+      "restored": "Flow restored to draft",
+      "deleted": "Flow deleted",
+      "duplicated": "Flow duplicated"
+    }
+  },
+  "time": {
+    "justNow": "just now",
+    "minutesAgo": "{{count}} min ago",
+    "hoursAgo": "{{count}} h ago",
+    "daysAgo": "{{count}} d ago"
+  }
+}

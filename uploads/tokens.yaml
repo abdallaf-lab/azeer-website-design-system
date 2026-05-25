@@ -1,0 +1,402 @@
+# Azeer Design System — Tokens (Machine-Readable)
+# Generated: 2026-04-22 | LOCKED V1
+# Source of truth: ../01-Foundations/tokens.md
+# Consumers: Claude, Cursor, v0, shadcn Studio, Figma plugins, audit scripts
+
+version: "1.0"
+locked: true
+last_updated: "2026-04-22"
+
+# =============================================================================
+# COLORS — Semantic tokens (both modes)
+# =============================================================================
+
+colors:
+  core:
+    background:
+      light: "#FFFFFF"
+      dark: "#090909"
+      figma_var: "9:3"
+    foreground:
+      light: "#2E2E2E"
+      dark: "#FCFCFC"
+      figma_var: "9:8"
+    card:
+      light: "#FFFFFF"
+      dark: "#161616"
+      figma_var: "9:5"
+    card-foreground:
+      light: "#2E2E2E"
+      dark: "#FCFCFC"
+    popover:
+      light: "#FFFFFF"
+      dark: "#161616"
+      figma_var: "9:6"
+    popover-foreground:
+      light: "#2E2E2E"
+      dark: "#FCFCFC"
+    primary:
+      light: "#7C64FE"
+      dark: "#9B85FF"
+      figma_var: "9:12"
+      note: "Dark is lifted for WCAG AA on #090909"
+    primary-foreground:
+      light: "#F5F5F5"
+      dark: "#0A0A0A"
+      figma_var: "9:14"
+    secondary:
+      light: "#0D2043"
+      dark: "#0D2043"
+      note: "Navy — authoritative, same both modes"
+    secondary-foreground:
+      light: "#F5F5F5"
+      dark: "#F5F5F5"
+    muted:
+      light: "#F5F5F5"
+      dark: "#1A1A1A"
+    muted-foreground:
+      light: "#4D4D4D"
+      dark: "#A1A1A1"
+      figma_var: "9:10"
+    accent:
+      light: "#F2F0FF"
+      dark: "#1F1A3A"
+      figma_var: "9:15"
+      note: "Dark is desaturated purple, not Radix grey"
+    accent-foreground:
+      light: "#7C64FE"
+      dark: "#C7B8FF"
+      figma_var: "9:16"
+    destructive:
+      light: "#E60006"
+      dark: "#FF6366"
+      figma_var: "9:26"
+    destructive-foreground:
+      light: "#FFFFFF"
+      dark: "#FFFFFF"
+    success:
+      light: "#12BFA5"
+      dark: "#00BC7C"
+      figma_var: "9:22"
+    warning:
+      light: "#FEB343"
+      dark: "#FC9A0D"
+      figma_var: "9:24"
+    info:
+      light: "#00BCFF"
+      dark: "#00ACF1"
+      figma_var: "9:28"
+    border:
+      light: "#E4E4E4"
+      dark: "rgba(255,255,255,0.10)"
+      figma_var: "9:18"
+    input:
+      light: "#E4E4E4"
+      dark: "rgba(255,255,255,0.15)"
+    ring:
+      light: "#CDDAFD"
+      dark: "#9B85FF"
+      figma_var: "9:17"
+
+  sidebar:
+    sidebar:
+      light: "#0D2043"
+      dark: "#0D2043"
+    sidebar-foreground:
+      light: "#F5F5F5"
+      dark: "#F5F5F5"
+    sidebar-primary:
+      light: "#7C64FE"
+      dark: "#9B85FF"
+    sidebar-primary-foreground:
+      light: "#FFFFFF"
+      dark: "#FFFFFF"
+    sidebar-accent:
+      light: "#1B2F53"
+      dark: "#1B2F53"
+    sidebar-accent-foreground:
+      light: "#FFFFFF"
+      dark: "#FFFFFF"
+    sidebar-border:
+      light: "#1B2F53"
+      dark: "#1B2F53"
+    sidebar-ring:
+      light: "#7C64FE"
+      dark: "#9B85FF"
+
+  charts:
+    chart-1:
+      light: "#7C64FE"
+      dark: "#9B85FF"
+      series: "primary (purple)"
+    chart-2:
+      light: "#00BCFF"
+      dark: "#00BCFF"
+      series: "secondary (cyan)"
+    chart-3:
+      light: "#FEB343"
+      dark: "#FEB343"
+      series: "highlight (amber)"
+    chart-4:
+      light: "#FF655A"
+      dark: "#FF655A"
+      series: "alert (coral)"
+    chart-5:
+      light: "#12BFA5"
+      dark: "#12BFA5"
+      series: "growth (teal)"
+
+  voice:
+    recording:
+      light: "#E5484D"
+      dark: "#FF6366"
+      motion: "pulse"
+      use: "Recording active indicator"
+    on-call:
+      light: "#12BFA5"
+      dark: "#00BC7C"
+      motion: null
+      use: "Active call state"
+    ringing:
+      light: "#FEB343"
+      dark: "#FC9A0D"
+      motion: "pulse"
+      use: "Incoming call ringing"
+
+  channels:
+    # Single-mode, never themed
+    whatsapp: "#25D366"
+    voice: "#7C64FE"
+    sms: "#8A8F98"
+    email: "#EA4335"
+    instagram: "#E1306C"
+    messenger: "#0084FF"
+
+  tenant:
+    # Profile B only — overridable per tenant
+    tenant-primary:
+      default: "#7C64FE"
+      overridable: true
+      note: "Auto-derives tenant-primary-foreground for WCAG AA"
+    tenant-primary-foreground:
+      default: "#F5F5F5"
+      overridable: false
+      derived_from: "tenant-primary"
+
+# =============================================================================
+# TYPOGRAPHY — Two-font architecture
+# =============================================================================
+
+typography:
+  families:
+    brand:
+      name: "Dialogue ME"
+      usage: "Marketing, hero, brand surfaces ONLY (landing, logo wordmark)"
+      never_use_for: "Product UI"
+    product-en:
+      name: "IBM Plex Sans"
+      usage: "All English product UI"
+      weights: [400, 500, 600, 700]
+    product-ar:
+      name: "IBM Plex Sans Arabic"
+      usage: "All Arabic product UI"
+      weights: [400, 500, 600, 700]
+
+  sizes:
+    # In px — all integers on scale
+    allowed: [11, 12, 13, 14, 15, 16, 18, 20, 24, 32, 48, 64, 72]
+
+  scale:
+    display-xl: { size: 72, weight: 700, line: 80, letter: -0.02 }
+    display-lg: { size: 48, weight: 700, line: 56, letter: -0.02 }
+    display-md: { size: 32, weight: 700, line: 40, letter: -0.01 }
+    heading-lg: { size: 24, weight: 600, line: 32, letter: -0.01 }
+    heading-md: { size: 20, weight: 600, line: 28, letter: 0 }
+    heading-sm: { size: 18, weight: 600, line: 26, letter: 0 }
+    body-lg: { size: 16, weight: 400, line: 24, letter: 0 }
+    body-md: { size: 14, weight: 400, line: 20, letter: 0 }
+    body-sm: { size: 13, weight: 400, line: 18, letter: 0 }
+    label-md: { size: 14, weight: 510, line: 20, letter: 0 }
+    label-sm: { size: 13, weight: 510, line: 18, letter: 0 }
+    caption: { size: 12, weight: 510, line: 16, letter: 0 }
+    meta: { size: 11, weight: 500, line: 14, letter: 0.01 }
+    code: { size: 13, weight: 400, line: 20, family: "IBM Plex Mono" }
+
+  deprecated:
+    - "mono/* aliases (DELETED)"
+    - "brand/* primitive scale (DELETED — use product scale)"
+
+# =============================================================================
+# SPACING + RADIUS + SIZE
+# =============================================================================
+
+spacing:
+  # In px — strict scale
+  allowed: [1, 4, 8, 12, 16, 20, 24, 32, 40, 48, 64, 80, 96]
+  scale:
+    space-0: 0
+    space-px: 1
+    space-1: 4
+    space-2: 8
+    space-3: 12
+    space-4: 16
+    space-5: 20
+    space-6: 24
+    space-8: 32
+    space-10: 40
+    space-12: 48
+    space-16: 64
+    space-20: 80
+    space-24: 96
+
+radius:
+  # Hybrid scale — default + primitive scale
+  default: "0.625rem"  # 10px — Azeer default
+  scale:
+    radius-xs: "0.25rem"   # 4px — chips, dots
+    radius-sm: "0.375rem"  # 6px — inputs, buttons
+    radius-md: "0.625rem"  # 10px — cards (default)
+    radius-lg: "0.75rem"   # 12px — modals, sheets
+    radius-xl: "1rem"      # 16px — hero surfaces
+    radius-full: "9999px"  # avatars, pills
+
+size:
+  # Control heights in px
+  scale:
+    size-xs: 24
+    size-sm: 28
+    size-md: 32
+    size-lg: 36
+    size-xl: 44
+
+# =============================================================================
+# MOTION
+# =============================================================================
+
+motion:
+  durations:
+    instant: 100
+    quick: 200
+    standard: 400
+
+  curves:
+    ease-out-quint: "cubic-bezier(0.22, 1, 0.36, 1)"
+    ease-in-out-quint: "cubic-bezier(0.83, 0, 0.17, 1)"
+    linear: "linear"
+
+  presets:
+    fade:
+      duration: 200
+      curve: "ease-out-quint"
+      props: ["opacity"]
+    slide-in:
+      duration: 400
+      curve: "ease-out-quint"
+      props: ["transform", "opacity"]
+    scale-in:
+      duration: 200
+      curve: "ease-out-quint"
+      props: ["transform", "opacity"]
+    pulse:
+      duration: 1500
+      curve: "ease-in-out-quint"
+      infinite: true
+      use: "Recording indicators, ringing states, voice only"
+
+  reduced-motion:
+    fallback: "fade only, 100ms"
+
+# =============================================================================
+# ICONS
+# =============================================================================
+
+icons:
+  library: "lucide-react"
+  sizes:
+    icon-xs: 12
+    icon-sm: 14  # SCOPED — list-drag handles only
+    icon-md: 16  # DEFAULT
+    icon-lg: 18
+    icon-xl: 20
+    icon-2xl: 24
+
+  rules:
+    - "Default = 16px"
+    - "14px ONLY for drag handles in list rows"
+    - "RTL flip: arrows, chevrons, back/forward, undo/redo"
+    - "RTL never flip: logos, media controls, checkmarks, numbers"
+
+# =============================================================================
+# Z-INDEX
+# =============================================================================
+
+z-index:
+  base: 0
+  dropdown: 10
+  sticky: 20
+  overlay: 30
+  modal: 40
+  popover: 50
+  toast: 60
+  tooltip: 70
+
+# =============================================================================
+# BREAKPOINTS
+# =============================================================================
+
+breakpoints:
+  sm: 640
+  md: 768
+  lg: 1024
+  xl: 1280
+  2xl: 1536
+
+# =============================================================================
+# SURFACE PROFILES
+# =============================================================================
+
+profiles:
+  A:
+    name: "Agent Console"
+    density: "high"
+    default-size: "sm"
+    use: "Inbox, dashboard, CRM — 8hr/day usage"
+    mode-toggle: true
+  B:
+    name: "Consumer-Facing"
+    density: "comfortable"
+    default-size: "md"
+    use: "Booking page, public forms"
+    mode-toggle: false
+    tenant-theming: true
+  C:
+    name: "Admin/Config"
+    density: "medium"
+    default-size: "md"
+    use: "Settings, user management"
+    mode-toggle: true
+
+# =============================================================================
+# TENANT THEMING
+# =============================================================================
+
+tenant-theming:
+  scope: "Profile B only (Consumer-Facing)"
+  overridable:
+    - tenant-primary
+    - tenant-primary-foreground  # auto-derived for WCAG AA
+    - logo
+    - favicon
+    - tenant-name
+    - hero-image
+  locked:
+    - "All other color tokens"
+    - "Typography (family, scale)"
+    - "Radius"
+    - "Spacing"
+    - "Motion"
+  attribution:
+    starter: "visible, unclosable"
+    growth: "visible, unclosable"
+    business: "visible, closable"
+    enterprise: "hidden"

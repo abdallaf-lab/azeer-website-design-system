@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Azeer Design System — V1</title>
+<link rel="stylesheet" href="colors_and_type.css" />
+<style>
+  body { margin: 0; background: var(--surface-canvas); color: var(--text-primary); font-family: var(--font-sans); }
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 64px 40px 96px; }
+  header { border-bottom: 1px solid var(--border-subtle); padding-bottom: 32px; margin-bottom: 48px; display: flex; align-items: flex-end; justify-content: space-between; gap: 32px; flex-wrap: wrap; }
+  .brand { display: flex; align-items: center; gap: 16px; }
+  .mark { width: 48px; height: 48px; background: var(--brand-primary); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 20px; letter-spacing: -0.02em; }
+  h1 { font-family: var(--font-sans); font-size: 40px; font-weight: 700; margin: 0; letter-spacing: -0.03em; line-height: 1.1; }
+  .sub { color: var(--text-secondary); font-size: 15px; margin-top: 6px; }
+  .meta { font-size: 13px; color: var(--text-tertiary); text-align: right; }
+  .meta b { color: var(--text-primary); font-weight: 600; display: block; font-size: 14px; }
+
+  .intro { font-size: 18px; line-height: 1.55; color: var(--text-secondary); max-width: 720px; margin-bottom: 56px; }
+  .intro b { color: var(--text-primary); font-weight: 600; }
+
+  h2 { font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-tertiary); font-weight: 600; margin: 56px 0 20px; }
+  h2:first-of-type { margin-top: 0; }
+
+  .grid { display: grid; gap: 12px; grid-template-columns: repeat(12, 1fr); }
+  .card { grid-column: span 4; background: var(--surface-card); border: 1px solid var(--border-subtle); border-radius: 12px; padding: 24px; text-decoration: none; color: inherit; display: flex; flex-direction: column; gap: 10px; transition: border-color 120ms, transform 120ms, box-shadow 120ms; min-height: 140px; }
+  .card:hover { border-color: var(--brand-primary); transform: translateY(-1px); box-shadow: var(--shadow-sm); }
+  .card.wide { grid-column: span 6; }
+  .card.full { grid-column: span 12; }
+  .card .tag { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--brand-primary); }
+  .card .tag.a { color: var(--brand-navy); }
+  .card .tag.b { color: var(--success); }
+  .card h3 { font-size: 17px; font-weight: 600; margin: 0; letter-spacing: -0.01em; }
+  .card p { font-size: 14px; color: var(--text-secondary); margin: 0; line-height: 1.5; }
+  .card .fn { font-family: var(--font-mono); font-size: 12px; color: var(--text-tertiary); margin-top: auto; padding-top: 8px; border-top: 1px dashed var(--border-subtle); }
+
+  .profiles { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 32px; }
+  .profile { border-radius: 16px; padding: 28px; color: #fff; position: relative; overflow: hidden; min-height: 180px; display: flex; flex-direction: column; justify-content: space-between; }
+  .profile.a { background: var(--brand-navy); }
+  .profile.b { background: linear-gradient(135deg, var(--brand-primary) 0%, #8458E6 100%); }
+  .profile .label { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.7; font-weight: 600; }
+  .profile h3 { font-size: 22px; font-weight: 700; margin: 8px 0 12px; letter-spacing: -0.02em; }
+  .profile p { font-size: 14px; line-height: 1.5; opacity: 0.88; margin: 0 0 16px; }
+  .profile ul { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .profile li { font-size: 12px; background: rgba(255,255,255,0.12); backdrop-filter: blur(4px); padding: 4px 10px; border-radius: 999px; }
+
+  .rules { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .rule { background: var(--surface-card); border: 1px solid var(--border-subtle); border-radius: 10px; padding: 16px; }
+  .rule .n { font-family: var(--font-mono); font-size: 11px; color: var(--brand-primary); font-weight: 600; }
+  .rule h4 { font-size: 14px; font-weight: 600; margin: 4px 0 6px; }
+  .rule p { font-size: 12.5px; color: var(--text-secondary); line-height: 1.5; margin: 0; }
+
+  footer { margin-top: 80px; padding-top: 24px; border-top: 1px solid var(--border-subtle); font-size: 12px; color: var(--text-tertiary); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  footer code { font-family: var(--font-mono); background: var(--surface-raised); padding: 2px 6px; border-radius: 4px; }
+
+  @media (max-width: 840px) {
+    .card, .card.wide { grid-column: span 12; }
+    .profiles { grid-template-columns: 1fr; }
+    .rules { grid-template-columns: 1fr 1fr; }
+    h1 { font-size: 32px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <div class="mark">A</div>
+      <div>
+        <h1>Azeer Design System</h1>
+        <div class="sub">V1 · Locked · 2026-04-22</div>
+      </div>
+    </div>
+    <div class="meta">
+      <b>B2B SaaS · MENA/GCC</b>
+      WhatsApp-led comms + voice<br>
+      Healthcare · E-commerce<br>
+      Arabic-first · RTL + LTR
+    </div>
+  </header>
+
+  <p class="intro">
+    Single source of truth for designing, building, and auditing any Azeer screen,
+    component, or flow. <b>If a value is not in this system, ask — don't invent.</b>
+    Every color binds to a token, every space is on the 4-pt grid, every component
+    declares which Surface Profile it belongs to.
+  </p>
+
+  <h2>Surface Profiles</h2>
+  <div class="profiles">
+    <div class="profile a">
+      <div>
+        <div class="label">Profile A</div>
+        <h3>Agent Console</h3>
+        <p>Clinic staff, agents, admins. 8+ hours/day, keyboard-heavy, dense. Azeer brand owns the color. Dark mode supported.</p>
+      </div>
+      <ul><li>Inbox</li><li>Calendar</li><li>Call Bar</li><li>Campaigns</li><li>Analytics</li><li>Admin</li></ul>
+    </div>
+    <div class="profile b">
+      <div>
+        <div class="label">Profile B</div>
+        <h3>Consumer Booking</h3>
+        <p>Patients &amp; shoppers. 2–5 minute task flows. <b>Tenant brand</b> owns the color; Azeer is footer attribution only. Light-only.</p>
+      </div>
+      <ul><li>Booking stepper</li><li>Confirmation</li><li>Payment</li><li>Patient emails</li></ul>
+    </div>
+  </div>
+
+  <h2>Tokens</h2>
+  <div class="grid">
+    <a class="card" href="preview/colors.html">
+      <span class="tag">Colors</span>
+      <h3>Palette &amp; semantic tokens</h3>
+      <p>Brand purple + navy, neutrals, semantic (success/warning/danger/info), surfaces, dark-mode pairs.</p>
+      <span class="fn">preview/colors.html</span>
+    </a>
+    <a class="card" href="preview/type.html">
+      <span class="tag">Type</span>
+      <h3>Typography scale</h3>
+      <p>Inter (UI) + IBM Plex Sans Arabic (RTL) + JetBrains Mono. 13 sizes, 4 weights, locked leading.</p>
+      <span class="fn">preview/type.html</span>
+    </a>
+    <a class="card" href="preview/spacing.html">
+      <span class="tag">Spacing</span>
+      <h3>Spacing · radius · shadow · motion</h3>
+      <p>4-pt grid, 6 radii, 5 elevations, 6 motion tokens. Single source for all layout values.</p>
+      <span class="fn">preview/spacing.html</span>
+    </a>
+    <a class="card" href="preview/components.html">
+      <span class="tag">Components</span>
+      <h3>Component inventory</h3>
+      <p>Buttons, inputs, badges, cards — all seven states (default/hover/focus/disabled/loading/empty/error).</p>
+      <span class="fn">preview/components.html</span>
+    </a>
+    <a class="card wide" href="preview/brand.html">
+      <span class="tag">Brand</span>
+      <h3>Logos · marks · co-branding rules</h3>
+      <p>Wordmark + mark, clearspace, minimum sizes, tenant co-branding (footer-only), don'ts.</p>
+      <span class="fn">preview/brand.html</span>
+    </a>
+    <a class="card wide" href="preview/iconography.html">
+      <span class="tag">Icons</span>
+      <h3>Iconography</h3>
+      <p>Lucide React, 2px stroke, native sizes 14/16/20/24/32. Semantic mappings. RTL mirroring rules.</p>
+      <span class="fn">preview/iconography.html</span>
+    </a>
+  </div>
+
+  <h2>UI Kits — Reference Builds</h2>
+  <div class="grid">
+    <a class="card wide" href="ui_kits/agent_console/index.html">
+      <span class="tag a">Profile A · Agent</span>
+      <h3>Agent Console</h3>
+      <p>Inbox + thread + composer + call bar. Toggle dark mode and RTL/Arabic. Lift the JSX components as-is — token-bound &amp; RTL-safe.</p>
+      <span class="fn">ui_kits/agent_console/index.html</span>
+    </a>
+    <a class="card wide" href="ui_kits/booking/index.html">
+      <span class="tag b">Profile B · Consumer</span>
+      <h3>Consumer Booking</h3>
+      <p>Tenant-branded stepper: service → time → confirm. Live-change the tenant color to see co-branding behaviour. Footer-only Azeer attribution.</p>
+      <span class="fn">ui_kits/booking/index.html</span>
+    </a>
+  </div>
+
+  <h2>Documents</h2>
+  <div class="grid">
+    <a class="card" href="README.md">
+      <span class="tag">Docs</span>
+      <h3>README.md</h3>
+      <p>Full written spec — surface profiles, content fundamentals, visual foundations, iconography, audit checklist.</p>
+      <span class="fn">README.md</span>
+    </a>
+    <a class="card" href="tokens.yaml">
+      <span class="tag">Docs</span>
+      <h3>tokens.yaml</h3>
+      <p>Machine-readable registry of every token. The source of truth referenced by code and preview cards.</p>
+      <span class="fn">tokens.yaml</span>
+    </a>
+    <a class="card" href="AI-PROMPT-BLOCK.md">
+      <span class="tag">Docs</span>
+      <h3>AI prompt contract</h3>
+      <p>Locked block to paste into Cursor / v0 / Lovable / Figma Make so no AI tool drifts from the system.</p>
+      <span class="fn">AI-PROMPT-BLOCK.md</span>
+    </a>
+  </div>
+
+  <h2>Non-negotiable rules</h2>
+  <div class="rules">
+    <div class="rule">
+      <div class="n">01</div>
+      <h4>Every value is a token</h4>
+      <p>No raw hex, no off-scale spacing, no one-off font sizes. If it's not in the system, ask.</p>
+    </div>
+    <div class="rule">
+      <div class="n">02</div>
+      <h4>Profile awareness</h4>
+      <p>Never mix Profile A density into Profile B. Never render tenant theming in Profile A.</p>
+    </div>
+    <div class="rule">
+      <div class="n">03</div>
+      <h4>Seven states</h4>
+      <p>Default, hover, focus, disabled, loading, empty, error. Every interactive component.</p>
+    </div>
+    <div class="rule">
+      <div class="n">04</div>
+      <h4>RTL is mandatory</h4>
+      <p>Logical properties only. Mirror layout, never data — phone numbers &amp; IDs stay LTR.</p>
+    </div>
+  </div>
+
+  <footer>
+    <div>Source of truth: <code>tokens.yaml</code> · themes in <code>themes/</code> · Figma file <code>Mo6TnlpEQeFyiEx1GoDfVR</code></div>
+    <div>When layers disagree, update the <b>lower</b> layer to match the higher.</div>
+  </footer>
+</div>
+</body>
+</html>

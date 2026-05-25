@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<link rel="stylesheet" href="../colors_and_type.css"/>
+<style>
+  body { padding: 20px; }
+  .group { display: flex; flex-direction: column; gap: 10px; max-width: 360px; }
+  .field { display:flex; flex-direction: column; gap: 6px; }
+  label { font-size: 12px; font-weight: 500; color: var(--foreground); }
+  .input {
+    height: 36px; padding: 0 12px; border-radius: 10px; border: 1px solid #E4E4E4;
+    background: #fff; font-size: 14px; font-family: var(--font-product); color: #2E2E2E;
+    transition: var(--transition-state);
+  }
+  .input:focus-visible { outline: 2px solid #CDDAFD; outline-offset: 2px; border-color: #7C64FE; }
+  .input.error { border-color: #E60006; }
+  .error-msg { color: #E60006; font-size: 12px; }
+  .input::placeholder { color: #8A8F98; }
+  .hint { font-size: 12px; color: #4D4D4D; }
+  .row { display:flex; gap: 10px; }
+</style>
+</head>
+<body>
+<div class="group">
+  <div class="field">
+    <label>Full name</label>
+    <input class="input" placeholder="Khaled Al-Saud" value="Khaled Al-Saud"/>
+  </div>
+  <div class="field">
+    <label>Phone</label>
+    <input class="input" placeholder="+966 5X XXX XXXX" dir="ltr"/>
+    <span class="hint">Include country code. Stored LTR inside RTL layouts.</span>
+  </div>
+  <div class="field">
+    <label>Email</label>
+    <input class="input error" value="khaled@" />
+    <span class="error-msg">Enter a valid email address</span>
+  </div>
+  <div class="row">
+    <div class="field" style="flex:1;">
+      <label>Disabled</label>
+      <input class="input" disabled value="Locked by admin"/>
+    </div>
+  </div>
+</div>
+</body>
+</html>

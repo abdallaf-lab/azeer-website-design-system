@@ -1,8 +1,0 @@
-/*
- * Storybook Tailwind entry — simple passthrough to the canonical token surface.
- * @source directives live in tokens.css alongside @import "tailwindcss" so
- * the whole Tailwind processing chain is unified. App-local additions can
- * still go here if a feature lives outside the standard scan globs.
- */
-
-@import "@azeer/tokens/tokens.css";

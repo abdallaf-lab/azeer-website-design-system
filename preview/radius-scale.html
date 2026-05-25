@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<link rel="stylesheet" href="../colors_and_type.css"/>
+<style>
+  body { padding: 20px; }
+  .grid { display:grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .box {
+    aspect-ratio: 1; background: #F2F0FF; border: 1px solid #E4E4E4;
+    display:flex; align-items:center; justify-content:center; color:#7C64FE;
+    font-size: 11px; font-family: var(--font-mono); font-weight: 600;
+  }
+  .label { margin-top: 6px; font-size: 11px; color: var(--muted-foreground); text-align: center; }
+  .tag { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; opacity:0.7; margin-bottom: 12px; display:block;}
+</style>
+</head>
+<body>
+<span class="tag">Radius scale · default = 10px</span>
+<div class="grid">
+  <div><div class="box" style="border-radius:2px;">xs</div><div class="label">2px</div></div>
+  <div><div class="box" style="border-radius:4px;">sm</div><div class="label">4px</div></div>
+  <div><div class="box" style="border-radius:6px;">md</div><div class="label">6px</div></div>
+  <div><div class="box" style="border-radius:10px;background:#7C64FE;color:#fff;border-color:#7C64FE;">default</div><div class="label">10px · Azeer</div></div>
+  <div><div class="box" style="border-radius:12px;">xl</div><div class="label">12px</div></div>
+  <div><div class="box" style="border-radius:16px;">2xl</div><div class="label">16px · hero</div></div>
+  <div><div class="box" style="border-radius:22px;">3xl</div><div class="label">22px</div></div>
+  <div><div class="box" style="border-radius:9999px;">full</div><div class="label">pills · dots</div></div>
+</div>
+</body>
+</html>

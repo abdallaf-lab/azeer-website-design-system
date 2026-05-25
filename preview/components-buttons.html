@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<link rel="stylesheet" href="../colors_and_type.css"/>
+<style>
+  body { padding: 20px; }
+  .row { display:flex; gap: 10px; align-items:center; flex-wrap: wrap; margin-bottom: 12px; }
+  .btn {
+    display: inline-flex; align-items:center; gap: 8px;
+    height: 36px; padding: 0 14px; border-radius: 10px;
+    font-size: 14px; font-weight: 500; border: 1px solid transparent; cursor:pointer;
+    transition: var(--transition-state);
+    font-family: var(--font-product);
+  }
+  .btn-primary { background: #7C64FE; color: #F5F5F5; }
+  .btn-primary:hover { background: #6F57F5; }
+  .btn-secondary { background: #0D2043; color: #F5F5F5; }
+  .btn-outline { background: #fff; color: #2E2E2E; border-color: #E4E4E4; }
+  .btn-outline:hover { background: #F2F0FF; border-color: #CDDAFD; color:#7C64FE; }
+  .btn-ghost   { background: transparent; color: #2E2E2E; }
+  .btn-ghost:hover { background: #F2F0FF; color: #7C64FE; }
+  .btn-destructive { background: #E60006; color: #fff; }
+  .btn-sm { height: 28px; padding: 0 10px; font-size: 13px; border-radius: 8px; }
+  .btn-lg { height: 44px; padding: 0 18px; font-size: 15px; }
+  .btn[disabled] { opacity: 0.5; cursor: not-allowed; }
+  .ring { outline: 2px solid #CDDAFD; outline-offset: 2px; }
+  .ico { width: 14px; height: 14px; }
+  .tag { font-size: 10px; text-transform: uppercase; letter-spacing:0.06em; opacity:0.7; font-weight:600; display:block; margin-bottom:10px; }
+</style>
+</head>
+<body>
+  <span class="tag">Buttons · primary, secondary, outline, ghost, destructive</span>
+  <div class="row">
+    <button class="btn btn-primary">Send reply</button>
+    <button class="btn btn-primary ring">Focused</button>
+    <button class="btn btn-secondary">New campaign</button>
+    <button class="btn btn-outline">Cancel</button>
+    <button class="btn btn-ghost">Dismiss</button>
+    <button class="btn btn-destructive">Delete thread</button>
+    <button class="btn btn-primary" disabled>Disabled</button>
+  </div>
+  <span class="tag">Sizes · sm (28) · md (36) · lg (44)</span>
+  <div class="row">
+    <button class="btn btn-primary btn-sm">Small</button>
+    <button class="btn btn-primary">Medium</button>
+    <button class="btn btn-primary btn-lg">Large</button>
+  </div>
+</body>
+</html>

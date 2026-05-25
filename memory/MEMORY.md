@@ -1,0 +1,4 @@
+- [Stack](stack.md) — React 19 · Vite 8 · TS · Tailwind v4 · shadcn + shadcn Studio Premium · lucide-react
+- [Brand decision](brand-decision.md) — Marketing vs product palette split locked 2026-05-08; amber is the gold thread, never semantic
+- [Token sources](token-sources.md) — tokens.json is canonical; older sources (DESIGN.md @ AF-Vault, colors_and_type.css, themes/*.json, tokens.yaml) all need reconciliation
+- [Design quality target](design-quality-target.md) — Intercom-grade discipline; voice (call bar) is the signature surface

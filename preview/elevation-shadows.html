@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<link rel="stylesheet" href="../colors_and_type.css"/>
+<style>
+  body { padding: 24px; background: #FAFAFA; }
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .card {
+    background: #fff; border-radius: 10px; padding: 16px;
+    border: 1px solid #E4E4E4;
+    display:flex; flex-direction: column; justify-content: space-between;
+    height: 92px;
+  }
+  .name { font-size: 12px; font-weight: 600; }
+  .px { font-size: 10px; color: var(--muted-foreground); font-family: var(--font-mono); }
+  .xs { box-shadow: 0 1px 2px 0 rgba(13,32,67,0.05); }
+  .sm { box-shadow: 0 1px 3px 0 rgba(13,32,67,0.08), 0 1px 2px -1px rgba(13,32,67,0.06); }
+  .md { box-shadow: 0 4px 6px -1px rgba(13,32,67,0.10), 0 2px 4px -2px rgba(13,32,67,0.08); }
+  .lg { box-shadow: 0 10px 15px -3px rgba(13,32,67,0.10), 0 4px 6px -4px rgba(13,32,67,0.10); }
+</style>
+</head>
+<body>
+<div class="grid">
+  <div class="card xs"><span class="name">shadow-xs</span><span class="px">card rest</span></div>
+  <div class="card sm"><span class="name">shadow-sm</span><span class="px">popover · menu</span></div>
+  <div class="card md"><span class="name">shadow-md</span><span class="px">toast · call bar</span></div>
+  <div class="card lg"><span class="name">shadow-lg</span><span class="px">modal · drawer</span></div>
+</div>
+</body>
+</html>

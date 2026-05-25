@@ -1,0 +1,656 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Azeer · Operations overview</title>
+<link rel="stylesheet" href="globals.css" />
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<style>
+  /* =========================================================================
+     Test dashboard — exercises every CLAUDE.md rule.
+     - No global top header (sidebar + secondary nav + content only)
+     - No gradients, no shadows on cards (1px borders only)
+     - One accent (purple) — amber not present; this is a daily-work screen
+     - Backgrounds: zinc-50 / cards: white; navy sidebar anchor
+     - Page header lives INSIDE content (Breadcrumb · Title · Owner · {right actions})
+     - KPI tiles: label · 30px number · delta · sparkline · 1px border
+     - Empty states: icon (zinc-400) + title + helper, no CTA when no obvious next action
+     - Buttons: ghost is default; ONE solid primary on the page
+     ========================================================================= */
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  /* ---------- App shell: primary sidebar + secondary nav + content ---------- */
+  .app {
+    display: grid;
+    grid-template-columns: 220px 240px 1fr;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  /* ---------- Primary sidebar (navy, icon rail + labels) ---------- */
+  .nav-primary {
+    background: var(--secondary);
+    color: var(--secondary-fg);
+    display: flex; flex-direction: column;
+    z-index: var(--z-sidebar);
+  }
+  .np-brand {
+    height: 56px;
+    display: flex; align-items: center; gap: var(--space-3);
+    padding: 0 var(--space-5);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .np-brand-mark {
+    width: 28px; height: 28px;
+    border-radius: var(--radius-md);
+    background: var(--primary);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--primary-fg);
+    font-weight: var(--weight-semibold); font-size: 14px;
+    letter-spacing: -0.01em;
+  }
+  .np-brand-name {
+    font-size: var(--text-body);
+    font-weight: var(--weight-semibold);
+    letter-spacing: -0.01em;
+  }
+  .np-section { padding: var(--space-3) var(--space-2); }
+  .np-section-label {
+    padding: var(--space-2) var(--space-3);
+    color: var(--secondary-fg-muted);
+    font-size: var(--text-micro);
+    font-weight: var(--weight-medium);
+    text-transform: uppercase; letter-spacing: 0.06em;
+  }
+  .np-item {
+    display: flex; align-items: center; gap: var(--space-3);
+    height: var(--size-md);
+    padding: 0 var(--space-3);
+    color: var(--secondary-fg-muted);
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-medium);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+  }
+  .np-item:hover { background: var(--secondary-hover); color: var(--secondary-fg); }
+  .np-item.active { background: var(--primary); color: var(--primary-fg); }
+  .np-item i { width: 16px; height: 16px; stroke-width: 1.75; flex-shrink: 0; }
+  .np-item-count {
+    margin-inline-start: auto;
+    font-size: var(--text-micro);
+    color: var(--secondary-fg-muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .np-item.active .np-item-count { color: var(--primary-fg); opacity: 0.8; }
+
+  .np-foot {
+    margin-top: auto;
+    padding: var(--space-3);
+    border-top: 1px solid rgba(255,255,255,0.06);
+    display: flex; align-items: center; gap: var(--space-3);
+  }
+  .np-avatar {
+    width: 28px; height: 28px;
+    border-radius: var(--radius-full);
+    background: var(--primary);
+    color: var(--primary-fg);
+    display: flex; align-items: center; justify-content: center;
+    font-size: var(--text-body-sm); font-weight: var(--weight-semibold);
+  }
+  .np-avatar-meta { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+  .np-avatar-name {
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-medium);
+    color: var(--secondary-fg);
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .np-avatar-role {
+    font-size: var(--text-caption);
+    color: var(--secondary-fg-muted);
+  }
+
+  /* ---------- Secondary nav (light surface, sub-sections) ---------- */
+  .nav-secondary {
+    background: var(--surface);
+    border-inline-end: 1px solid var(--border);
+    display: flex; flex-direction: column;
+    z-index: var(--z-panel);
+  }
+  .ns-head {
+    height: 56px;
+    padding: 0 var(--space-5);
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+  }
+  .ns-head h2 {
+    margin: 0;
+    font-size: var(--text-body);
+    font-weight: var(--weight-semibold);
+    color: var(--foreground);
+  }
+  .ns-head .pin-btn {
+    width: 24px; height: 24px;
+    border: 0; background: transparent;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: var(--radius-sm);
+    color: var(--foreground-muted);
+    cursor: pointer;
+    transition: background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+  }
+  .ns-head .pin-btn:hover { background: var(--muted); color: var(--foreground); }
+  .ns-head .pin-btn i { width: 14px; height: 14px; stroke-width: 1.75; }
+
+  .ns-body { flex: 1; overflow-y: auto; padding: var(--space-3) var(--space-2); }
+  .ns-group { margin-bottom: var(--space-4); }
+  .ns-group-label {
+    padding: var(--space-2) var(--space-3);
+    font-size: var(--text-micro);
+    color: var(--foreground-muted);
+    font-weight: var(--weight-medium);
+    text-transform: uppercase; letter-spacing: 0.06em;
+  }
+  .ns-item {
+    display: flex; align-items: center; gap: var(--space-3);
+    height: var(--size-md);
+    padding: 0 var(--space-3);
+    border-radius: var(--radius-md);
+    color: var(--foreground);
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-medium);
+    cursor: pointer;
+    transition: background var(--dur-fast) var(--ease);
+  }
+  .ns-item:hover { background: var(--muted); }
+  .ns-item.active {
+    background: var(--primary-muted);
+    color: var(--primary);
+  }
+  .ns-item i { width: 16px; height: 16px; stroke-width: 1.75; flex-shrink: 0; color: var(--foreground-muted); }
+  .ns-item.active i { color: var(--primary); }
+
+  /* ---------- System banner (above page header, single instance) ---------- */
+  .system-banner {
+    background: var(--accent-soft);
+    color: var(--accent-fg);
+    border-bottom: 1px solid var(--border);
+    padding: var(--space-2) var(--space-6);
+    display: flex; align-items: center; gap: var(--space-3);
+    font-size: var(--text-body-sm);
+  }
+  .system-banner i { width: 14px; height: 14px; stroke-width: 1.75; color: var(--warning); }
+  .system-banner b { font-weight: var(--weight-semibold); }
+  .system-banner a {
+    margin-inline-start: auto;
+    color: var(--accent-fg);
+    text-decoration: underline; text-underline-offset: 3px;
+    font-weight: var(--weight-medium);
+  }
+
+  /* ---------- Content area + page header (header inside content) ---------- */
+  .content {
+    background: var(--background);
+    overflow-y: auto;
+    display: flex; flex-direction: column;
+  }
+
+  .page-head {
+    padding: var(--space-6) var(--space-8) var(--space-5);
+    background: var(--background);
+    border-bottom: 1px solid var(--border);
+    display: flex; flex-direction: column; gap: var(--space-3);
+  }
+  .breadcrumb {
+    display: flex; align-items: center; gap: var(--space-2);
+    font-size: var(--text-caption);
+    color: var(--foreground-muted);
+  }
+  .breadcrumb i { width: 12px; height: 12px; stroke-width: 1.75; }
+  .breadcrumb a { color: var(--foreground-muted); text-decoration: none; }
+  .breadcrumb a:hover { color: var(--foreground); }
+  .breadcrumb .current { color: var(--foreground); font-weight: var(--weight-medium); }
+
+  .page-row {
+    display: flex; align-items: center; justify-content: space-between; gap: var(--space-4);
+    flex-wrap: wrap;
+  }
+  .page-title-block { display: flex; align-items: center; gap: var(--space-4); min-width: 0; }
+  .page-title { font-size: var(--text-h1); font-weight: var(--weight-semibold); letter-spacing: -0.01em; color: var(--foreground); }
+  .page-owner {
+    display: flex; align-items: center; gap: var(--space-2);
+    font-size: var(--text-caption); color: var(--foreground-muted);
+    padding-inline-start: var(--space-4);
+    border-inline-start: 1px solid var(--border);
+  }
+  .page-owner-avatar {
+    width: 20px; height: 20px;
+    border-radius: var(--radius-full);
+    background: var(--success);
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: var(--text-micro); font-weight: var(--weight-semibold);
+  }
+
+  .page-actions { display: flex; align-items: center; gap: var(--space-2); }
+
+  /* ---------- Buttons (ghost default, one solid primary on the page) ---------- */
+  .btn {
+    height: var(--size-md);
+    padding: 0 var(--space-3);
+    border-radius: var(--radius-md);
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-medium);
+    font-family: inherit;
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--foreground);
+    cursor: pointer;
+    display: inline-flex; align-items: center; gap: var(--space-2);
+    transition: background var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
+  }
+  .btn i { width: 14px; height: 14px; stroke-width: 1.75; }
+
+  .btn-ghost { color: var(--foreground); border-color: var(--border); background: var(--surface); }
+  .btn-ghost:hover { background: var(--muted); }
+
+  .btn-pill { border-radius: var(--radius-full); padding: 0 var(--space-4); }
+
+  .btn-primary { background: var(--primary); color: var(--primary-fg); }
+  .btn-primary:hover { background: var(--primary-hover); }
+
+  /* Date range pill */
+  .date-range {
+    display: inline-flex; align-items: center; gap: var(--space-2);
+    height: var(--size-md);
+    padding: 0 var(--space-3);
+    border-radius: var(--radius-full);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    font-size: var(--text-body-sm);
+    color: var(--foreground);
+    cursor: pointer;
+    font-variant-numeric: tabular-nums;
+  }
+  .date-range:hover { background: var(--muted); }
+  .date-range i { width: 14px; height: 14px; stroke-width: 1.75; color: var(--foreground-muted); }
+
+  /* ---------- Content body ---------- */
+  .body { padding: var(--space-6) var(--space-8) var(--space-12); display: flex; flex-direction: column; gap: var(--space-6); }
+  .section-label {
+    font-size: var(--text-micro);
+    font-weight: var(--weight-medium);
+    color: var(--foreground-muted);
+    text-transform: uppercase; letter-spacing: 0.06em;
+    margin-bottom: var(--space-3);
+  }
+
+  /* KPI tiles row */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-4);
+  }
+  .kpi {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: var(--space-5);
+    display: flex; flex-direction: column; gap: var(--space-3);
+  }
+  .kpi-label {
+    font-size: var(--text-body-sm);
+    color: var(--foreground-muted);
+    font-weight: var(--weight-medium);
+  }
+  .kpi-row { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-3); }
+  .kpi-number {
+    font-size: var(--text-kpi);
+    font-weight: var(--weight-semibold);
+    color: var(--foreground);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+  }
+  .kpi-delta {
+    display: inline-flex; align-items: center; gap: 2px;
+    font-size: var(--text-caption);
+    font-weight: var(--weight-medium);
+    font-variant-numeric: tabular-nums;
+  }
+  .kpi-delta.up   { color: var(--success); }
+  .kpi-delta.down { color: var(--destructive); }
+  .kpi-delta i { width: 12px; height: 12px; stroke-width: 2; }
+  .kpi-spark { height: 28px; width: 100%; }
+
+  /* Charts row */
+  .chart-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: var(--space-4);
+  }
+  .chart-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: var(--space-5);
+    display: flex; flex-direction: column; gap: var(--space-4);
+    min-height: 280px;
+  }
+  .chart-head { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
+  .chart-title { font-size: var(--text-body); font-weight: var(--weight-semibold); color: var(--foreground); }
+  .chart-sub   { font-size: var(--text-caption); color: var(--foreground-muted); margin-top: 2px; }
+
+  .legend { display: flex; align-items: center; gap: var(--space-3); }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: var(--text-caption); color: var(--foreground-muted); }
+  .legend-dot { width: 8px; height: 8px; border-radius: var(--radius-full); }
+
+  /* Bar chart */
+  .bar-chart {
+    width: 100%; height: 180px;
+    display: grid; grid-template-columns: repeat(7, 1fr); gap: var(--space-3);
+    align-items: end;
+  }
+  .bar-stack { display: flex; flex-direction: column; align-items: center; gap: var(--space-2); height: 100%; }
+  .bar-stack-bars { display: flex; flex-direction: column; gap: 2px; width: 100%; align-items: center; }
+  .bar { width: 100%; max-width: 28px; border-radius: var(--radius-sm) var(--radius-sm) 2px 2px; }
+  .bar-primary   { background: var(--chart-1); }
+  .bar-secondary { background: var(--chart-2); }
+  .bar-stack-label { font-size: var(--text-micro); color: var(--foreground-muted); font-weight: var(--weight-medium); }
+
+  /* Donut */
+  .donut-wrap { display: flex; flex-direction: column; align-items: center; gap: var(--space-4); }
+  .donut svg { display: block; }
+  .donut-list { display: flex; flex-direction: column; gap: var(--space-2); width: 100%; }
+  .donut-row { display: flex; align-items: center; gap: var(--space-3); font-size: var(--text-body-sm); }
+  .donut-row .name { color: var(--foreground); flex: 1; }
+  .donut-row .val  { color: var(--foreground-muted); font-variant-numeric: tabular-nums; }
+
+  /* Empty state */
+  .empty {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: var(--space-12) var(--space-8);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: var(--space-2);
+    text-align: center;
+  }
+  .empty-icon {
+    width: 40px; height: 40px;
+    border-radius: var(--radius-md);
+    background: var(--muted);
+    color: var(--foreground-subtle);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: var(--space-2);
+  }
+  .empty-icon i { width: 20px; height: 20px; stroke-width: 1.75; }
+  .empty-title { font-size: var(--text-body); font-weight: var(--weight-semibold); color: var(--foreground); }
+  .empty-helper { font-size: var(--text-body-sm); color: var(--foreground-muted); }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ============================================================
+       PRIMARY SIDEBAR — navy anchor, icon rail + labels
+       ============================================================ -->
+  <aside class="nav-primary" aria-label="Primary navigation">
+    <div class="np-brand">
+      <div class="np-brand-mark">A</div>
+      <div class="np-brand-name">Azeer</div>
+    </div>
+    <div class="np-section">
+      <div class="np-section-label">Workspace</div>
+      <div class="np-item active"><i data-lucide="layout-dashboard"></i> Operations <span class="np-item-count">12</span></div>
+      <div class="np-item"><i data-lucide="message-square"></i> Inbox <span class="np-item-count">38</span></div>
+      <div class="np-item"><i data-lucide="phone"></i> Calls <span class="np-item-count">5</span></div>
+      <div class="np-item"><i data-lucide="calendar"></i> Calendar</div>
+      <div class="np-item"><i data-lucide="users"></i> Customers</div>
+    </div>
+    <div class="np-section">
+      <div class="np-section-label">AI &amp; Automation</div>
+      <div class="np-item"><i data-lucide="sparkles"></i> Agents</div>
+      <div class="np-item"><i data-lucide="workflow"></i> Workflows</div>
+      <div class="np-item"><i data-lucide="bot"></i> Bots</div>
+    </div>
+    <div class="np-section">
+      <div class="np-section-label">Reports</div>
+      <div class="np-item"><i data-lucide="bar-chart-3"></i> Analytics</div>
+      <div class="np-item"><i data-lucide="file-text"></i> Exports</div>
+    </div>
+
+    <div class="np-foot">
+      <div class="np-avatar">AF</div>
+      <div class="np-avatar-meta">
+        <div class="np-avatar-name">Abdullah F.</div>
+        <div class="np-avatar-role">Admin · Andalus</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ============================================================
+       SECONDARY NAV — sub-sections of "Operations"
+       ============================================================ -->
+  <aside class="nav-secondary" aria-label="Operations sub-navigation">
+    <div class="ns-head">
+      <h2>Operations</h2>
+      <button class="pin-btn" title="Pin section"><i data-lucide="pin"></i></button>
+    </div>
+    <div class="ns-body">
+      <div class="ns-group">
+        <div class="ns-group-label">Today</div>
+        <div class="ns-item active"><i data-lucide="activity"></i> Overview</div>
+        <div class="ns-item"><i data-lucide="inbox"></i> Open conversations</div>
+        <div class="ns-item"><i data-lucide="phone-incoming"></i> Calls in queue</div>
+        <div class="ns-item"><i data-lucide="calendar-clock"></i> Bookings today</div>
+      </div>
+      <div class="ns-group">
+        <div class="ns-group-label">This week</div>
+        <div class="ns-item"><i data-lucide="clipboard-list"></i> Caseload</div>
+        <div class="ns-item"><i data-lucide="trending-up"></i> Performance</div>
+        <div class="ns-item"><i data-lucide="alert-triangle"></i> SLA breaches</div>
+      </div>
+      <div class="ns-group">
+        <div class="ns-group-label">Saved views</div>
+        <div class="ns-item"><i data-lucide="bookmark"></i> Khaled's queue</div>
+        <div class="ns-item"><i data-lucide="bookmark"></i> WhatsApp only</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ============================================================
+       CONTENT — page header lives INSIDE here, not in shell
+       ============================================================ -->
+  <main class="content" aria-label="Operations overview">
+
+    <!-- Optional system banner — single instance, above page header only -->
+    <div class="system-banner" role="status">
+      <i data-lucide="alert-triangle"></i>
+      <span><b>Trial ends in 6 days.</b> Add a payment method to keep your team online.</span>
+      <a href="#">Add billing</a>
+    </div>
+
+    <!-- Page header inside content -->
+    <header class="page-head">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="#">Workspace</a>
+        <i data-lucide="chevron-right"></i>
+        <a href="#">Operations</a>
+        <i data-lucide="chevron-right"></i>
+        <span class="current">Overview</span>
+      </nav>
+      <div class="page-row">
+        <div class="page-title-block">
+          <h1 class="page-title">Operations overview</h1>
+          <div class="page-owner">
+            <span class="page-owner-avatar">LO</span>
+            <span>Owner: Layla Al-Otaibi</span>
+          </div>
+        </div>
+        <div class="page-actions">
+          <button class="date-range" type="button">
+            <i data-lucide="calendar"></i>
+            Last 7 days
+            <i data-lucide="chevron-down"></i>
+          </button>
+          <button class="btn btn-ghost" type="button">
+            <i data-lucide="filter"></i>
+            Add filter
+          </button>
+          <button class="btn btn-ghost" type="button">
+            <i data-lucide="share-2"></i>
+            Share
+          </button>
+          <!-- The single solid primary CTA on this page -->
+          <button class="btn btn-primary" type="button">
+            <i data-lucide="pencil"></i>
+            Edit overview
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Body -->
+    <div class="body">
+
+      <!-- KPI tiles -->
+      <section aria-labelledby="kpi-section">
+        <h2 id="kpi-section" class="section-label">Today at a glance</h2>
+        <div class="kpi-grid">
+          <article class="kpi">
+            <div class="kpi-label">Open conversations</div>
+            <div class="kpi-row">
+              <div class="kpi-number">38</div>
+              <div class="kpi-delta up"><i data-lucide="arrow-up"></i> 12%</div>
+            </div>
+            <svg class="kpi-spark" viewBox="0 0 200 28" preserveAspectRatio="none" aria-hidden="true">
+              <polyline fill="none" stroke="var(--chart-1)" stroke-width="1.5"
+                points="0,20 20,18 40,15 60,16 80,12 100,13 120,9 140,11 160,7 180,5 200,8"/>
+            </svg>
+          </article>
+
+          <article class="kpi">
+            <div class="kpi-label">Avg first response</div>
+            <div class="kpi-row">
+              <div class="kpi-number">2:14</div>
+              <div class="kpi-delta down"><i data-lucide="arrow-down"></i> 18s</div>
+            </div>
+            <svg class="kpi-spark" viewBox="0 0 200 28" preserveAspectRatio="none" aria-hidden="true">
+              <polyline fill="none" stroke="var(--chart-1)" stroke-width="1.5"
+                points="0,8 20,10 40,12 60,11 80,15 100,14 120,17 140,16 160,19 180,21 200,22"/>
+            </svg>
+          </article>
+
+          <article class="kpi">
+            <div class="kpi-label">Calls handled</div>
+            <div class="kpi-row">
+              <div class="kpi-number">127</div>
+              <div class="kpi-delta up"><i data-lucide="arrow-up"></i> 4%</div>
+            </div>
+            <svg class="kpi-spark" viewBox="0 0 200 28" preserveAspectRatio="none" aria-hidden="true">
+              <polyline fill="none" stroke="var(--chart-1)" stroke-width="1.5"
+                points="0,15 20,14 40,16 60,12 80,13 100,10 120,11 140,9 160,12 180,8 200,10"/>
+            </svg>
+          </article>
+
+          <article class="kpi">
+            <div class="kpi-label">Bookings confirmed</div>
+            <div class="kpi-row">
+              <div class="kpi-number">42</div>
+              <div class="kpi-delta up"><i data-lucide="arrow-up"></i> 22%</div>
+            </div>
+            <svg class="kpi-spark" viewBox="0 0 200 28" preserveAspectRatio="none" aria-hidden="true">
+              <polyline fill="none" stroke="var(--chart-1)" stroke-width="1.5"
+                points="0,22 20,20 40,18 60,17 80,15 100,14 120,12 140,10 160,9 180,7 200,5"/>
+            </svg>
+          </article>
+        </div>
+      </section>
+
+      <!-- Charts row: bar (primary series) + donut (channel mix) -->
+      <section>
+        <h2 class="section-label">This week</h2>
+        <div class="chart-grid">
+          <article class="chart-card">
+            <header class="chart-head">
+              <div>
+                <div class="chart-title">Conversations by day</div>
+                <div class="chart-sub">Replied (purple) vs auto-resolved (zinc-400)</div>
+              </div>
+              <div class="legend">
+                <div class="legend-item"><span class="legend-dot" style="background: var(--chart-1)"></span> Replied</div>
+                <div class="legend-item"><span class="legend-dot" style="background: var(--chart-2)"></span> Auto</div>
+              </div>
+            </header>
+            <div class="bar-chart" aria-hidden="true">
+              <div class="bar-stack"><div class="bar-stack-bars"><div class="bar bar-primary"   style="height: 80px"></div><div class="bar bar-secondary" style="height: 30px"></div></div><div class="bar-stack-label">Mon</div></div>
+              <div class="bar-stack"><div class="bar-stack-bars"><div class="bar bar-primary"   style="height: 95px"></div><div class="bar bar-secondary" style="height: 24px"></div></div><div class="bar-stack-label">Tue</div></div>
+              <div class="bar-stack"><div class="bar-stack-bars"><div class="bar bar-primary"   style="height: 70px"></div><div class="bar bar-secondary" style="height: 35px"></div></div><div class="bar-stack-label">Wed</div></div>
+              <div class="bar-stack"><div class="bar-stack-bars"><div class="bar bar-primary"   style="height: 110px"></div><div class="bar bar-secondary" style="height: 40px"></div></div><div class="bar-stack-label">Thu</div></div>
+              <div class="bar-stack"><div class="bar-stack-bars"><div class="bar bar-primary"   style="height: 88px"></div><div class="bar bar-secondary" style="height: 28px"></div></div><div class="bar-stack-label">Fri</div></div>
+              <div class="bar-stack"><div class="bar-stack-bars"><div class="bar bar-primary"   style="height: 60px"></div><div class="bar bar-secondary" style="height: 18px"></div></div><div class="bar-stack-label">Sat</div></div>
+              <div class="bar-stack"><div class="bar-stack-bars"><div class="bar bar-primary"   style="height: 48px"></div><div class="bar bar-secondary" style="height: 14px"></div></div><div class="bar-stack-label">Sun</div></div>
+            </div>
+          </article>
+
+          <article class="chart-card">
+            <header class="chart-head">
+              <div>
+                <div class="chart-title">Channel mix</div>
+                <div class="chart-sub">Last 7 days</div>
+              </div>
+            </header>
+            <div class="donut-wrap">
+              <div class="donut" aria-hidden="true">
+                <svg width="140" height="140" viewBox="0 0 42 42">
+                  <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="var(--muted)" stroke-width="6"></circle>
+                  <!-- WhatsApp 58% -->
+                  <circle cx="21" cy="21" r="15.915" fill="transparent"
+                          stroke="var(--channel-whatsapp)" stroke-width="6"
+                          stroke-dasharray="58 42" stroke-dashoffset="25" />
+                  <!-- Voice 22% -->
+                  <circle cx="21" cy="21" r="15.915" fill="transparent"
+                          stroke="var(--channel-voice)" stroke-width="6"
+                          stroke-dasharray="22 78" stroke-dashoffset="-33" />
+                  <!-- SMS 12% -->
+                  <circle cx="21" cy="21" r="15.915" fill="transparent"
+                          stroke="var(--channel-sms)" stroke-width="6"
+                          stroke-dasharray="12 88" stroke-dashoffset="-55" />
+                  <!-- Instagram 8% -->
+                  <circle cx="21" cy="21" r="15.915" fill="transparent"
+                          stroke="var(--channel-instagram)" stroke-width="6"
+                          stroke-dasharray="8 92" stroke-dashoffset="-67" />
+                </svg>
+              </div>
+              <div class="donut-list">
+                <div class="donut-row"><span class="legend-dot" style="background: var(--channel-whatsapp)"></span><span class="name">WhatsApp</span><span class="val">58%</span></div>
+                <div class="donut-row"><span class="legend-dot" style="background: var(--channel-voice)"></span><span class="name">Voice</span><span class="val">22%</span></div>
+                <div class="donut-row"><span class="legend-dot" style="background: var(--channel-sms)"></span><span class="name">SMS</span><span class="val">12%</span></div>
+                <div class="donut-row"><span class="legend-dot" style="background: var(--channel-instagram)"></span><span class="name">Instagram</span><span class="val">8%</span></div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Empty state — exercises the rule (icon zinc-400, 1-line title, 1-line helper, no CTA when no obvious next action) -->
+      <section>
+        <h2 class="section-label">SLA breaches</h2>
+        <div class="empty">
+          <div class="empty-icon"><i data-lucide="check-circle-2"></i></div>
+          <div class="empty-title">No SLA breaches in this window.</div>
+          <div class="empty-helper">When a conversation goes past its target response time, it'll land here.</div>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+
+<script>
+  lucide.createIcons();
+</script>
+</body>
+</html>

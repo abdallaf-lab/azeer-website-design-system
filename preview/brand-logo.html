@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"/>
+<title>Azeer · Logo system</title>
+<link rel="stylesheet" href="../colors_and_type.css"/>
+<style>
+  :root {
+    --brand-purple: #7C64FE;       /* token --primary */
+    --brand-purple-tint: #C8BCFF;  /* monochrome-light tint */
+    --brand-navy: #091F44;          /* sampled from official brand sheet */
+    --brand-charcoal: #2E2E2E;      /* row-5 dark background */
+    --row-pad: 28px;
+  }
+
+  body {
+    padding: 36px 40px;
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-arabic), "IBM Plex Sans", sans-serif;
+  }
+
+  /* ── Page header ───────────────────────────────────────── */
+  .header {
+    display: flex; align-items: baseline; justify-content: space-between;
+    margin-bottom: 28px; padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .header h1 {
+    font-size: 26px; font-weight: 700; margin: 0;
+    color: var(--primary);
+    font-family: var(--font-arabic), sans-serif;
+  }
+  .header .meta {
+    font-size: 11px; font-family: var(--font-mono);
+    color: var(--muted-foreground);
+    direction: ltr;
+  }
+
+  /* ── Grid: row label (rightmost in RTL), then 4 lockup cells (mix · ar · en · mark-only) ──
+     With dir=rtl, the first column lays out at the right edge.
+     [label · 220px][mix][ar][en][mark]  → reads right→left as the brand book does.
+     The mark-only column sits at the leftmost (last) edge, narrower since it's square. */
+  .logo-grid {
+    display: grid;
+    grid-template-columns: 220px 1.2fr 1.2fr 1.2fr 0.8fr;
+    gap: 16px;
+    align-items: center;
+    padding: var(--row-pad) 0;
+    border-bottom: 1px dashed var(--border);
+  }
+  .logo-grid:last-child { border-bottom: 0; }
+
+  .cell {
+    height: 132px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    padding: 18px 22px;
+    transition: transform 0.15s ease;
+  }
+
+  .row-label {
+    text-align: start;
+    direction: rtl;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--foreground);
+    line-height: 1.5;
+    padding-inline-start: 8px;
+  }
+  .row-label small {
+    display: block;
+    font-size: 11px;
+    font-family: var(--font-mono);
+    color: var(--muted-foreground);
+    font-weight: 400;
+    margin-top: 4px;
+    direction: ltr;
+    text-align: start;
+  }
+
+  /* SVG inherits color via currentColor */
+  .cell svg { width: 100%; height: 100%; max-height: 88px; display: block; }
+  /* Mark-only column — keep the icon square and a touch smaller so it doesn't dominate */
+  .cell.mark-only svg { max-height: 76px; max-width: 76px; margin: 0 auto; }
+
+  /* Background variants */
+  .bg-paper      { background: #FFFFFF; border: 1px solid var(--border); }
+  .bg-navy       { background: var(--brand-navy); }
+  .bg-black      { background: #000000; }
+  .bg-charcoal   { background: var(--brand-charcoal); }
+  .bg-transparent{ background: transparent; }
+
+  /* Foreground (mark+wordmark) variants */
+  .fg-primary    { color: var(--brand-purple); }            /* row 1, on white */
+  .fg-mixed-light{ /* row 2: navy bg → mark stays purple, but lockup is light */
+                   color: #FFFFFF; }
+  .fg-purple-flat{ color: var(--brand-purple); }            /* row 3 mono purple */
+  .fg-purple-tint{ color: var(--brand-purple-tint); }       /* row 3 light tint */
+  .fg-black      { color: #000000; }                         /* row 4 mono black */
+  .fg-white      { color: #FFFFFF; }                         /* row 5 white on dark */
+
+  /* Row 2 special: the leftmost cell uses purple mark on navy (per screenshot middle col),
+     while the others are white-on-navy. We handle this with .fg-purple-flat on .bg-navy. */
+
+  /* Column headers row — same grid template, but only labels, no border */
+  .logo-grid.col-headers {
+    padding: 0 0 12px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 8px;
+  }
+  .col-tag {
+    text-align: center;
+    font-size: 11px;
+    font-family: var(--font-mono);
+    color: var(--muted-foreground);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    line-height: 1.4;
+  }
+  .col-tag small {
+    display: block;
+    font-family: var(--font-arabic), "IBM Plex Sans", sans-serif;
+    text-transform: none;
+    letter-spacing: 0;
+    font-size: 12px;
+    color: var(--foreground);
+    opacity: 0.55;
+    margin-top: 2px;
+    direction: ltr;
+  }
+
+  /* Section heading */
+  .section-tag {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--muted-foreground); font-family: var(--font-mono);
+    direction: ltr; margin-bottom: 6px; display: block;
+  }
+
+  /* Color legend at bottom */
+  .legend {
+    margin-top: 36px; padding-top: 20px;
+    border-top: 1px solid var(--border);
+    display: flex; gap: 24px; flex-wrap: wrap;
+    direction: ltr;
+  }
+  .swatch {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 12px; font-family: var(--font-mono);
+    color: var(--muted-foreground);
+  }
+  .swatch .chip {
+    width: 28px; height: 28px; border-radius: 6px;
+    border: 1px solid var(--border);
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>أشكال الشعار · Logo system</h1>
+  <div class="meta">5 treatments × 4 lockups (mix · ar · en · mark) · brand assets v1</div>
+</div>
+
+<!-- Column headers -->
+<div class="logo-grid col-headers">
+  <div></div>
+  <div class="col-tag">Bilingual <small>mix</small></div>
+  <div class="col-tag">Arabic <small>أزير</small></div>
+  <div class="col-tag">Latin <small>Azeer</small></div>
+  <div class="col-tag">Mark only <small>icon</small></div>
+</div>
+
+<!-- Row 1 — primary on white -->
+<div class="logo-grid">
+  <div class="row-label">
+    الشعار بألوانه الأساسية
+    <small>Primary · purple on paper</small>
+  </div>
+  <div class="cell bg-paper fg-primary" data-svg="../assets/logo-mix.svg"></div>
+  <div class="cell bg-paper fg-primary" data-svg="../assets/logo-ar.svg"></div>
+  <div class="cell bg-paper fg-primary" data-svg="../assets/logo-en.svg"></div>
+  <div class="cell bg-paper fg-primary mark-only" data-svg="../assets/logo-mark-only.svg"></div>
+</div>
+
+<!-- Row 2 — inverted on navy (معكوس) -->
+<div class="logo-grid">
+  <div class="row-label">
+    الشعار معكوس
+    <small>Inverted · on brand navy <span style="color:var(--brand-purple)">●</span></small>
+  </div>
+  <div class="cell bg-navy fg-white" data-svg="../assets/logo-mix.svg"></div>
+  <div class="cell bg-navy fg-purple-flat" data-svg="../assets/logo-ar.svg"></div>
+  <div class="cell bg-navy fg-white" data-svg="../assets/logo-en.svg"></div>
+  <div class="cell bg-navy fg-purple-flat mark-only" data-svg="../assets/logo-mark-only.svg"></div>
+</div>
+
+<!-- Row 3 — monochrome purple tints -->
+<div class="logo-grid">
+  <div class="row-label">
+    الشعار أحادي اللون
+    <small>Monochrome · light purple tint</small>
+  </div>
+  <div class="cell bg-paper fg-purple-tint" data-svg="../assets/logo-mix.svg"></div>
+  <div class="cell bg-paper fg-purple-tint" data-svg="../assets/logo-ar.svg"></div>
+  <div class="cell bg-paper fg-purple-tint" data-svg="../assets/logo-en.svg"></div>
+  <div class="cell bg-paper fg-purple-tint mark-only" data-svg="../assets/logo-mark-only.svg"></div>
+</div>
+
+<!-- Row 4 — monochrome black -->
+<div class="logo-grid">
+  <div class="row-label">
+    الشعار باللون الأسود
+    <small>Monochrome · black on paper</small>
+  </div>
+  <div class="cell bg-paper fg-black" data-svg="../assets/logo-mix.svg"></div>
+  <div class="cell bg-paper fg-black" data-svg="../assets/logo-ar.svg"></div>
+  <div class="cell bg-paper fg-black" data-svg="../assets/logo-en.svg"></div>
+  <div class="cell bg-paper fg-black mark-only" data-svg="../assets/logo-mark-only.svg"></div>
+</div>
+
+<!-- Row 5 — white on charcoal -->
+<div class="logo-grid">
+  <div class="row-label">
+    الشعار باللون الأبيض على الخلفية السوداء
+    <small>White · on charcoal</small>
+  </div>
+  <div class="cell bg-charcoal fg-white" data-svg="../assets/logo-mix.svg"></div>
+  <div class="cell bg-charcoal fg-white" data-svg="../assets/logo-ar.svg"></div>
+  <div class="cell bg-charcoal fg-white" data-svg="../assets/logo-en.svg"></div>
+  <div class="cell bg-charcoal fg-white mark-only" data-svg="../assets/logo-mark-only.svg"></div>
+</div>
+
+<!-- Color legend -->
+<div class="legend">
+  <span class="section-tag">Brand colors</span>
+  <div class="swatch"><span class="chip" style="background:var(--brand-purple)"></span>#7C64FE · Brand purple</div>
+  <div class="swatch"><span class="chip" style="background:var(--brand-purple-tint)"></span>#C8BCFF · Purple tint</div>
+  <div class="swatch"><span class="chip" style="background:var(--brand-navy)"></span>#091F44 · Brand navy</div>
+  <div class="swatch"><span class="chip" style="background:var(--brand-charcoal)"></span>#2E2E2E · Charcoal</div>
+</div>
+
+<script>
+  // Inline-load each SVG so currentColor takes effect.
+  // Strips empty <defs> and replaces .cls-1 paths with fill="currentColor".
+  (async function() {
+    const cells = document.querySelectorAll('.cell[data-svg]');
+    const cache = new Map();
+    for (const cell of cells) {
+      const url = cell.dataset.svg;
+      let svg = cache.get(url);
+      if (!svg) {
+        const res = await fetch(url);
+        let txt = await res.text();
+        // Strip the empty defs block
+        txt = txt.replace(/<defs>[\s\S]*?<\/defs>/, '');
+        // Make every .cls-1 inherit currentColor
+        txt = txt.replace(/class="cls-1"/g, 'fill="currentColor"');
+        // Strip XML decl
+        txt = txt.replace(/<\?xml[^?]*\?>/, '').trim();
+        cache.set(url, txt);
+        svg = txt;
+      }
+      cell.innerHTML = svg;
+    }
+  })();
+</script>
+
+</body>
+</html>

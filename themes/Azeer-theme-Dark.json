@@ -1,0 +1,480 @@
+{
+  "theme": {
+    "background": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.0352941176, 0.0352941176, 0.0352941176],
+        "alpha": 1.0,
+        "hex": "#090909"
+      },
+      "$extensions": {
+        "com.figma.codeSyntax": { "WEB": "var(--background)" }
+      }
+    },
+    "foreground": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.9882352941, 0.9882352941, 0.9882352941],
+        "alpha": 1.0,
+        "hex": "#FCFCFC"
+      },
+      "$extensions": {
+        "com.figma.codeSyntax": { "WEB": "var(--foreground)" }
+      }
+    },
+    "card": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.0862745098, 0.0862745098, 0.0862745098],
+        "alpha": 1.0,
+        "hex": "#161616"
+      },
+      "$extensions": {
+        "com.figma.codeSyntax": { "WEB": "var(--card)" }
+      }
+    },
+    "card-foreground": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.9882352941, 0.9882352941, 0.9882352941],
+        "alpha": 1.0,
+        "hex": "#FCFCFC"
+      },
+      "$extensions": {
+        "com.figma.codeSyntax": { "WEB": "var(--card-foreground)" }
+      }
+    },
+    "popover": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.0862745098, 0.0862745098, 0.0862745098],
+        "alpha": 1.0,
+        "hex": "#161616"
+      },
+      "$extensions": {
+        "com.figma.codeSyntax": { "WEB": "var(--popover)" }
+      }
+    },
+    "popover-foreground": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.9882352941, 0.9882352941, 0.9882352941],
+        "alpha": 1.0,
+        "hex": "#FCFCFC"
+      },
+      "$extensions": {
+        "com.figma.codeSyntax": { "WEB": "var(--popover-foreground)" }
+      }
+    },
+    "primary": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.6078431373, 0.5215686275, 1.0],
+        "alpha": 1.0,
+        "hex": "#9B85FF",
+        "note": "FIXED from Section A Decision 1. Was #E4E4E4 (near-white, broke brand). Now lifted purple — WCAG AA pass 4.8:1 on #090909."
+      },
+      "$extensions": {
+        "com.figma.codeSyntax": { "WEB": "var(--primary)" }
+      }
+    },
+    "primary-foreground": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.0392156863, 0.0392156863, 0.0392156863],
+        "alpha": 1.0,
+        "hex": "#0A0A0A",
+        "note": "Dark text on lifted purple, higher contrast than #161616."
+      },
+      "$extensions": {
+        "com.figma.codeSyntax": { "WEB": "var(--primary-foreground)" }
+      }
+    },
+    "secondary": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.0509803922, 0.1254901961, 0.2627450980],
+        "alpha": 1.0,
+        "hex": "#0D2043",
+        "note": "FIXED from Section A Decision 2. Was #262626 (grey, lost navy identity). Now navy — same as Light mode. Sidebar stays navy across both modes."
+      },
+      "$extensions": {
+        "com.figma.codeSyntax": { "WEB": "var(--secondary)" }
+      }
+    },
+    "secondary-foreground": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.9607843137, 0.9607843137, 0.9607843137],
+        "alpha": 1.0,
+        "hex": "#F5F5F5"
+      },
+      "$extensions": {
+        "com.figma.codeSyntax": { "WEB": "var(--secondary-foreground)" }
+      }
+    },
+    "muted": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.1019607843, 0.1019607843, 0.1019607843],
+        "alpha": 1.0,
+        "hex": "#1A1A1A",
+        "note": "Darker than card (#161616), creates clearer muted hierarchy."
+      },
+      "$extensions": {
+        "com.figma.codeSyntax": { "WEB": "var(--muted)" }
+      }
+    },
+    "muted-foreground": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.6313725490, 0.6313725490, 0.6313725490],
+        "alpha": 1.0,
+        "hex": "#A1A1A1"
+      },
+      "$extensions": {
+        "com.figma.codeSyntax": { "WEB": "var(--muted-foreground)" }
+      }
+    },
+    "accent": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.1215686275, 0.1019607843, 0.2274509804],
+        "alpha": 1.0,
+        "hex": "#1F1A3A",
+        "note": "FIXED from Section A Decision 3. Was #262626 (grey, lost purple-tint interactions). Now desaturated dark purple — carries brand into hover/selected states."
+      },
+      "$extensions": {
+        "com.figma.codeSyntax": { "WEB": "var(--accent)" }
+      }
+    },
+    "accent-foreground": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.7803921569, 0.7215686275, 1.0],
+        "alpha": 1.0,
+        "hex": "#C7B8FF",
+        "note": "Lifted lavender on dark purple accent."
+      },
+      "$extensions": {
+        "com.figma.codeSyntax": { "WEB": "var(--accent-foreground)" }
+      }
+    },
+    "destructive": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [1.0, 0.3882352941, 0.4],
+        "alpha": 1.0,
+        "hex": "#FF6366"
+      },
+      "$extensions": {
+        "com.figma.codeSyntax": { "WEB": "var(--destructive)" }
+      }
+    },
+    "info": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.0, 0.6745098039, 0.9450980392],
+        "alpha": 1.0,
+        "hex": "#00ACF1"
+      },
+      "$extensions": {
+        "com.figma.codeSyntax": { "WEB": "var(--info)" }
+      }
+    },
+    "success": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.0, 0.7372549020, 0.4862745098],
+        "alpha": 1.0,
+        "hex": "#00BC7C"
+      },
+      "$extensions": {
+        "com.figma.codeSyntax": { "WEB": "var(--success)" }
+      }
+    },
+    "warning": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.9882352941, 0.6039215686, 0.0509803922],
+        "alpha": 1.0,
+        "hex": "#FC9A0D"
+      },
+      "$extensions": {
+        "com.figma.codeSyntax": { "WEB": "var(--warning)" }
+      }
+    },
+    "border": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [1.0, 1.0, 1.0],
+        "alpha": 0.1,
+        "hex": "#FFFFFF1A"
+      },
+      "$extensions": {
+        "com.figma.codeSyntax": { "WEB": "var(--border)" }
+      }
+    },
+    "input": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [1.0, 1.0, 1.0],
+        "alpha": 0.15,
+        "hex": "#FFFFFF26"
+      },
+      "$extensions": {
+        "com.figma.codeSyntax": { "WEB": "var(--input)" }
+      }
+    },
+    "ring": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.6078431373, 0.5215686275, 1.0],
+        "alpha": 1.0,
+        "hex": "#9B85FF",
+        "note": "FIXED from Section A Decision 5. Aligned to lifted purple primary. Was #747474 grey."
+      },
+      "$extensions": {
+        "com.figma.codeSyntax": { "WEB": "var(--ring)" }
+      }
+    },
+    "chart-1": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.6078431373, 0.5215686275, 1.0],
+        "alpha": 1.0,
+        "hex": "#9B85FF",
+        "note": "FIXED from Section A Decision 4. Was #1649E5 (blue — broke cross-mode series identity). Now lifted purple, matches Light chart-1 at #7C64FE semantically."
+      },
+      "$extensions": {
+        "com.figma.codeSyntax": { "WEB": "var(--chart-1)" }
+      }
+    },
+    "chart-2": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.0, 0.7372549020, 1.0],
+        "alpha": 1.0,
+        "hex": "#00BCFF",
+        "note": "Aligned to Light chart-2 — cyan in both modes."
+      },
+      "$extensions": {
+        "com.figma.codeSyntax": { "WEB": "var(--chart-2)" }
+      }
+    },
+    "chart-3": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.9960784314, 0.7019607843, 0.2627450980],
+        "alpha": 1.0,
+        "hex": "#FEB343",
+        "note": "Aligned to Light chart-3 — amber in both modes."
+      },
+      "$extensions": {
+        "com.figma.codeSyntax": { "WEB": "var(--chart-3)" }
+      }
+    },
+    "chart-4": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [1.0, 0.3960784314, 0.3529411765],
+        "alpha": 1.0,
+        "hex": "#FF655A",
+        "note": "Aligned to Light chart-4 — coral in both modes."
+      },
+      "$extensions": {
+        "com.figma.codeSyntax": { "WEB": "var(--chart-4)" }
+      }
+    },
+    "chart-5": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.0705882353, 0.7490196078, 0.6470588235],
+        "alpha": 1.0,
+        "hex": "#12BFA5",
+        "note": "Aligned to Light chart-5 — teal in both modes."
+      },
+      "$extensions": {
+        "com.figma.codeSyntax": { "WEB": "var(--chart-5)" }
+      }
+    },
+    "sidebar": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.0509803922, 0.1254901961, 0.2627450980],
+        "alpha": 1.0,
+        "hex": "#0D2043",
+        "note": "FIXED from Section A Decision 6. Was #161616 (flat with cards). Now navy — sidebar keeps identity in both modes."
+      },
+      "$extensions": {
+        "com.figma.codeSyntax": { "WEB": "var(--sidebar)" }
+      }
+    },
+    "sidebar-foreground": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.9607843137, 0.9607843137, 0.9607843137],
+        "alpha": 1.0,
+        "hex": "#F5F5F5"
+      },
+      "$extensions": {
+        "com.figma.codeSyntax": { "WEB": "var(--sidebar-foreground)" }
+      }
+    },
+    "sidebar-primary": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.6078431373, 0.5215686275, 1.0],
+        "alpha": 1.0,
+        "hex": "#9B85FF",
+        "note": "FIXED from Section A Decision 5. Was #1649E5 (blue). Now lifted purple — active nav item stays purple in dark mode."
+      },
+      "$extensions": {
+        "com.figma.codeSyntax": { "WEB": "var(--sidebar-primary)" }
+      }
+    },
+    "sidebar-primary-foreground": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [1.0, 1.0, 1.0],
+        "alpha": 1.0,
+        "hex": "#FFFFFF"
+      },
+      "$extensions": {
+        "com.figma.codeSyntax": { "WEB": "var(--sidebar-primary-foreground)" }
+      }
+    },
+    "sidebar-accent": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.1058823529, 0.1843137255, 0.3254901961],
+        "alpha": 1.0,
+        "hex": "#1B2F53"
+      },
+      "$extensions": {
+        "com.figma.codeSyntax": { "WEB": "var(--sidebar-accent)" }
+      }
+    },
+    "sidebar-accent-foreground": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [1.0, 1.0, 1.0],
+        "alpha": 1.0,
+        "hex": "#FFFFFF"
+      },
+      "$extensions": {
+        "com.figma.codeSyntax": { "WEB": "var(--sidebar-accent-foreground)" }
+      }
+    },
+    "sidebar-border": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.1058823529, 0.1843137255, 0.3254901961],
+        "alpha": 1.0,
+        "hex": "#1B2F53"
+      },
+      "$extensions": {
+        "com.figma.codeSyntax": { "WEB": "var(--sidebar-border)" }
+      }
+    },
+    "sidebar-ring": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.6078431373, 0.5215686275, 1.0],
+        "alpha": 1.0,
+        "hex": "#9B85FF"
+      },
+      "$extensions": {
+        "com.figma.codeSyntax": { "WEB": "var(--sidebar-ring)" }
+      }
+    },
+    "recording": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [1.0, 0.3882352941, 0.4],
+        "alpha": 1.0,
+        "hex": "#FF6366",
+        "note": "Voice token — recording indicator. Apply pulse motion (1.5s infinite)."
+      },
+      "$extensions": {
+        "com.figma.codeSyntax": { "WEB": "var(--recording)" }
+      }
+    },
+    "on-call": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.0, 0.7372549020, 0.4862745098],
+        "alpha": 1.0,
+        "hex": "#00BC7C",
+        "note": "Voice token — active call state."
+      },
+      "$extensions": {
+        "com.figma.codeSyntax": { "WEB": "var(--on-call)" }
+      }
+    },
+    "ringing": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.9882352941, 0.6039215686, 0.0509803922],
+        "alpha": 1.0,
+        "hex": "#FC9A0D",
+        "note": "Voice token — incoming call ringing. Apply pulse motion."
+      },
+      "$extensions": {
+        "com.figma.codeSyntax": { "WEB": "var(--ringing)" }
+      }
+    }
+  },
+  "$extensions": {
+    "com.figma.modeName": "Dark",
+    "com.azeer.version": "V1-2026-04-22",
+    "com.azeer.sectionAFixes": [
+      "Decision 1: primary lifted from #E4E4E4 to #9B85FF (WCAG AA)",
+      "Decision 2: secondary kept as #0D2043 navy across modes",
+      "Decision 3: accent changed from #262626 grey to #1F1A3A dark purple",
+      "Decision 4: chart-1 aligned to #9B85FF (was blue #1649E5)",
+      "Decision 5: sidebar-primary aligned to #9B85FF (was blue)",
+      "Decision 6: sidebar kept navy #0D2043 (was flat #161616)"
+    ],
+    "com.azeer.added": [
+      "Voice tokens: recording, on-call, ringing"
+    ]
+  }
+}

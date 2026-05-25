@@ -1,0 +1,351 @@
+/* =============================================================================
+   Azeer Design System — colors_and_type.css
+   LOCKED V3 (2026-04-27 · Inter (Latin) + Vazirmatn (Arabic), metrics-matched)
+   Source of truth: tokens.yaml + AI-PROMPT-BLOCK.md + SKILL.md
+   Fonts: Inter (variable)   — self-hosted from /fonts/Inter-VariableFont.ttf
+          Vazirmatn (variable) — from Google Fonts, weights 100–900
+          IBM Plex Mono — kept on Google Fonts for code/numerics.
+   Stack:  font-family: 'Inter', 'Vazirmatn', sans-serif;
+           Inter handles Latin glyphs; the browser falls through to
+           Vazirmatn for Arabic codepoints. size-adjust on Vazirmatn
+           normalizes its x-height so both align on the same baseline.
+   ============================================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Vazirmatn:wght@100..900&display=swap');
+
+/* Inter — variable font (weights 100–900) for Latin glyphs. */
+@font-face {
+  font-family: 'Inter';
+  src: url('fonts/Inter-VariableFont.ttf') format('truetype-variations'),
+       url('fonts/Inter-VariableFont.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Vazirmatn — metrics-matched override for Arabic.
+   The base @import above brings the font in; this @font-face re-declares it
+   with size-adjust + ascent/descent overrides so its visual size and baseline
+   match Inter, keeping bilingual lines flush.
+   Targets only the U+0600–U+06FF Arabic block plus presentation forms. */
+@font-face {
+  font-family: 'Vazirmatn';
+  src: local('Vazirmatn');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+  size-adjust: 108%;            /* nudge x-height up to Inter's */
+  ascent-override: 90%;
+  descent-override: 22%;
+  line-gap-override: 0%;
+  unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF;
+}
+
+/* =============================================================================
+   1 · Color tokens — LIGHT (default)
+   ============================================================================= */
+:root,
+:root[data-theme="light"] {
+  /* Core surfaces */
+  --background: #FFFFFF;
+  --foreground: #2E2E2E;
+  --card: #FFFFFF;
+  --card-foreground: #2E2E2E;
+  --popover: #FFFFFF;
+  --popover-foreground: #2E2E2E;
+
+  /* Brand */
+  --primary: #7C64FE;
+  --primary-foreground: #F5F5F5;
+  --secondary: #0D2043;            /* Navy — authoritative, same in both modes */
+  --secondary-foreground: #F5F5F5;
+
+  /* Muted / accent */
+  --muted: #F5F5F5;
+  --muted-foreground: #4D4D4D;
+  --accent: #F2F0FF;               /* lavender hover tint */
+  --accent-foreground: #7C64FE;
+
+  /* Semantic */
+  --destructive: #E60006;
+  --destructive-foreground: #FFFFFF;
+  --success: #12BFA5;
+  --warning: #FEB343;
+  --info: #00BCFF;
+
+  /* Lines */
+  --border: #E4E4E4;
+  --input: #E4E4E4;
+  --ring: #CDDAFD;
+
+  /* Sidebar — navy in BOTH modes */
+  --sidebar: #0D2043;
+  --sidebar-foreground: #F5F5F5;
+  --sidebar-primary: #7C64FE;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #1B2F53;
+  --sidebar-accent-foreground: #FFFFFF;
+  --sidebar-border: #1B2F53;
+  --sidebar-ring: #7C64FE;
+
+  /* Charts */
+  --chart-1: #7C64FE;
+  --chart-2: #00BCFF;
+  --chart-3: #FEB343;
+  --chart-4: #FF655A;
+  --chart-5: #12BFA5;
+
+  /* Voice */
+  --recording: #E5484D;
+  --on-call: #12BFA5;
+  --ringing: #FEB343;
+
+  /* Channels — single-mode, never themed */
+  --channel-whatsapp: #25D366;
+  --channel-voice: #7C64FE;
+  --channel-sms: #8A8F98;
+  --channel-email: #EA4335;
+  --channel-instagram: #E1306C;
+  --channel-messenger: #0084FF;
+  --channel-telegram: #229ED9;
+  --channel-webchat: #0F1011;
+  --channel-rcs: #1A73E8;
+
+  /* Tenant (Profile B) — default maps to primary; tenants override */
+  --tenant-primary: var(--primary);
+  --tenant-primary-foreground: var(--primary-foreground);
+}
+
+/* =============================================================================
+   2 · Color tokens — DARK (with Section-A fixes; do NOT use shadcn defaults)
+   ============================================================================= */
+:root[data-theme="dark"] {
+  --background: #090909;
+  --foreground: #FCFCFC;
+  --card: #161616;
+  --card-foreground: #FCFCFC;
+  --popover: #161616;
+  --popover-foreground: #FCFCFC;
+
+  --primary: #9B85FF;              /* lifted for WCAG AA on #090909 */
+  --primary-foreground: #0A0A0A;
+  --secondary: #0D2043;            /* navy unchanged */
+  --secondary-foreground: #F5F5F5;
+
+  --muted: #1A1A1A;
+  --muted-foreground: #A1A1A1;
+  --accent: #1F1A3A;               /* desaturated purple, NOT grey */
+  --accent-foreground: #C7B8FF;
+
+  --destructive: #FF6366;
+  --destructive-foreground: #FFFFFF;
+  --success: #00BC7C;
+  --warning: #FC9A0D;
+  --info: #00ACF1;
+
+  --border: rgba(255, 255, 255, 0.10);
+  --input: rgba(255, 255, 255, 0.15);
+  --ring: #9B85FF;
+
+  --sidebar-primary: #9B85FF;
+  --sidebar-ring: #9B85FF;
+
+  --chart-1: #9B85FF;
+
+  --recording: #FF6366;
+  --on-call: #00BC7C;
+  --ringing: #FC9A0D;
+}
+
+/* =============================================================================
+   3 · Font families + type scale
+   Product: Inter (Latin) + Vazirmatn (Arabic) — metrics-matched, share line-box
+   Brand:   Dialogue ME — product never uses it (load separately when needed)
+   ============================================================================= */
+:root {
+  --font-product: 'Inter', 'Vazirmatn', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-arabic:  'Inter', 'Vazirmatn', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono:    'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --font-brand:   'Dialogue ME', 'Inter', sans-serif; /* NEVER inside product UI */
+
+  /* Raw size + line-height + weight tokens (px) */
+  --text-display-xl: 72px;
+  --text-display-lg: 64px;
+  --text-display-md: 48px;
+  --text-h1: 32px;
+  --text-h2: 24px;
+  --text-h3: 20px;
+  --text-body-l: 18px;
+  --text-body: 16px;
+  --text-body-s: 15px;
+  --text-ui-small: 14px;
+  --text-ui-caption: 13px;
+  --text-ui-label: 12px;
+  --text-ui-micro: 11px;
+
+  /* Weight aliases — full Inter variable range (100–900) */
+  --weight-thin:       100;
+  --weight-extralight: 200;
+  --weight-light:      300;
+  --weight-regular:    400;
+  --weight-medium:     500;
+  --weight-semibold:   600;
+  --weight-bold:       700;
+  --weight-extrabold:  800;
+  --weight-black:      900;
+}
+
+/* =============================================================================
+   4 · Spacing + radius + motion + size
+   ============================================================================= */
+:root {
+  /* Spacing — px; raw integers never used in components */
+  --space-0: 0px;
+  --space-px: 1px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+
+  /* Radius */
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius: 10px;       /* Azeer default — buttons, inputs, cards, dialogs, sheets, toasts */
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-2xl: 16px;
+  --radius-3xl: 22px;
+  --radius-full: 9999px;
+
+  /* Control heights */
+  --size-xs: 24px;
+  --size-sm: 28px;
+  --size-md: 32px;
+  --size-lg: 36px;
+  --size-xl: 44px;
+
+  /* Motion — 3 durations only */
+  --dur-fast: 100ms;
+  --dur-base: 200ms;
+  --dur-slow: 400ms;
+
+  /* Curves — 3 only */
+  --ease-out-quint: cubic-bezier(0.16, 1, 0.3, 1);        /* enter */
+  --ease-in-quint: cubic-bezier(0.7, 0, 0.84, 0);         /* exit */
+  --ease-in-out-quint: cubic-bezier(0.87, 0, 0.13, 1);    /* state change */
+
+  /* Motion presets as composable transitions */
+  --transition-enter: var(--dur-slow) var(--ease-out-quint);
+  --transition-exit: var(--dur-base) var(--ease-in-quint);
+  --transition-state: var(--dur-fast) var(--ease-in-out-quint);
+}
+
+/* =============================================================================
+   5 · Base reset + body typography
+   ============================================================================= */
+html {
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Inter OpenType features: contextual alts (cv11), stylistic sets (ss01/ss03),
+     tabular numbers off by default (use .tabular for numerics) */
+  font-feature-settings: "cv11", "ss01", "ss03";
+  font-variation-settings: "opsz" 14;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-product);
+  font-size: var(--text-body);
+  line-height: 24px;
+  font-weight: var(--weight-regular);
+}
+
+/* Respect RTL */
+[dir="rtl"] body { font-family: var(--font-arabic); }
+
+/* =============================================================================
+   6 · Semantic type classes — mapped to weight tokens (Inter variable)
+   ============================================================================= */
+.text-display-xl { font-size: 72px; line-height: 72px; font-weight: var(--weight-medium); letter-spacing: -0.02em; font-variation-settings: "opsz" 32; }
+.text-display-lg { font-size: 64px; line-height: 64px; font-weight: var(--weight-medium); letter-spacing: -0.02em; font-variation-settings: "opsz" 32; }
+.text-display    { font-size: 48px; line-height: 48px; font-weight: var(--weight-medium); letter-spacing: -0.01em; font-variation-settings: "opsz" 32; }
+
+.text-h1 { font-size: 32px; line-height: 36px; font-weight: var(--weight-medium); letter-spacing: -0.01em; font-variation-settings: "opsz" 24; }
+.text-h2 { font-size: 24px; line-height: 32px; font-weight: var(--weight-medium); font-variation-settings: "opsz" 20; }
+.text-h3 { font-size: 20px; line-height: 27px; font-weight: var(--weight-semibold); font-variation-settings: "opsz" 18; }
+
+.text-body-l  { font-size: 18px; line-height: 29px; font-weight: var(--weight-regular); }
+.text-body    { font-size: 16px; line-height: 24px; font-weight: var(--weight-regular); }
+.text-body-m  { font-size: 16px; line-height: 24px; font-weight: var(--weight-medium); }
+.text-body-s  { font-size: 15px; line-height: 24px; font-weight: var(--weight-regular); }
+
+.text-tabular-sm { font-size: 13px; line-height: 20px; font-weight: var(--weight-regular); font-variant-numeric: tabular-nums; }
+.tabular { font-variant-numeric: tabular-nums; font-feature-settings: "tnum", "cv11"; }
+
+.text-ui-small   { font-size: 14px; line-height: 21px; font-weight: var(--weight-medium); }
+.text-ui-caption { font-size: 13px; line-height: 20px; font-weight: var(--weight-regular); }
+.text-ui-label   { font-size: 12px; line-height: 17px; font-weight: var(--weight-medium); }
+.text-ui-micro   { font-size: 11px; line-height: 15px; font-weight: var(--weight-medium); }
+
+/* Weight utilities — use sparingly; prefer semantic classes above */
+.font-thin       { font-weight: var(--weight-thin); }
+.font-extralight { font-weight: var(--weight-extralight); }
+.font-light      { font-weight: var(--weight-light); }
+.font-regular    { font-weight: var(--weight-regular); }
+.font-medium     { font-weight: var(--weight-medium); }
+.font-semibold   { font-weight: var(--weight-semibold); }
+.font-bold       { font-weight: var(--weight-bold); }
+.font-extrabold  { font-weight: var(--weight-extrabold); }
+.font-black      { font-weight: var(--weight-black); }
+
+/* Headings default to semantic tokens */
+h1 { font-size: 32px; line-height: 36px; font-weight: var(--weight-medium); letter-spacing: -0.01em; margin: 0; font-variation-settings: "opsz" 24; }
+h2 { font-size: 24px; line-height: 32px; font-weight: var(--weight-medium); margin: 0; font-variation-settings: "opsz" 20; }
+h3 { font-size: 20px; line-height: 27px; font-weight: var(--weight-semibold); margin: 0; font-variation-settings: "opsz" 18; }
+h4 { font-size: 18px; line-height: 29px; font-weight: var(--weight-semibold); margin: 0; }
+p  { margin: 0; }
+code, pre { font-family: var(--font-mono); font-size: 13px; }
+
+/* =============================================================================
+   7 · Motion — pulse preset for voice components
+   ============================================================================= */
+@keyframes azeer-pulse {
+  0%, 100% { opacity: 0.6; }
+  50%      { opacity: 1.0; }
+}
+.azeer-pulse { animation: azeer-pulse 1500ms var(--ease-in-out-quint) infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* =============================================================================
+   8 · Focus ring — unified across primitives
+   ============================================================================= */
+.az-focus-ring:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[role="button"]:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+  border-radius: var(--radius);
+}

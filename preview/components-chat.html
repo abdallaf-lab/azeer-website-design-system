@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<link rel="stylesheet" href="../colors_and_type.css"/>
+<style>
+  body { padding: 20px; }
+  .bubble-col { display:flex; flex-direction: column; gap: 8px; max-width: 520px; }
+  .bubble {
+    padding: 8px 12px; border-radius: 16px; max-width: 70%;
+    font-size: 14px; line-height: 20px;
+  }
+  .inbound { align-self: flex-start; background: #F5F5F5; color: #2E2E2E; border-bottom-left-radius: 4px; }
+  .outbound { align-self: flex-end; background: #7C64FE; color: #fff; border-bottom-right-radius: 4px; }
+  .meta { font-size: 11px; color: #4D4D4D; display: flex; gap: 6px; align-items: center; }
+  .outbound + .meta { align-self: flex-end; }
+  .channel { display:inline-flex; align-items:center; gap: 6px; font-size: 11px; padding: 2px 8px; border-radius: 99px; background: rgba(37,211,102,0.14); color: #1A8D46; }
+  .channel .d { width: 6px; height: 6px; border-radius: 99px; background: #25D366; }
+  .tag { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; opacity:0.7; font-weight:600; display:block; margin-bottom: 12px; }
+</style>
+</head>
+<body>
+<span class="tag">Chat bubbles · outbound right (LTR) · channel pill</span>
+<div class="bubble-col">
+  <span class="channel"><span class="d"></span>WhatsApp · Khaled</span>
+  <div class="bubble inbound">Hi, can I reschedule tomorrow's appointment to Thursday?</div>
+  <span class="meta">10:28 AM</span>
+  <div class="bubble outbound">Of course — we have 10:30 or 14:00 on Thursday. Which works?</div>
+  <span class="meta">10:29 AM · Sent ✓✓</span>
+  <div class="bubble inbound">14:00 is perfect, thanks.</div>
+  <span class="meta">10:30 AM</span>
+</div>
+</body>
+</html>

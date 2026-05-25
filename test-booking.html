@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Andalus Polyclinic · Book a visit</title>
+<link rel="stylesheet" href="colors_and_type.css" />
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<style>
+  /* =========================================================================
+     Profile B — Consumer booking page (test page for the Azeer design system)
+     ALL values come from colors_and_type.css tokens. Nothing invented.
+     ========================================================================= */
+
+  :root {
+    /* Tenant brand override — Andalus Polyclinic uses a teal accent.
+       Profile B requires the tenant brand to own primary color. Azeer's
+       purple is reserved for the Starter/Growth footer attribution only. */
+    --tenant-primary: #0E8E7E;
+    --tenant-primary-foreground: #FFFFFF;
+    --tenant-accent: #E6F4F1;
+  }
+
+  html, body { background: var(--muted); }
+  body {
+    min-height: 100vh;
+    padding: var(--space-10) var(--space-5) var(--space-20);
+    font-family: var(--font-product);
+    color: var(--foreground);
+  }
+
+  /* ---------- Shell ---------- */
+  .shell {
+    max-width: 640px;
+    margin: 0 auto;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-2xl);
+    overflow: hidden;
+    box-shadow: 0 1px 2px 0 rgba(13, 32, 67, 0.05);
+  }
+
+  /* ---------- Hero strip (Profile B's only allowed photo surface) ---------- */
+  .hero {
+    height: 160px;
+    background:
+      linear-gradient(180deg, rgba(13,32,67,0.10) 0%, rgba(13,32,67,0.00) 60%),
+      linear-gradient(135deg, var(--tenant-primary) 0%, #146B62 100%);
+    position: relative;
+  }
+  .hero-tag {
+    position: absolute; inset-block-end: var(--space-4); inset-inline-start: var(--space-6);
+    background: rgba(13, 32, 67, 0.72);
+    backdrop-filter: blur(8px) saturate(180%);
+    color: #fff;
+    border-radius: var(--radius-full);
+    padding: 6px var(--space-3);
+    font-size: var(--text-ui-caption); font-weight: var(--weight-medium);
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .hero-tag i { width: 14px; height: 14px; stroke-width: 1.5; }
+
+  /* ---------- Header (tenant identity + stepper) ---------- */
+  .head {
+    padding: var(--space-6) var(--space-8) var(--space-5);
+    border-bottom: 1px solid var(--border);
+    display: flex; flex-direction: column; gap: var(--space-4);
+  }
+  .head-row { display: flex; align-items: center; gap: var(--space-3); }
+  .logo {
+    width: 44px; height: 44px;
+    border-radius: var(--radius);
+    background: var(--tenant-primary);
+    color: var(--tenant-primary-foreground);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: var(--weight-bold); font-size: 18px; letter-spacing: -0.01em;
+  }
+  .tenant-name { font-size: var(--text-body); font-weight: var(--weight-semibold); }
+  .tenant-tag  { font-size: var(--text-ui-caption); color: var(--muted-foreground); }
+
+  .stepper { display: flex; flex-direction: column; gap: 6px; }
+  .stepper-bars { display: flex; gap: 4px; }
+  .stepper-bars span {
+    flex: 1; height: 4px; border-radius: var(--radius-full); background: var(--muted);
+    transition: background var(--transition-state);
+  }
+  .stepper-bars span.done    { background: var(--tenant-primary); }
+  .stepper-bars span.current { background: var(--tenant-primary); opacity: 0.6; }
+  .stepper-meta {
+    display: flex; justify-content: space-between;
+    font-size: var(--text-ui-caption); color: var(--muted-foreground);
+    font-weight: var(--weight-medium);
+  }
+  .stepper-meta .of { color: var(--foreground); }
+
+  /* ---------- Body ---------- */
+  .body { padding: var(--space-8); display: flex; flex-direction: column; gap: var(--space-6); }
+  .h2 { font-size: var(--text-h2); line-height: 32px; font-weight: var(--weight-medium); letter-spacing: -0.01em; }
+  .sub { font-size: var(--text-body-s); line-height: 24px; color: var(--muted-foreground); }
+
+  .group-label {
+    font-size: var(--text-ui-label); font-weight: var(--weight-medium);
+    color: var(--muted-foreground); text-transform: uppercase; letter-spacing: 0.04em;
+  }
+
+  /* ---------- Service cards (radio-style) ---------- */
+  .services { display: grid; gap: var(--space-3); }
+  .svc {
+    display: flex; align-items: center; gap: var(--space-4);
+    padding: var(--space-4) var(--space-5);
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    cursor: pointer; text-align: start; width: 100%;
+    font-family: inherit; color: inherit;
+    transition: background var(--transition-state), border-color var(--transition-state);
+  }
+  .svc:hover { background: var(--accent); border-color: var(--tenant-primary); }
+  .svc.selected {
+    border-color: var(--tenant-primary);
+    box-shadow: inset 0 0 0 1px var(--tenant-primary);
+    background: var(--tenant-accent);
+  }
+  .svc-icon {
+    width: 44px; height: 44px; flex-shrink: 0;
+    border-radius: var(--radius);
+    background: var(--muted);
+    color: var(--tenant-primary);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .svc-icon i { width: 22px; height: 22px; stroke-width: 1.5; }
+  .svc-body  { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+  .svc-title { font-size: var(--text-body); font-weight: var(--weight-semibold); }
+  .svc-desc  { font-size: var(--text-ui-caption); color: var(--muted-foreground); }
+  .svc-meta  { font-size: var(--text-ui-small); font-weight: var(--weight-medium); font-variant-numeric: tabular-nums; }
+
+  /* ---------- Date pills + time slots ---------- */
+  .dates { display: flex; gap: var(--space-2); overflow-x: auto; padding-bottom: 2px; }
+  .date {
+    flex: 0 0 auto;
+    min-width: 64px;
+    padding: 10px var(--space-3);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: var(--card);
+    cursor: pointer; font-family: inherit;
+    display: flex; flex-direction: column; align-items: center; gap: 2px;
+    transition: var(--transition-state);
+  }
+  .date:hover { background: var(--accent); }
+  .date.selected {
+    background: var(--tenant-primary); color: var(--tenant-primary-foreground); border-color: var(--tenant-primary);
+  }
+  .date-dow { font-size: var(--text-ui-micro); text-transform: uppercase; letter-spacing: 0.06em; opacity: 0.85; }
+  .date-day { font-size: 18px; font-weight: var(--weight-semibold); font-variant-numeric: tabular-nums; }
+
+  .slots { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-2); }
+  .slot {
+    height: var(--size-md); border-radius: var(--radius);
+    border: 1px solid var(--border); background: var(--card);
+    font-size: var(--text-ui-small); font-weight: var(--weight-medium); color: var(--foreground);
+    font-variant-numeric: tabular-nums; cursor: pointer; font-family: inherit;
+    transition: var(--transition-state);
+  }
+  .slot:hover { background: var(--accent); }
+  .slot.selected {
+    background: var(--tenant-primary); color: var(--tenant-primary-foreground); border-color: var(--tenant-primary);
+  }
+  .slot[disabled] { color: var(--muted-foreground); background: var(--muted); cursor: not-allowed; opacity: 0.6; }
+
+  /* ---------- Summary card ---------- */
+  .summary {
+    background: var(--muted);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: var(--space-4) var(--space-5);
+    display: flex; flex-direction: column; gap: var(--space-2);
+  }
+  .summary-row { display: flex; justify-content: space-between; align-items: center; gap: var(--space-3); }
+  .summary-row .lbl { font-size: var(--text-ui-caption); color: var(--muted-foreground); font-weight: var(--weight-medium); }
+  .summary-row .val { font-size: var(--text-ui-small); font-weight: var(--weight-semibold); font-variant-numeric: tabular-nums; }
+
+  /* ---------- Footer (CTAs + Azeer attribution) ---------- */
+  .foot {
+    padding: var(--space-5) var(--space-8) var(--space-6);
+    border-top: 1px solid var(--border);
+    display: flex; flex-direction: column; gap: var(--space-4);
+  }
+  .actions { display: flex; gap: var(--space-3); }
+  .btn {
+    height: var(--size-xl);
+    padding: 0 var(--space-5);
+    border-radius: var(--radius);
+    font-size: var(--text-ui-small); font-weight: var(--weight-semibold);
+    font-family: inherit; cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    transition: var(--transition-state);
+    border: 1px solid transparent;
+  }
+  .btn-primary {
+    flex: 1;
+    background: var(--tenant-primary); color: var(--tenant-primary-foreground);
+  }
+  .btn-primary:hover { opacity: 0.92; }
+  .btn-primary:active { transform: scale(0.98); }
+  .btn-ghost {
+    background: var(--card); color: var(--foreground); border-color: var(--border);
+  }
+  .btn-ghost:hover { background: var(--accent); }
+  .btn i { width: 16px; height: 16px; stroke-width: 1.5; }
+
+  .attrib {
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    font-size: var(--text-ui-caption); color: var(--muted-foreground);
+  }
+  .attrib b { color: var(--foreground); font-weight: var(--weight-semibold); }
+  .attrib .dot {
+    width: 6px; height: 6px; border-radius: var(--radius-full); background: var(--primary);
+  }
+
+  /* ---------- Theme audit chip (shows the tokens this page bound to) ---------- */
+  .audit {
+    max-width: 640px; margin: var(--space-5) auto 0;
+    background: var(--card);
+    border: 1px dashed var(--border);
+    border-radius: var(--radius);
+    padding: var(--space-3) var(--space-4);
+    font-size: var(--text-ui-caption);
+    color: var(--muted-foreground);
+    display: flex; flex-wrap: wrap; gap: var(--space-3);
+    font-family: var(--font-mono);
+  }
+  .audit b { color: var(--foreground); font-family: var(--font-product); font-weight: var(--weight-semibold); }
+  .audit .swatch {
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .audit .swatch i {
+    width: 12px; height: 12px; border-radius: var(--radius-sm); border: 1px solid var(--border);
+    display: inline-block;
+  }
+</style>
+</head>
+<body>
+
+<main class="shell" aria-label="Booking">
+  <!-- Hero strip — Profile B's one allowed photo surface. Capsule used over it. -->
+  <section class="hero" aria-hidden="true">
+    <span class="hero-tag"><i data-lucide="map-pin"></i> Riyadh · Olaya branch</span>
+  </section>
+
+  <!-- Header: tenant identity + 4-step stepper -->
+  <header class="head">
+    <div class="head-row">
+      <div class="logo">A</div>
+      <div style="flex:1;">
+        <div class="tenant-name">Andalus Polyclinic</div>
+        <div class="tenant-tag">Family medicine · Pediatrics · Dental</div>
+      </div>
+    </div>
+
+    <div class="stepper">
+      <div class="stepper-bars">
+        <span class="done"></span>
+        <span class="current"></span>
+        <span></span>
+        <span></span>
+      </div>
+      <div class="stepper-meta">
+        <span><span class="of">Step 2</span> of 4</span>
+        <span>Pick a time</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Body -->
+  <div class="body">
+    <div>
+      <div class="h2">When works for you?</div>
+      <div class="sub">All times are shown in Asia/Riyadh (GMT+3).</div>
+    </div>
+
+    <!-- Service summary (selected previously) -->
+    <div>
+      <div class="group-label" style="margin-bottom: var(--space-3);">Selected service</div>
+      <button type="button" class="svc selected" aria-pressed="true">
+        <span class="svc-icon"><i data-lucide="stethoscope"></i></span>
+        <span class="svc-body">
+          <span class="svc-title">General consultation</span>
+          <span class="svc-desc">Dr. Layla Al-Otaibi · 30 min</span>
+        </span>
+        <span class="svc-meta">SAR 180</span>
+      </button>
+    </div>
+
+    <!-- Date pills -->
+    <div>
+      <div class="group-label" style="margin-bottom: var(--space-3);">Choose a day</div>
+      <div class="dates" role="radiogroup" aria-label="Choose a day">
+        <button type="button" class="date" role="radio" aria-checked="false"><span class="date-dow">Mon</span><span class="date-day">11</span></button>
+        <button type="button" class="date selected" role="radio" aria-checked="true"><span class="date-dow">Tue</span><span class="date-day">12</span></button>
+        <button type="button" class="date" role="radio" aria-checked="false"><span class="date-dow">Wed</span><span class="date-day">13</span></button>
+        <button type="button" class="date" role="radio" aria-checked="false"><span class="date-dow">Thu</span><span class="date-day">14</span></button>
+        <button type="button" class="date" role="radio" aria-checked="false"><span class="date-dow">Fri</span><span class="date-day">15</span></button>
+        <button type="button" class="date" role="radio" aria-checked="false"><span class="date-dow">Sat</span><span class="date-day">16</span></button>
+        <button type="button" class="date" role="radio" aria-checked="false"><span class="date-dow">Sun</span><span class="date-day">17</span></button>
+      </div>
+    </div>
+
+    <!-- Time slots -->
+    <div>
+      <div class="group-label" style="margin-bottom: var(--space-3);">Available slots · Tue 12 May</div>
+      <div class="slots" role="radiogroup" aria-label="Available slots">
+        <button type="button" class="slot" role="radio" aria-checked="false">09:00</button>
+        <button type="button" class="slot" disabled>09:30</button>
+        <button type="button" class="slot" role="radio" aria-checked="false">10:00</button>
+        <button type="button" class="slot selected" role="radio" aria-checked="true">10:30</button>
+        <button type="button" class="slot" role="radio" aria-checked="false">11:00</button>
+        <button type="button" class="slot" disabled>11:30</button>
+        <button type="button" class="slot" role="radio" aria-checked="false">14:00</button>
+        <button type="button" class="slot" role="radio" aria-checked="false">14:30</button>
+        <button type="button" class="slot" role="radio" aria-checked="false">15:00</button>
+        <button type="button" class="slot" role="radio" aria-checked="false">15:30</button>
+        <button type="button" class="slot" role="radio" aria-checked="false">16:00</button>
+        <button type="button" class="slot" role="radio" aria-checked="false">16:30</button>
+      </div>
+    </div>
+
+    <!-- Summary -->
+    <div class="summary" aria-live="polite">
+      <div class="summary-row"><span class="lbl">Service</span><span class="val">General consultation</span></div>
+      <div class="summary-row"><span class="lbl">Provider</span><span class="val">Dr. Layla Al-Otaibi</span></div>
+      <div class="summary-row"><span class="lbl">Date &amp; time</span><span class="val">Tue, 12 May · 10:30</span></div>
+      <div class="summary-row"><span class="lbl">Total</span><span class="val">SAR 180</span></div>
+    </div>
+  </div>
+
+  <!-- Footer: CTAs + Azeer attribution (Starter/Growth — unclosable) -->
+  <footer class="foot">
+    <div class="actions">
+      <button type="button" class="btn btn-ghost"><i data-lucide="arrow-left"></i> Back</button>
+      <button type="button" class="btn btn-primary">Continue <i data-lucide="arrow-right"></i></button>
+    </div>
+    <div class="attrib">
+      <span class="dot"></span>
+      Booking powered by <b>Azeer</b>
+    </div>
+  </footer>
+</main>
+
+<!-- Token audit chip — confirms the page bound to design-system variables. -->
+<aside class="audit" aria-label="Bound design tokens">
+  <span class="swatch"><i style="background: var(--tenant-primary)"></i><b>tenant-primary</b></span>
+  <span class="swatch"><i style="background: var(--secondary)"></i><b>secondary (navy)</b></span>
+  <span class="swatch"><i style="background: var(--accent)"></i><b>accent</b></span>
+  <span class="swatch"><i style="background: var(--muted)"></i><b>muted</b></span>
+  <span>radius <b style="color:var(--foreground)">10px</b></span>
+  <span>type <b style="color:var(--foreground)">Inter / Vazirmatn</b></span>
+  <span>motion <b style="color:var(--foreground)">100/200/400ms</b></span>
+</aside>
+
+<script>
+  // Render Lucide icons
+  lucide.createIcons();
+
+  // Light interactivity — toggle selection on date + slot pills.
+  document.querySelectorAll('.dates').forEach(group => {
+    group.addEventListener('click', e => {
+      const btn = e.target.closest('.date');
+      if (!btn) return;
+      group.querySelectorAll('.date').forEach(b => {
+        b.classList.remove('selected');
+        b.setAttribute('aria-checked', 'false');
+      });
+      btn.classList.add('selected');
+      btn.setAttribute('aria-checked', 'true');
+    });
+  });
+  document.querySelectorAll('.slots').forEach(group => {
+    group.addEventListener('click', e => {
+      const btn = e.target.closest('.slot');
+      if (!btn || btn.disabled) return;
+      group.querySelectorAll('.slot').forEach(b => {
+        b.classList.remove('selected');
+        b.setAttribute('aria-checked', 'false');
+      });
+      btn.classList.add('selected');
+      btn.setAttribute('aria-checked', 'true');
+    });
+  });
+</script>
+</body>
+</html>

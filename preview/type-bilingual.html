@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"/>
+<title>Azeer · Type — Bilingual</title>
+<link rel="stylesheet" href="../colors_and_type.css"/>
+<style>
+  body { padding: 28px; background: var(--background); color: var(--foreground); }
+  .head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    margin-bottom: 20px; padding-bottom: 14px; border-bottom: 1px solid var(--border);
+  }
+  .head h1 {
+    font-family: var(--font-arabic), sans-serif;
+    font-size: 22px; font-weight: var(--weight-semibold); margin: 0;
+  }
+  .head .badge {
+    font-size: 11px; font-family: var(--font-mono);
+    color: var(--success); background: rgba(18,191,165,0.1);
+    padding: 3px 8px; border-radius: 9999px;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .head .badge::before {
+    content: ''; width: 6px; height: 6px; border-radius: 9999px; background: var(--success);
+  }
+
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+  .col {
+    padding: 16px 18px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--background);
+  }
+  .col h4 {
+    font-size: 11px; color: var(--muted-foreground);
+    letter-spacing: 0.06em; text-transform: uppercase;
+    margin: 0 0 12px; font-weight: var(--weight-semibold);
+    font-family: var(--font-mono);
+  }
+  .en { direction: ltr; font-family: var(--font-product); }
+  .ar { direction: rtl; font-family: var(--font-arabic); }
+  .sample { margin-bottom: 10px; line-height: 1.4; }
+  .sample:last-child { margin-bottom: 0; }
+
+  /* Weight ladder */
+  .ladder {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    background: var(--background);
+  }
+  .ladder h4 {
+    font-size: 11px; color: var(--muted-foreground);
+    letter-spacing: 0.06em; text-transform: uppercase;
+    margin: 0 0 14px; font-weight: var(--weight-semibold);
+    font-family: var(--font-mono);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .ladder h4 .note { color: var(--success); text-transform: none; letter-spacing: 0; font-weight: var(--weight-medium); }
+  .row {
+    display: grid;
+    grid-template-columns: 110px 1fr 1fr 60px;
+    gap: 16px; align-items: baseline;
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--border);
+  }
+  .row:last-child { border-bottom: 0; }
+  .row .w {
+    font-family: var(--font-mono);
+    font-size: 11px; color: var(--muted-foreground);
+  }
+  .row .ar-sample {
+    font-family: var(--font-arabic);
+    font-size: 22px; line-height: 1.4;
+    direction: rtl;
+  }
+  .row .en-sample {
+    font-family: var(--font-product);
+    font-size: 22px; line-height: 1.4;
+    direction: ltr;
+  }
+  .row .num {
+    font-family: var(--font-mono);
+    font-size: 11px; color: var(--muted-foreground);
+    text-align: end;
+    font-variant-numeric: tabular-nums;
+  }
+</style>
+</head>
+<body>
+
+<div class="head">
+  <h1>الطباعة ثنائية اللغة · Bilingual Type</h1>
+  <span class="badge">Inter (Latin) + Vazirmatn (Arabic) · metrics-matched</span>
+</div>
+
+<!-- Real product samples, side-by-side -->
+<div class="grid">
+  <div class="col en">
+    <h4>Inter · Latin</h4>
+    <div class="sample text-h2">Appointment confirmed</div>
+    <div class="sample text-body">Dr Khaled has 3 open threads on WhatsApp.</div>
+    <div class="sample text-ui-caption">Updated 3 minutes ago · Riyadh time</div>
+  </div>
+  <div class="col ar">
+    <h4>Vazirmatn · Arabic</h4>
+    <div class="sample text-h2">تم تأكيد الموعد</div>
+    <div class="sample text-body">لدى د. خالد 3 محادثات مفتوحة على واتساب.</div>
+    <div class="sample text-ui-caption">تم التحديث قبل 3 دقائق · توقيت الرياض</div>
+  </div>
+</div>
+
+<!-- Weight ladder — all 9 axis stops on the variable font -->
+<div class="ladder">
+  <h4>
+    <span>سُلّم الأوزان · Weight ladder</span>
+    <span class="note">Inter + Vazirmatn · 9 weights, metrics-matched, shared baseline</span>
+  </h4>
+  <div class="row">
+    <span class="w">Thin · 100</span>
+    <span class="ar-sample" style="font-weight:100">عيادة مجمع النخبة الطبي</span>
+    <span class="en-sample" style="font-weight:100">Al Nukhba Medical Group</span>
+    <span class="num">100</span>
+  </div>
+  <div class="row">
+    <span class="w">ExtraLight · 200</span>
+    <span class="ar-sample" style="font-weight:200">عيادة مجمع النخبة الطبي</span>
+    <span class="en-sample" style="font-weight:200">Al Nukhba Medical Group</span>
+    <span class="num">200</span>
+  </div>
+  <div class="row">
+    <span class="w">Light · 300</span>
+    <span class="ar-sample" style="font-weight:300">عيادة مجمع النخبة الطبي</span>
+    <span class="en-sample" style="font-weight:300">Al Nukhba Medical Group</span>
+    <span class="num">300</span>
+  </div>
+  <div class="row">
+    <span class="w">Regular · 400</span>
+    <span class="ar-sample" style="font-weight:400">عيادة مجمع النخبة الطبي</span>
+    <span class="en-sample" style="font-weight:400">Al Nukhba Medical Group</span>
+    <span class="num">400</span>
+  </div>
+  <div class="row">
+    <span class="w">Medium · 500</span>
+    <span class="ar-sample" style="font-weight:500">عيادة مجمع النخبة الطبي</span>
+    <span class="en-sample" style="font-weight:500">Al Nukhba Medical Group</span>
+    <span class="num">500</span>
+  </div>
+  <div class="row">
+    <span class="w">SemiBold · 600</span>
+    <span class="ar-sample" style="font-weight:600">عيادة مجمع النخبة الطبي</span>
+    <span class="en-sample" style="font-weight:600">Al Nukhba Medical Group</span>
+    <span class="num">600</span>
+  </div>
+  <div class="row">
+    <span class="w">Bold · 700</span>
+    <span class="ar-sample" style="font-weight:700">عيادة مجمع النخبة الطبي</span>
+    <span class="en-sample" style="font-weight:700">Al Nukhba Medical Group</span>
+    <span class="num">700</span>
+  </div>
+  <div class="row">
+    <span class="w">ExtraBold · 800</span>
+    <span class="ar-sample" style="font-weight:800">عيادة مجمع النخبة الطبي</span>
+    <span class="en-sample" style="font-weight:800">Al Nukhba Medical Group</span>
+    <span class="num">800</span>
+  </div>
+  <div class="row">
+    <span class="w">Black · 900</span>
+    <span class="ar-sample" style="font-weight:900">عيادة مجمع النخبة الطبي</span>
+    <span class="en-sample" style="font-weight:900">Al Nukhba Medical Group</span>
+    <span class="num">900</span>
+  </div>
+</div>
+
+</body>
+</html>
