@@ -34,6 +34,9 @@ export * from "./marketing-button";
 export * from "./feature-card";
 export * from "./trust-badges";
 
+// Motion (Path C — entrance / scroll motion primitives)
+export * from "./motion/motion-preset";
+
 // Chrome
 export * from "./navbar";
 export * from "./footer";
