@@ -40,8 +40,10 @@ export * from "./motion/border-beam";
 export * from "./motion/connector-arrow";
 
 // Layout (Path C — structural section wrappers)
-export * from "./layout/section-rails";
-export * from "./layout/dotted-canvas";
+export * from "./layout";
+
+// Features (Path C — feature blocks)
+export * from "./features";
 
 // Chrome
 export * from "./navbar";
