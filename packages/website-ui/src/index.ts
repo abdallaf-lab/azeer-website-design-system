@@ -45,6 +45,9 @@ export * from "./layout";
 // Features (Path C — feature blocks)
 export * from "./features";
 
+// Use cases (Path C — tabbed vertical showcases)
+export * from "./use-cases";
+
 // Chrome
 export * from "./navbar";
 export * from "./footer";
