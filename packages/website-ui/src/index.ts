@@ -48,6 +48,9 @@ export * from "./features";
 // Use cases (Path C — tabbed vertical showcases)
 export * from "./use-cases";
 
+// Testimonials (Path C — featured-voice carousel)
+export * from "./testimonials";
+
 // Chrome
 export * from "./navbar";
 export * from "./footer";
