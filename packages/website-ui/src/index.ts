@@ -51,6 +51,9 @@ export * from "./use-cases";
 // Testimonials (Path C — featured-voice carousel)
 export * from "./testimonials";
 
+// Integrations (Path C — lean integration showcase)
+export * from "./integrations";
+
 // Chrome
 export * from "./navbar";
 export * from "./footer";
